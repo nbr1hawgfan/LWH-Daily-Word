@@ -1,5 +1,5 @@
 /* LWH Daily Word service worker */
-const VERSION = 'dw-1.1.0';
+const VERSION = 'dw-1.2.0';
 const SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -20,7 +20,8 @@ self.addEventListener('fetch', e => {
   // Scripture text never changes: cache first, keep forever.
   const isScripture =
     (url.hostname === 'bolls.life' && /^\/(get-text|get-verse|get-books|static\/bolls)/.test(url.pathname)) ||
-    url.hostname === 'bible-api.com' || url.hostname === 'bible.helloao.org';
+    url.hostname === 'bible-api.com' || url.hostname === 'bible.helloao.org' ||
+    url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
   if (isScripture) {
     e.respondWith(caches.open('dw-scripture').then(async c => {
       const hit = await c.match(req);

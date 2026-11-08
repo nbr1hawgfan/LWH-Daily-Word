@@ -20,6 +20,11 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.2
+- **Book design** — Crimson Pro book typography, cream paper, oxblood leather header, gold rules; Home and More laid out like a table of contents.
+- **Full-screen reading** — the top and bottom bars slide away while reading and return on scroll up, a tap on the page, or at the end of the chapter.
+- Page-turn motion between chapters; Previous/Next show the chapter names. App icon matches the cover.
+
 ### Added in 1.1
 - **Cover** — leather-look Bible cover with the owner's name stamped in gold; tap to open. Can be turned off in Settings.
 - **Presentation page** — "Presented to / by / on" with a dedication message and a blessing (Numbers 6:24-26). Fully editable in Settings.

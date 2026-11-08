@@ -1,0 +1,15 @@
+{
+  "name": "LWH Daily Word",
+  "short_name": "Daily Word",
+  "description": "A personal Bible for the leadership of Logistics Warehouse, Inc.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141414",
+  "theme_color": "#C41230",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

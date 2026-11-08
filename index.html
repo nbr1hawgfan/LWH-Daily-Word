@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LWH Daily Word</title>
+<meta name="description" content="A personal Bible for the leadership of Logistics Warehouse, Inc.">
+<meta name="theme-color" content="#C41230">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daily Word">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+:root{
+  --red:#C41230; --maroon:#7d1935; --black:#141414;
+  --paper:#fbf8f3; --card:#ffffff; --ink:#1b1b1b; --muted:#5d5852; --line:#d9d2c7; --soft:#f1ece4;
+  --hl-gold:#fde68a; --hl-green:#bbf7d0; --hl-blue:#bfdbfe; --hl-rose:#fecdd3;
+  --fs:20px; --lh:1.7;
+  --navh:72px; --safeb:env(safe-area-inset-bottom,0px); --safet:env(safe-area-inset-top,0px);
+}
+:root[data-theme="dark"]{
+  --paper:#111111; --card:#1b1b1b; --ink:#f2eee8; --muted:#b3aca3; --line:#333; --soft:#232323;
+  --hl-gold:#6b5a12; --hl-green:#1f5133; --hl-blue:#1f3d66; --hl-rose:#6b2633;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.45;
+  padding-bottom:calc(var(--navh) + var(--safeb) + 8px)}
+button,input,select,textarea{font:inherit;color:inherit;border-radius:0}
+button{cursor:pointer}
+.serif{font-family:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:40;background:var(--red);color:#fff;border-bottom:5px solid var(--black);
+  padding:calc(var(--safet) + 10px) 16px 10px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;flex-direction:column;line-height:1.05;flex:1;min-width:0}
+.brand b{font-size:21px;letter-spacing:.06em;text-transform:uppercase}
+.brand span{font-size:13px;opacity:.9;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-wx{text-align:right;line-height:1.1}
+.hdr-wx .t{font-size:20px;font-weight:700}
+.hdr-wx .w{font-size:14px;opacity:.95}
+
+main{max-width:760px;margin:0 auto;padding:16px}
+.view{display:none}
+.view.on{display:block}
+h1{font-size:26px;margin:4px 0 12px}
+h2{font-size:21px;margin:18px 0 10px;padding-bottom:6px;border-bottom:3px solid var(--black)}
+:root[data-theme="dark"] h2{border-bottom-color:var(--red)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+
+/* Cards & controls - sharp edges */
+.card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);padding:16px;margin:0 0 14px}
+.card.plain{border-left:1px solid var(--line)}
+.card.black{border-left-color:var(--black)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:10px 16px;border:2px solid var(--black);
+  background:var(--card);font-weight:700;font-size:17px}
+:root[data-theme="dark"] .btn{border-color:#555}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.dark{background:var(--black);border-color:var(--black);color:#fff}
+.btn.full{width:100%}
+.btn.sm{min-height:42px;padding:6px 12px;font-size:15px}
+.btn:active{transform:translateY(1px)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .grow{flex:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+input[type=text],input[type=search],select,textarea{width:100%;min-height:52px;padding:12px;border:2px solid var(--black);background:var(--card);font-size:18px}
+:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea{border-color:#555}
+textarea{min-height:120px;line-height:1.5}
+label.lbl{display:block;font-weight:700;margin:12px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--black);background:var(--card);padding:9px 14px;font-weight:600;font-size:16px}
+:root[data-theme="dark"] .chip{border-color:#555}
+.chip.on{background:var(--black);color:#fff;border-color:var(--black)}
+:root[data-theme="dark"] .chip.on{background:var(--red);border-color:var(--red)}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px;min-height:96px;border:2px solid var(--black);background:var(--card);text-align:left}
+:root[data-theme="dark"] .tile{border-color:#444}
+.tile svg{width:28px;height:28px;color:var(--red)}
+.tile b{font-size:17px}
+.tile span{font-size:14px;color:var(--muted)}
+
+/* Verse of the day */
+.votd{background:var(--black);color:#fff;border:none;border-top:6px solid var(--red);padding:20px}
+.votd .lab{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#f3b2bd;font-weight:700}
+.votd .txt{font-size:calc(var(--fs) + 3px);line-height:1.55;margin:10px 0}
+.votd .ref{font-weight:700;font-size:17px}
+.votd .btn{background:transparent;color:#fff;border-color:#fff}
+.wxcard{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wxcard .big{font-size:40px;font-weight:800;line-height:1}
+
+/* Reader */
+.rbar{position:sticky;top:calc(var(--safet) + 70px);z-index:30;background:var(--paper);display:flex;gap:8px;padding:8px 0 10px;border-bottom:2px solid var(--line)}
+.rbar .btn{min-height:48px}
+.rbar .bk{flex:1;justify-content:flex-start;font-size:19px}
+.scripture{font-size:var(--fs);line-height:var(--lh);padding:10px 2px 20px}
+.scripture h3{font-size:calc(var(--fs) + 6px);margin:10px 0 14px}
+.v{cursor:pointer;padding:2px 1px;transition:background .15s}
+.v sup{font-family:-apple-system,Segoe UI,Arial,sans-serif;font-size:.62em;font-weight:800;color:var(--red);margin-right:3px;vertical-align:.45em}
+.v.sel{outline:2px dashed var(--red);outline-offset:1px}
+.v.hl-gold{background:var(--hl-gold)} .v.hl-green{background:var(--hl-green)} .v.hl-blue{background:var(--hl-blue)} .v.hl-rose{background:var(--hl-rose)}
+.v.saved sup::after{content:"";display:inline-block;width:7px;height:7px;background:var(--black);margin-left:3px;vertical-align:middle}
+:root[data-theme="dark"] .v.saved sup::after{background:#fff}
+.v mark{background:transparent;color:inherit;font-weight:700}
+.para-mode .v{display:inline}
+.list-mode .v{display:block;margin-bottom:6px}
+.chapnav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 20px}
+.loading{padding:30px 0;text-align:center;color:var(--muted)}
+
+/* Picker */
+.bookgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.bookgrid button{min-height:50px;border:1px solid var(--line);background:var(--card);text-align:left;padding:8px 12px;font-size:17px}
+.bookgrid button.cur{border:2px solid var(--red);font-weight:800}
+.chapgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.chapgrid button{min-height:54px;border:1px solid var(--line);background:var(--card);font-size:19px;font-weight:700}
+.chapgrid button.cur{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* Sheet / modal */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:60;display:none}
+.scrim.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-top:6px solid var(--red);max-height:88vh;overflow:auto;
+  transform:translateY(105%);transition:transform .22s ease;padding:16px 16px calc(20px + var(--safeb))}
+.sheet.on{transform:none}
+.sheet .inner{max-width:760px;margin:0 auto}
+.sheet h3{margin:0 0 6px;font-size:21px}
+.sheet .close{float:right;border:2px solid var(--black);background:var(--card);min-width:48px;min-height:44px;font-weight:800}
+.swatches{display:flex;gap:10px;margin:12px 0}
+.sw{width:52px;height:46px;border:2px solid var(--black)}
+.sw.gold{background:var(--hl-gold)} .sw.green{background:var(--hl-green)} .sw.blue{background:var(--hl-blue)} .sw.rose{background:var(--hl-rose)}
+.sw.none{background:var(--card);font-weight:800;font-size:14px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Lists */
+.item{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--black);padding:14px;margin-bottom:12px}
+.item .ref{font-weight:800;color:var(--red);font-size:17px}
+:root[data-theme="dark"] .item .ref{color:#ff6b81}
+.item .txt{margin:6px 0;font-size:calc(var(--fs) - 1px);line-height:1.55}
+.item .note{background:var(--soft);padding:10px;margin:8px 0;font-size:16px;border-left:3px solid var(--red)}
+.item .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.empty{padding:26px;text-align:center;color:var(--muted);border:2px dashed var(--line)}
+.tabs{display:flex;border:2px solid var(--black);margin-bottom:14px}
+.tabs button{flex:1;min-height:48px;border:none;background:var(--card);font-weight:700;font-size:16px}
+.tabs button + button{border-left:2px solid var(--black)}
+.tabs button.on{background:var(--black);color:#fff}
+:root[data-theme="dark"] .tabs, :root[data-theme="dark"] .tabs button + button{border-color:#555}
+:root[data-theme="dark"] .tabs button.on{background:var(--red)}
+.progress{height:14px;background:var(--soft);border:1px solid var(--line)}
+.progress > i{display:block;height:100%;background:var(--red)}
+.check{display:flex;align-items:center;gap:10px}
+.speechbody{white-space:pre-wrap}
+
+/* Bottom nav */
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--black);border-top:4px solid var(--red);
+  display:grid;grid-template-columns:repeat(5,1fr);height:calc(var(--navh) + var(--safeb));padding-bottom:var(--safeb)}
+nav.bottom a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#d6d6d6;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.03em}
+nav.bottom a svg{width:26px;height:26px}
+nav.bottom a.on{color:#fff;background:var(--red)}
+
+/* Presenter */
+#presenter{position:fixed;inset:0;z-index:90;background:#0d0d0d;color:#fff;display:none;flex-direction:column}
+#presenter.on{display:flex}
+#presenter .pbar{display:flex;gap:8px;padding:calc(var(--safet) + 10px) 12px 10px;background:var(--red);border-bottom:4px solid #000}
+#presenter .pbar .btn{min-height:46px;background:#000;color:#fff;border-color:#000}
+#presenter .ptext{flex:1;overflow:auto;padding:24px 22px 40vh;font-size:30px;line-height:1.6;white-space:pre-wrap}
+.toast{position:fixed;left:50%;bottom:calc(var(--navh) + var(--safeb) + 16px);transform:translateX(-50%);background:var(--black);color:#fff;
+  padding:12px 18px;border-left:5px solid var(--red);z-index:100;font-weight:700;display:none;max-width:90vw}
+.toast.on{display:block}
+.footer-note{font-size:13px;color:var(--muted);text-align:center;margin:24px 0 8px}
+@media (min-width:640px){.bookgrid{grid-template-columns:repeat(3,1fr)}.chapgrid{grid-template-columns:repeat(8,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><b>Daily Word</b><span id="hdrSub">Logistics Warehouse, Inc.</span></div>
+  <div class="hdr-wx"><div class="t" id="hdrTime">--:--</div><div class="w" id="hdrWx">&nbsp;</div></div>
+</header>
+
+<main>
+<!-- HOME -->
+<section class="view" id="v-home">
+  <h1 id="greet">Good day</h1>
+  <div class="muted" id="todayDate" style="margin:-6px 0 14px"></div>
+
+  <div class="card votd" id="votdCard">
+    <div class="lab">Verse of the Day</div>
+    <div class="txt serif" id="votdText">Loading...</div>
+    <div class="ref" id="votdRef"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn sm" id="votdSave">Save</button>
+      <button class="btn sm" id="votdShare">Share</button>
+      <button class="btn sm" id="votdImg">Picture</button>
+      <button class="btn sm" id="votdOpen">Read Chapter</button>
+    </div>
+  </div>
+
+  <div class="card wxcard" id="wxCard">
+    <div><div class="muted small" id="wxPlace">Fort Smith, AR</div><div class="big" id="wxTemp">--</div><div id="wxDesc" class="small"></div></div>
+    <div style="text-align:right" class="small"><div id="wxHiLo"></div><div id="wxRain" class="muted"></div></div>
+  </div>
+
+  <button class="btn red full" id="contBtn" style="margin-bottom:14px">Continue Reading</button>
+
+  <div class="card black">
+    <div class="small muted" style="font-weight:700;letter-spacing:.08em;text-transform:uppercase">Today's Proverb</div>
+    <div style="font-size:20px;font-weight:700;margin:4px 0 10px" id="provTitle">Proverbs</div>
+    <div class="small muted" style="margin-bottom:10px">Thirty-one chapters of wisdom — one for each day of the month.</div>
+    <button class="btn full" id="provBtn">Read Today's Proverb</button>
+  </div>
+
+  <h2>Quick Start</h2>
+  <div class="grid2">
+    <button class="tile" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><b>Speech Builder</b><span>Devotionals for meetings</span></button>
+    <button class="tile" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Topics</b><span>Verses for any need</span></button>
+    <button class="tile" data-go="plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17"/><path d="M3 9h18M8 2v4M16 2v4M8 14l3 3 5-5"/></svg><b>Reading Plans</b><span id="planMini">Pick a plan</span></button>
+    <button class="tile" data-go="prayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg><b>Prayer List</b><span id="prayMini">People and needs</span></button>
+  </div>
+</section>
+
+<!-- READ -->
+<section class="view" id="v-read">
+  <div class="rbar">
+    <button class="btn bk" id="rBook">John 3</button>
+    <button class="btn" id="rTr">KJV</button>
+    <button class="btn" id="rAa" aria-label="Text size">Aa</button>
+    <button class="btn" id="rListen" aria-label="Listen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg></button>
+  </div>
+  <div id="scripture" class="scripture serif para-mode"></div>
+  <div class="chapnav">
+    <button class="btn" id="rPrev">&larr; Previous</button>
+    <button class="btn" id="rNext">Next &rarr;</button>
+  </div>
+  <div class="footer-note" id="trNote"></div>
+</section>
+
+<!-- SEARCH -->
+<section class="view" id="v-search">
+  <h1>Search</h1>
+  <div class="row">
+    <input class="grow" type="search" id="sq" placeholder="John 3:16, Psalm 23, or a topic like courage" enterkeyhint="search">
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn red grow" id="sGo">Search</button>
+    <select id="sScope" style="width:auto;flex:0 0 160px"><option value="">Whole Bible</option><option value="ot">Old Testament</option><option value="nt">New Testament</option></select>
+  </div>
+  <label class="check small" style="margin:12px 0"><input type="checkbox" id="sExact" style="width:24px;height:24px"> Exact words only (otherwise searches by meaning)</label>
+  <div id="sResults"></div>
+</section>
+
+<!-- TOPICS -->
+<section class="view" id="v-topics">
+  <h1>Topics</h1>
+  <p class="muted" style="margin-top:-6px">Hand-picked passages for leading people and running a business with faith.</p>
+  <div class="chips" id="topicChips"></div>
+  <div id="topicResults" style="margin-top:16px"></div>
+</section>
+
+<!-- SAVED -->
+<section class="view" id="v-saved">
+  <h1>Saved</h1>
+  <div class="tabs" id="savedTabs"><button data-t="verses" class="on">Verses</button><button data-t="hl">Highlights</button><button data-t="speeches">Speeches</button></div>
+  <div class="chips" id="collChips" style="margin-bottom:12px"></div>
+  <div id="savedList"></div>
+</section>
+
+<!-- MORE -->
+<section class="view" id="v-more">
+  <h1>More</h1>
+  <div class="grid2">
+    <button class="tile" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><b>Speech Builder</b><span>Write a devotional or talk</span></button>
+    <button class="tile" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Topics</b><span>Verses by subject</span></button>
+    <button class="tile" data-go="plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><b>Reading Plans</b><span>Stay on track</span></button>
+    <button class="tile" data-go="prayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg><b>Prayer List</b><span>Requests and answers</span></button>
+    <button class="tile" data-go="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><b>Settings</b><span>Name, text size, backup</span></button>
+    <button class="tile" id="randBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><b>Random Verse</b><span>A word for right now</span></button>
+  </div>
+</section>
+
+<!-- SPEECH BUILDER -->
+<section class="view" id="v-speech">
+  <h1>Speech Builder</h1>
+  <p class="muted" style="margin-top:-6px">Build a short devotional or encouraging talk for a meeting. Pick a theme, the occasion and how long you want to speak.</p>
+  <label class="lbl">Theme</label>
+  <div class="chips" id="spThemes"></div>
+  <label class="lbl">Occasion</label>
+  <select id="spOcc"></select>
+  <label class="lbl">Length</label>
+  <div class="tabs" id="spLen"><button data-l="short">About 2 min</button><button data-l="standard" class="on">About 5 min</button><button data-l="long">About 10 min</button></div>
+  <label class="lbl">Key Verse</label>
+  <select id="spVerse"></select>
+  <label class="lbl">Audience name (optional)</label>
+  <input type="text" id="spAud" placeholder="e.g. Van Buren warehouse team">
+  <div style="margin-top:14px"><button class="btn red full" id="spBuild">Build My Speech</button></div>
+
+  <div id="spOut" style="display:none;margin-top:18px">
+    <h2>Your Draft</h2>
+    <p class="small muted" style="margin-top:-4px">Edit anything below. Words in [brackets] are spots for your own story.</p>
+    <input type="text" id="spTitle" style="margin-bottom:10px">
+    <textarea id="spText" style="min-height:380px;font-size:18px"></textarea>
+    <div class="grid2" style="margin-top:10px">
+      <button class="btn red" id="spSave">Save Speech</button>
+      <button class="btn dark" id="spPresent">Present</button>
+      <button class="btn" id="spShare">Share / Copy</button>
+      <button class="btn" id="spClaude">Copy Polish Prompt</button>
+    </div>
+    <p class="small muted">"Copy Polish Prompt" copies your draft with instructions you can paste into Claude to tighten the wording or add a story.</p>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="view" id="v-plans">
+  <h1>Reading Plans</h1>
+  <div id="plansList"></div>
+</section>
+
+<!-- PRAYER -->
+<section class="view" id="v-prayer">
+  <h1>Prayer List</h1>
+  <div class="card plain">
+    <label class="lbl" style="margin-top:0">New request</label>
+    <textarea id="prText" placeholder="Who or what are you praying for?" style="min-height:90px"></textarea>
+    <div class="row" style="margin-top:10px">
+      <select id="prCat" class="grow"><option>Our Team</option><option>Family</option><option>Company</option><option>Customers</option><option>Friends</option><option>Community</option><option>Personal</option></select>
+      <button class="btn red" id="prAdd">Add</button>
+    </div>
+  </div>
+  <div class="tabs" id="prTabs"><button data-t="open" class="on">Praying</button><button data-t="answered">Answered</button></div>
+  <div id="prList"></div>
+</section>
+
+<!-- SETTINGS -->
+<section class="view" id="v-settings">
+  <h1>Settings</h1>
+  <label class="lbl">Your first name</label>
+  <input type="text" id="stName" placeholder="Used in your greeting">
+  <label class="lbl">Default translation</label>
+  <select id="stTr"></select>
+  <label class="lbl">Text size</label>
+  <div class="row"><button class="btn grow" id="stSm">A&minus;</button><div id="stFsLbl" style="align-self:center;min-width:70px;text-align:center;font-weight:700"></div><button class="btn grow" id="stLg">A+</button></div>
+  <label class="lbl">Verse layout</label>
+  <div class="tabs" id="stLayout"><button data-m="para">Paragraph</button><button data-m="list">One per line</button></div>
+  <label class="lbl">Appearance</label>
+  <div class="tabs" id="stTheme"><button data-m="light">Day</button><button data-m="dark">Night</button></div>
+  <label class="lbl">Reading voice speed</label>
+  <select id="stRate"><option value="0.8">Slow</option><option value="0.95">Normal</option><option value="1.1">Faster</option></select>
+  <label class="lbl">Weather location</label>
+  <div class="row"><button class="btn grow" id="stWxFs">Fort Smith</button><button class="btn grow" id="stWxGps">Use My Location</button></div>
+
+  <h2>Backup</h2>
+  <p class="small muted">Saved verses, highlights, speeches, plans and prayers live on this phone. Make a backup file before changing phones.</p>
+  <div class="grid2"><button class="btn" id="stExport">Save Backup</button><button class="btn" id="stImport">Restore Backup</button></div>
+  <input type="file" id="stFile" accept="application/json" style="display:none">
+
+  <h2>About</h2>
+  <p class="small">Prepared for the leadership of Logistics Warehouse, Inc. — with gratitude for the faith that guides how this company treats its people.</p>
+  <p class="small muted">Scripture text is provided by the free Bolls Bible service (bolls.life), with bible-api.com as a backup for King James. Verses you have read are kept on the phone for reading without signal.</p>
+  <p class="small muted" id="verLbl"></p>
+</section>
+</main>
+
+<nav class="bottom" id="nav">
+  <a href="#home" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8v10H3z"/><path d="M9 21v-6h6v6"/></svg>Home</a>
+  <a href="#read" data-v="read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>Read</a>
+  <a href="#search" data-v="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Search</a>
+  <a href="#saved" data-v="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Saved</a>
+  <a href="#more" data-v="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More</a>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="inner" id="sheetInner"></div></div>
+
+<div id="presenter">
+  <div class="pbar">
+    <button class="btn" id="pClose">Close</button>
+    <button class="btn" id="pSm">A&minus;</button>
+    <button class="btn" id="pLg">A+</button>
+    <button class="btn" id="pScroll">Auto-Scroll</button>
+    <button class="btn" id="pRead">Read Aloud</button>
+  </div>
+  <div class="ptext serif" id="pText"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<canvas id="cv" width="1080" height="1080" style="display:none"></canvas>
+
+<script>
+'use strict';
+const APP_VERSION = '1.0.0';
+const API = 'https://bolls.life';
+const FS_LAT = 35.3859, FS_LON = -94.3985;
+
+/* ---------- Books ---------- */
+const BOOKS = [
+ ['Genesis',50,'gen ge gn'],['Exodus',40,'exo ex exod'],['Leviticus',27,'lev le lv'],['Numbers',36,'num nu nm nb'],['Deuteronomy',34,'deut de dt deu'],
+ ['Joshua',24,'josh jos jsh'],['Judges',21,'judg jdg jg jdgs'],['Ruth',4,'rth ru'],['1 Samuel',31,'1sam 1sa 1sm 1s'],['2 Samuel',24,'2sam 2sa 2sm 2s'],
+ ['1 Kings',22,'1kgs 1ki 1kg 1k'],['2 Kings',25,'2kgs 2ki 2kg 2k'],['1 Chronicles',29,'1chr 1ch 1chron'],['2 Chronicles',36,'2chr 2ch 2chron'],['Ezra',10,'ezr'],
+ ['Nehemiah',13,'neh ne'],['Esther',10,'esth est es'],['Job',42,'jb'],['Psalms',150,'ps psa psalm pss psm'],['Proverbs',31,'prov pr prv pro'],
+ ['Ecclesiastes',12,'eccl ecc ec qoh'],['Song of Solomon',8,'song sos songofsongs canticles ss'],['Isaiah',66,'isa is'],['Jeremiah',52,'jer je jr'],['Lamentations',5,'lam la'],
+ ['Ezekiel',48,'ezek eze ezk'],['Daniel',12,'dan da dn'],['Hosea',14,'hos ho'],['Joel',3,'jl'],['Amos',9,'am'],['Obadiah',1,'obad ob'],['Jonah',4,'jon jnh'],
+ ['Micah',7,'mic mc'],['Nahum',3,'nah na'],['Habakkuk',3,'hab hb'],['Zephaniah',3,'zeph zep zp'],['Haggai',2,'hag hg'],['Zechariah',14,'zech zec zc'],['Malachi',4,'mal ml'],
+ ['Matthew',28,'matt mt mat'],['Mark',16,'mrk mk mr'],['Luke',24,'luk lk'],['John',21,'jn jhn joh'],['Acts',28,'act ac'],['Romans',16,'rom ro rm'],
+ ['1 Corinthians',16,'1cor 1co'],['2 Corinthians',13,'2cor 2co'],['Galatians',6,'gal ga'],['Ephesians',6,'eph ephes'],['Philippians',4,'phil php pp'],
+ ['Colossians',4,'col co'],['1 Thessalonians',5,'1thess 1th 1thes'],['2 Thessalonians',3,'2thess 2th 2thes'],['1 Timothy',6,'1tim 1ti 1tm'],['2 Timothy',4,'2tim 2ti 2tm'],
+ ['Titus',3,'tit ti'],['Philemon',1,'phlm phm philem'],['Hebrews',13,'heb'],['James',5,'jas jm'],['1 Peter',5,'1pet 1pe 1pt 1p'],['2 Peter',3,'2pet 2pe 2pt 2p'],
+ ['1 John',5,'1jn 1jo 1joh 1jhn'],['2 John',1,'2jn 2jo 2joh'],['3 John',1,'3jn 3jo 3joh'],['Jude',1,'jud jd'],['Revelation',22,'rev re rv revelations']
+];
+const bookName = id => BOOKS[id-1][0];
+const bookChapters = id => BOOKS[id-1][1];
+const norm = s => s.toLowerCase().replace(/\./g,'').replace(/^(first|1st|i)\s+/,'1 ').replace(/^(second|2nd|ii)\s+/,'2 ').replace(/^(third|3rd|iii)\s+/,'3 ').replace(/\s+/g,'');
+const ALIAS = {};
+BOOKS.forEach((b,i)=>{ ALIAS[norm(b[0])]=i+1; b[2].split(' ').forEach(a=>ALIAS[a]=i+1); });
+ALIAS['psalm']=19; ALIAS['songofsongs']=22; ALIAS['revelationofjohn']=66;
+function findBook(name){
+  const n = norm(name); if(!n) return 0;
+  if(ALIAS[n]) return ALIAS[n];
+  if(n.length>=3){ for(let i=0;i<BOOKS.length;i++){ if(norm(BOOKS[i][0]).startsWith(n)) return i+1; } }
+  return 0;
+}
+/* Parse "John 3:16-18,20" -> {book,ch,verses:[...]} */
+function parseRef(q){
+  q = (q||'').trim().replace(/[–—]/g,'-');
+  let m = q.match(/^(.+?)\s*(\d+)\s*(?:[:.]\s*([\d,\-\s]+))?$/);
+  let book, ch=1, vs=[];
+  if(m){ book=findBook(m[1]); ch=parseInt(m[2],10);
+    if(!book && /^[1-3]$/.test(m[2]) && !m[3]){ return null; }
+    if(m[3]){ m[3].split(',').forEach(part=>{ const r=part.trim().split('-').map(x=>parseInt(x,10)).filter(x=>!isNaN(x));
+      if(r.length===1) vs.push(r[0]); else if(r.length===2){ for(let v=r[0];v<=r[1]&&v-r[0]<200;v++) vs.push(v);} }); }
+  } else { book=findBook(q); }
+  if(!book) return null;
+  if(bookChapters(book)===1 && m && !m[3] && ch>1){ vs=[ch]; ch=1; }
+  if(ch<1||ch>bookChapters(book)) return null;
+  return {book,ch,verses:vs};
+}
+function refLabel(book,ch,vs){
+  let s = bookName(book)+' '+ch;
+  if(vs&&vs.length){ const parts=[]; let st=vs[0],pr=vs[0];
+    for(let i=1;i<=vs.length;i++){ const v=vs[i]; if(v===pr+1){pr=v;continue;} parts.push(st===pr?String(st):st+'-'+pr); st=pr=v; }
+    s+=':'+parts.join(','); }
+  return s;
+}
+
+/* ---------- Storage ---------- */
+const KEY='lwhDailyWord.v1';
+const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR'},
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}};
+let S;
+try{ S = Object.assign({}, DEF, JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
+function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ toast('Storage is full on this phone'); } }
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ---------- Helpers ---------- */
+const $ = s=>document.querySelector(s);
+const $$ = s=>Array.from(document.querySelectorAll(s));
+const esc = s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function cleanHTML(h){
+  return String(h||'').replace(/<S>[\s\S]*?<\/S>/gi,'').replace(/<sup[^>]*>[\s\S]*?<\/sup>/gi,'')
+    .replace(/<br\s*\/?>/gi,' ').replace(/<(?!\/?(i|em|mark)\b)[^>]*>/gi,'').replace(/\s+/g,' ').trim();
+}
+const plain = h=>{ const d=document.createElement('div'); d.innerHTML=cleanHTML(h); return d.textContent.trim(); };
+let toastT; function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200); }
+async function copyText(t){ try{ await navigator.clipboard.writeText(t); toast('Copied'); }catch(e){ const a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); toast('Copied'); } }
+async function shareText(title,text){ if(navigator.share){ try{ await navigator.share({title,text}); return; }catch(e){ if(e.name==='AbortError') return; } } copyText(text); }
+
+/* ---------- Scripture API ---------- */
+const memCache = new Map();
+const BIBLEAPI = {KJV:'kjv',WEB:'web',ASV:'asv',YLT:'ylt',DARBY:'darby'};
+async function getJSON(url,opts){ const r = await fetch(url,opts); if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }
+async function getChapter(tr,book,ch){
+  const k=tr+'/'+book+'/'+ch; if(memCache.has(k)) return memCache.get(k);
+  let verses;
+  try{
+    const d = await getJSON(`${API}/get-text/${encodeURIComponent(tr)}/${book}/${ch}/`);
+    if(!Array.isArray(d)||!d.length) throw new Error('empty');
+    verses = d.map(v=>({verse:v.verse,html:cleanHTML(v.text)}));
+  }catch(e){
+    const alt = BIBLEAPI[tr] || 'kjv';
+    const d = await getJSON(`https://bible-api.com/${encodeURIComponent(bookName(book))}+${ch}?translation=${alt}`);
+    verses = (d.verses||[]).map(v=>({verse:v.verse,html:esc(String(v.text).replace(/\s+/g,' ').trim())}));
+    if(!BIBLEAPI[tr]) toast('Showing KJV — that translation is unavailable right now');
+  }
+  memCache.set(k,verses); return verses;
+}
+async function getPassage(tr,ref){
+  const vs = await getChapter(tr,ref.book,ref.ch);
+  const pick = ref.verses.length ? vs.filter(v=>ref.verses.includes(v.verse)) : vs;
+  return pick;
+}
+async function passageText(tr,refStr){
+  const r = parseRef(refStr); if(!r) return '';
+  const vs = await getPassage(tr,r); return vs.map(v=>plain(v.html)).join(' ');
+}
+let TRANSLATIONS = [{short_name:'KJV',full_name:'King James Version'},{short_name:'NKJV',full_name:'New King James Version'},{short_name:'WEB',full_name:'World English Bible'},{short_name:'YLT',full_name:"Young's Literal Translation"}];
+const POPULAR = ['KJV','NKJV','ESV','NIV','NIV2011','NLT','NASB','CSB17','CSB','AMP','LSB','NET','MSG','WEB','ASV','YLT'];
+async function loadTranslations(){
+  try{
+    const d = await getJSON(`${API}/static/bolls/app/views/languages.json`);
+    const eng = (Array.isArray(d)?d:[]).filter(g=>/english/i.test(g.language||'')).flatMap(g=>g.translations||[]);
+    if(eng.length){ TRANSLATIONS = eng.map(t=>({short_name:t.short_name,full_name:t.full_name}));
+      TRANSLATIONS.sort((a,b)=>{ const ia=POPULAR.indexOf(a.short_name), ib=POPULAR.indexOf(b.short_name); return (ia<0?99:ia)-(ib<0?99:ib) || a.full_name.localeCompare(b.full_name); }); }
+  }catch(e){}
+  fillTrSelect();
+}
+const trName = s=>(TRANSLATIONS.find(t=>t.short_name===s)||{full_name:s}).full_name;
+function fillTrSelect(){ $('#stTr').innerHTML = TRANSLATIONS.map(t=>`<option value="${esc(t.short_name)}" ${t.short_name===S.settings.tr?'selected':''}>${esc(t.short_name)} — ${esc(t.full_name)}</option>`).join(''); }
+
+/* ---------- Content: verse of the day, topics, themes ---------- */
+const VOTD = ['Joshua 1:9','Psalms 23:1','Proverbs 3:5-6','Isaiah 40:31','Jeremiah 29:11','Philippians 4:13','Romans 8:28','John 3:16','Psalms 46:1','Matthew 6:33',
+ '2 Timothy 1:7','Psalms 118:24','Lamentations 3:22-23','Colossians 3:23','Proverbs 16:3','Galatians 6:9','Micah 6:8','Psalms 37:5','Isaiah 41:10','Matthew 11:28',
+ 'Philippians 4:6-7','1 Corinthians 16:14','Psalms 27:1','Proverbs 11:3','Hebrews 11:1','Romans 12:2','Psalms 121:1-2','Ephesians 2:10','James 1:5','Psalms 19:14',
+ 'Proverbs 27:17','Ecclesiastes 4:9-10','1 Peter 5:7','John 14:27','Psalms 90:17','Proverbs 22:1','Deuteronomy 31:6','Matthew 5:16','Romans 15:13','Psalms 34:8',
+ 'Hebrews 12:1','2 Corinthians 5:7','Psalms 56:3','Proverbs 4:23','Isaiah 26:3','Numbers 6:24-26','Psalms 91:1-2','Romans 5:3-4','1 Thessalonians 5:16-18','Colossians 3:12',
+ 'Ephesians 4:32','Proverbs 15:1','Matthew 7:12','Psalms 100:4','Psalms 32:8','Proverbs 19:21','Isaiah 43:19','John 16:33','Psalms 139:14','Psalms 51:10','Nehemiah 8:10','Habakkuk 3:19'];
+
+const THEMES = [
+ {id:'integrity',name:'Integrity',verses:['Proverbs 10:9','Proverbs 11:3','Luke 16:10','Psalms 25:21'],
+  hook:'Every one of us has heard the saying that character is what you do when no one is watching. In our business, a lot happens when no one is watching — a count at the end of a long shift, a load that gets checked or does not, a promise made to a customer on the phone.',
+  reflect:'Scripture tells us that the person who walks in integrity walks securely. That word "securely" matters. When you have nothing to hide, you do not have to remember which story you told. You can look anyone in the eye — your supervisor, your customer, your family.',
+  reflect2:'Integrity is not built in the big moments. It is built in the small ones. Jesus said that whoever is faithful in very little is faithful also in much. The way we handle a single pallet is practice for the way we handle a whole account.',
+  apply:['Count it right the first time, even when nobody will check behind you.','If you make a mistake, say so early. A mistake owned today is a small problem; a mistake hidden for a week is a big one.','Keep your word on the little promises — a callback, a start time, a delivery window.','Treat company property and customer product as if it were your own.'],
+  story:'a time someone was honest when it cost them something',
+  challenge:'This week, pick one small thing you will do exactly right, even if no one ever notices.',
+  prayer:'Lord, make us people of our word. Help us be honest in the small things and faithful in the large ones, so that our customers, our coworkers and our families can trust us. Amen.'},
+ {id:'work',name:'Hard Work',verses:['Colossians 3:23-24','Proverbs 16:3','Ecclesiastes 9:10','Proverbs 14:23'],
+  hook:'There is a lot of work in a warehouse that nobody will ever write a thank-you card about. Sweeping the dock. Rewrapping a leaning pallet. Double-checking a bill of lading.',
+  reflect:'Paul wrote that whatever we do, we should work at it with all our heart, as working for the Lord and not for people. That changes who our boss really is. The quality of our work becomes a kind of worship.',
+  reflect2:'Proverbs reminds us that all hard work brings a profit, but mere talk leads only to poverty. Plans matter, meetings matter — but in the end, the trailer still has to be loaded, and loaded right.',
+  apply:['Do the unseen job as carefully as the one your supervisor is watching.','Finish what you start before the end of the shift whenever you can.','Leave your area better than you found it for the next person.','Take pride in the details — labels, counts and clean paperwork.'],
+  story:'someone you worked with whose effort set the standard for everyone else',
+  challenge:'Choose one task this week and do it as if the Lord Himself were the customer.',
+  prayer:'Father, thank You for work to do and the strength to do it. Help us work with all our hearts, not to be seen, but because You see. Bless the work of our hands. Amen.'},
+ {id:'lead',name:'Servant Leadership',verses:['Mark 10:43-45','Philippians 2:3-4','1 Peter 5:2-3','Micah 6:8'],
+  hook:'Most of us have worked for someone who made us want to give our best, and most of us have worked for someone who made us count the minutes. The difference usually was not their title. It was how they treated people.',
+  reflect:'Jesus turned leadership upside down. He said whoever wants to be great must be the servant of all, and that He came not to be served but to serve. The highest position in His kingdom is the lowest place at the table.',
+  reflect2:'Peter told the early leaders to care for the people in their charge willingly, not because they had to, and to lead by example rather than by being bossy. That is still the best management advice ever written.',
+  apply:['Ask your people what is getting in their way, then go remove it.','Do not ask anyone to do something you would not do yourself.','Give credit away freely and take the blame when things go wrong.','Learn something personal about each person you lead — and remember it.'],
+  story:'a leader who served you when they did not have to',
+  challenge:'This week, find one way to serve someone who reports to you, without being asked.',
+  prayer:'Lord Jesus, You washed Your disciples\u2019 feet. Give us that same humble heart. Help us lead by serving and to see every person on our team as someone You love. Amen.'},
+ {id:'persevere',name:'Perseverance',verses:['Galatians 6:9','James 1:2-4','Romans 5:3-5','Isaiah 40:31'],
+  hook:'Some seasons in business feel like running uphill with a full pallet jack. Volume drops, a key customer changes plans, equipment breaks at the worst possible time.',
+  reflect:'Paul wrote, let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up. Notice the condition — if we do not give up. The harvest is promised; the timing is God\u2019s.',
+  reflect2:'James goes even further and tells us to count our trials as joy, because the testing of our faith produces perseverance. Hard seasons are not wasted. They are building something in us that easy seasons never could.',
+  apply:['Focus on today\u2019s work instead of carrying all of next month at once.','Encourage the person next to you; tired teams need it most.','Look back at what we have already come through together.','Keep doing the right things even before the results show up.'],
+  story:'a hard season this company or your family came through',
+  challenge:'Name one thing you are tempted to quit on, and commit to one more faithful week.',
+  prayer:'God of all strength, when we are tired, renew us. When the road is long, steady our steps. Help us not grow weary in doing good, and trust You for the harvest. Amen.'},
+ {id:'grat',name:'Gratitude',verses:['1 Thessalonians 5:16-18','Psalms 100:4','Colossians 3:15','Psalms 118:24'],
+  hook:'It is easy to notice what went wrong today. A late truck, a short shipment, a system that was down. It takes intention to notice what went right.',
+  reflect:'Scripture tells us to give thanks in all circumstances, for this is God\u2019s will for us. Not for all circumstances — in all circumstances. Even on a hard day, there is something to be thankful for.',
+  reflect2:'The psalmist says this is the day the Lord has made; let us rejoice and be glad in it. Today — not the day we wish we had, but the one in front of us.',
+  apply:['Thank one coworker by name today for something specific.','Start your shift by naming one thing that is going well.','Remember the customers who trust us with their product.','Be grateful for the job itself — someone is praying for the work we have.'],
+  story:'something you are grateful for about this team',
+  challenge:'Before you leave today, thank three people for something specific.',
+  prayer:'Father, thank You for this company, for these people, for the customers who trust us and for the work You have given us. Give us grateful hearts in every season. Amen.'},
+ {id:'team',name:'Teamwork',verses:['Ecclesiastes 4:9-12','1 Corinthians 12:12','Proverbs 27:17','Romans 12:4-5'],
+  hook:'Nobody unloads a trailer, puts it away, picks it and ships it alone. Every order that leaves this building has a dozen sets of hands on it.',
+  reflect:'Ecclesiastes says two are better than one, because if one falls, the other can help him up. And a cord of three strands is not quickly broken. Strength comes from being bound together.',
+  reflect2:'Paul describes the church as a body with many parts — every part needed, none more important than another. A warehouse works the same way. The receiver, the driver, the clerk and the forklift operator all matter.',
+  apply:['Offer help before someone has to ask for it.','Hand off your work the way you would want to receive it.','Speak well of other shifts and other departments.','Settle disagreements face to face, quickly and kindly.'],
+  story:'a time this team pulled together to get something done',
+  challenge:'Find one person outside your usual area and ask how you can make their job easier.',
+  prayer:'Lord, bind us together like a cord of three strands. Help us lift each other up, cover for each other and win together. Make us one team. Amen.'},
+ {id:'wisdom',name:'Wisdom',verses:['James 1:5','Proverbs 3:5-6','Proverbs 15:22','Proverbs 2:6'],
+  hook:'Every day we make decisions that matter — who to hire, which customer to take on, how to handle a problem nobody planned for.',
+  reflect:'James gives a promise: if any of you lacks wisdom, ask God, who gives generously to all without finding fault. Wisdom is not something we have to earn. It is something we are invited to ask for.',
+  reflect2:'Proverbs adds that plans fail for lack of counsel, but with many advisers they succeed. Wise leaders pray, and they also listen — to their team, to people with experience, and to the people closest to the work.',
+  apply:['Pray before big decisions, not only after they go wrong.','Ask the people closest to the problem what they see.','Slow down when emotions are high.','Choose what is right over what is merely easy or fast.'],
+  story:'a decision that turned out well because you asked for advice',
+  challenge:'Bring one decision you are facing to God in prayer and to one trusted person this week.',
+  prayer:'Lord, we lack wisdom, and You promised to give it generously. Guide our decisions, our words and our plans. We trust You with all our hearts. Amen.'},
+ {id:'safety',name:'Safety & Care',verses:['Philippians 2:4','Galatians 6:2','Proverbs 22:3','Psalms 91:11'],
+  hook:'Every person in this building has someone waiting for them at home. Safety is not about rules for the sake of rules. It is about making sure everyone goes home the way they came in.',
+  reflect:'Proverbs says the prudent see danger and take refuge, but the simple keep going and pay the penalty. Seeing a hazard and doing something about it is wisdom.',
+  reflect2:'Paul tells us to look not only to our own interests but also to the interests of others, and to carry one another\u2019s burdens. Watching out for each other on the floor is a way of loving our neighbor.',
+  apply:['Stop and fix — or report — a hazard the moment you see it.','Never let speed beat safety, no matter how far behind we are.','Speak up kindly when you see a coworker take a risk.','Do the walk-around and the checklist every single time.'],
+  story:'a close call that taught you something',
+  challenge:'Look for one hazard in your area today and make it right.',
+  prayer:'Father, watch over every person in this building and on the road today. Give us alert minds and careful hands, and bring each of us home safely. Amen.'},
+ {id:'steward',name:'Stewardship',verses:['1 Peter 4:10','Matthew 25:21','Proverbs 27:23','Luke 14:28'],
+  hook:'We are trusted with a lot here — buildings, trucks, equipment, and most of all, products that belong to our customers.',
+  reflect:'Peter wrote that each of us should use whatever gift we have received to serve others, as faithful stewards of God\u2019s grace. A steward manages something that belongs to someone else. That is exactly what a third-party warehouse does.',
+  reflect2:'In the parable of the talents, the master says, well done, good and faithful servant; you have been faithful with a few things, I will put you in charge of many things. Faithfulness with what we have is how we are trusted with more.',
+  apply:['Care for equipment like it is the only one we will ever get.','Know the condition of what we are responsible for — Proverbs says know your flocks.','Waste less: time, materials and money all matter.','Count the cost before starting a new project.'],
+  story:'a time careful stewardship paid off for this company',
+  challenge:'Pick one resource you are responsible for and take better care of it this week.',
+  prayer:'Lord, everything we have is from You. Make us faithful stewards of this company, our customers\u2019 trust and the gifts You have given each of us. Amen.'},
+ {id:'peace',name:'Peace in Worry',verses:['Philippians 4:6-7','Matthew 6:34','John 14:27','1 Peter 5:7'],
+  hook:'If we are honest, a lot of us carry worry to work every day — about bills, about family, about our health, about the future.',
+  reflect:'Paul wrote, do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and minds.',
+  reflect2:'Jesus said, do not worry about tomorrow, for tomorrow will worry about itself. Each day has enough trouble of its own. We are only asked to carry today.',
+  apply:['Turn your worries into a prayer list instead of a replay loop.','Do the next right thing in front of you.','Tell someone you trust what you are carrying.','Remember that this team cares about you, not just your output.'],
+  story:'a worry that God carried you through',
+  challenge:'Write down one worry and give it to God in prayer every morning this week.',
+  prayer:'Lord, You know what each of us is carrying today. We give those worries to You. Guard our hearts and minds with Your peace. Amen.'},
+ {id:'hope',name:'Hope & New Beginnings',verses:['Jeremiah 29:11','Lamentations 3:22-23','Isaiah 43:19','Romans 15:13'],
+  hook:'Every new month, every new customer, every new building is a fresh start. And every morning is too.',
+  reflect:'Lamentations reminds us that the Lord\u2019s mercies never fail; they are new every morning. Great is His faithfulness. Yesterday\u2019s mistakes do not have the last word.',
+  reflect2:'Through Isaiah, God says, see, I am doing a new thing — do you not perceive it? Sometimes the new thing God is doing looks like change, and change is hard. But He goes ahead of us.',
+  apply:['Let go of yesterday\u2019s bad day and start fresh.','Welcome new people the way you wish you had been welcomed.','Look for what God might be building through change.','Set one clear goal for this season.'],
+  story:'a new beginning that turned out to be a blessing',
+  challenge:'Name one fresh start you need, and take the first step this week.',
+  prayer:'God of hope, fill us with joy and peace as we trust in You. Thank You that Your mercies are new every morning. Lead us into what You are doing next. Amen.'},
+ {id:'kind',name:'Kindness',verses:['Colossians 3:12','Ephesians 4:32','Matthew 7:12','Proverbs 15:1'],
+  hook:'The way we speak to each other on a busy day says a lot about who we really are.',
+  reflect:'Proverbs says a gentle answer turns away wrath, but a harsh word stirs up anger. One sentence can calm a hot situation — or set it on fire.',
+  reflect2:'Jesus gave us the golden rule: do to others what you would have them do to you. Paul adds that we should be kind and compassionate to one another, forgiving each other. Kindness is not weakness. It takes strength.',
+  apply:['Answer gently, especially when you are under pressure.','Assume the best about a coworker before assuming the worst.','Learn the names of people you see every day.','Forgive quickly and do not keep score.'],
+  story:'a kindness someone showed you that you never forgot',
+  challenge:'Do one unexpected kind thing for a coworker this week.',
+  prayer:'Lord, clothe us with compassion, kindness, humility, gentleness and patience. Let the way we treat each other point people to You. Amen.'},
+ {id:'courage',name:'Courage',verses:['Joshua 1:9','2 Timothy 1:7','Deuteronomy 31:6','Psalms 27:1'],
+  hook:'Some decisions take courage — having a hard conversation, taking on a big new account, opening a new building in a new city.',
+  reflect:'God told Joshua, be strong and courageous; do not be afraid, for the Lord your God will be with you wherever you go. Joshua\u2019s courage did not come from his own strength. It came from knowing who was going with him.',
+  reflect2:'Paul reminded Timothy that God did not give us a spirit of fear, but of power, of love and of a sound mind. Fear shrinks us. Faith lets us step forward.',
+  apply:['Have the honest conversation you have been putting off.','Try the better way, even if it is new.','Stand up for what is right when it is unpopular.','Remember that you do not go into hard things alone.'],
+  story:'a time you stepped forward in faith even though you were afraid',
+  challenge:'Take one courageous step this week that you have been avoiding.',
+  prayer:'Lord, You are our light and our salvation — whom shall we fear? Give us courage for the hard things ahead and remind us that You go with us. Amen.'}
+];
+const OCCASIONS = [
+ {id:'team',name:'Team or staff meeting',open:'Before we get into business today, I want to take a few minutes for something more important.',close:'Thank you for all you do. Let\u2019s go have a good day.'},
+ {id:'lead',name:'Leadership or directors meeting',open:'Before we look at numbers today, I want us to remember who we are and why we do this.',close:'Let\u2019s lead well this week. Our people are watching how we do it.'},
+ {id:'safety',name:'Safety meeting',open:'Before we go over today\u2019s safety topic, I want to share a few words about why it matters.',close:'Take care of yourselves and each other. Everyone goes home safe.'},
+ {id:'holiday',name:'Holiday or year-end gathering',open:'It is good to have everyone together. Before we eat and celebrate, I want to say a few words.',close:'Thank you for a year of hard work. Enjoy this time with your families. Merry Christmas and God bless.'},
+ {id:'win',name:'Celebrating a win',open:'We have something to celebrate today, and I want to take a moment to give credit where it is due.',close:'Well done, everyone. This is what we can do together.'},
+ {id:'hard',name:'Difficult season',open:'I know these have not been easy days. I want to talk to you honestly, and I want to share some encouragement.',close:'We will get through this together. My door is open.'},
+ {id:'kickoff',name:'New year or new project kickoff',open:'Today is a fresh start, and I want to begin it the right way.',close:'Let\u2019s go build something we can be proud of.'},
+ {id:'new',name:'Welcoming new employees',open:'Welcome to the team. Before we get to the paperwork and the walk-through, I want you to know what kind of company this is.',close:'We are glad you are here. Ask questions, and do not be afraid to ask for help.'}
+];
+
+/* ---------- Router ---------- */
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more'};
+function go(v){ location.hash = v; }
+function route(){
+  let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
+  $$('.view').forEach(s=>s.classList.toggle('on', s.id==='v-'+v));
+  const nv = NAVMAP[v]||v; $$('#nav a').forEach(a=>a.classList.toggle('on', a.dataset.v===nv));
+  window.scrollTo(0,0);
+  if(v==='read') renderReader();
+  if(v==='saved') renderSaved();
+  if(v==='plans') renderPlans();
+  if(v==='prayer') renderPrayers();
+  if(v==='topics') renderTopics();
+  if(v==='speech') initSpeech();
+  if(v==='settings') renderSettings();
+  if(v==='home') renderHome();
+}
+window.addEventListener('hashchange',route);
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-go]'); if(t) go(t.dataset.go); });
+
+/* ---------- Header clock & weather ---------- */
+const WMO = {0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Cloudy',45:'Fog',48:'Fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',
+ 61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Showers',81:'Showers',82:'Heavy showers',
+ 85:'Snow showers',86:'Snow showers',95:'Thunderstorms',96:'Storms with hail',99:'Storms with hail'};
+function tick(){ const d=new Date(); $('#hdrTime').textContent=d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }
+async function loadWeather(){
+  const s=S.settings;
+  try{
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${s.lat}&longitude=${s.lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=1`;
+    const d=await getJSON(u); const t=Math.round(d.current.temperature_2m), desc=WMO[d.current.weather_code]||'';
+    $('#hdrWx').textContent=`${t}\u00B0 ${desc}`;
+    $('#wxTemp').textContent=t+'\u00B0'; $('#wxDesc').textContent=desc; $('#wxPlace').textContent=s.place;
+    $('#wxHiLo').textContent=`High ${Math.round(d.daily.temperature_2m_max[0])}\u00B0  Low ${Math.round(d.daily.temperature_2m_min[0])}\u00B0`;
+    const p=d.daily.precipitation_probability_max&&d.daily.precipitation_probability_max[0]; $('#wxRain').textContent = p!=null?`${p}% chance of rain`:'';
+  }catch(e){ $('#wxCard').style.display='none'; }
+}
+
+/* ---------- Home ---------- */
+let votdRef='';
+function dayOfYear(d=new Date()){ return Math.floor((d - new Date(d.getFullYear(),0,0))/864e5); }
+async function renderHome(){
+  const h=new Date().getHours(); const part = h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  $('#greet').textContent = S.settings.name ? `${part}, ${S.settings.name}` : part;
+  $('#todayDate').textContent = new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  $('#hdrSub').textContent = S.settings.name ? `For ${S.settings.name} — Logistics Warehouse, Inc.` : 'Logistics Warehouse, Inc.';
+  const dom=new Date().getDate(); $('#provTitle').textContent=`Proverbs ${dom}`+(S.prov[todayKey()]?'  —  read today':'');
+  $('#contBtn').textContent = `Continue Reading: ${bookName(S.last.book)} ${S.last.ch}`;
+  const open=S.prayers.filter(p=>!p.answered).length; $('#prayMini').textContent = open?`${open} open request${open>1?'s':''}`:'People and needs';
+  const ap = activePlan(); $('#planMini').textContent = ap?`${ap.name}: ${Math.round(planPct(ap))}%`:'Pick a plan';
+  votdRef = VOTD[dayOfYear()%VOTD.length];
+  $('#votdRef').textContent = `${votdRef} (${S.settings.tr})`;
+  try{ $('#votdText').textContent = await passageText(S.settings.tr,votdRef) || 'Tap Read Chapter to open.'; }
+  catch(e){ $('#votdText').textContent='Connect to the internet to load today\u2019s verse.'; }
+}
+const todayKey=()=>{ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; };
+$('#contBtn').onclick=()=>openReader(S.last.book,S.last.ch);
+$('#provBtn').onclick=()=>{ S.prov[todayKey()]=1; persist(); openReader(20,new Date().getDate()); };
+$('#votdOpen').onclick=()=>{ const r=parseRef(votdRef); openReader(r.book,r.ch,r.verses); };
+$('#votdSave').onclick=()=>{ const r=parseRef(votdRef); saveVerse(r,$('#votdText').textContent); };
+$('#votdShare').onclick=()=>shareText(votdRef,`"${$('#votdText').textContent}"\n— ${votdRef} (${S.settings.tr})`);
+$('#votdImg').onclick=()=>verseImage($('#votdText').textContent, `${votdRef} (${S.settings.tr})`);
+$('#randBtn').onclick=async()=>{
+  try{ const d=await getJSON(`${API}/get-random-verse/${S.settings.tr}/`); openReader(d.book,d.chapter,[d.verse]); }
+  catch(e){ const r=parseRef(VOTD[Math.floor(Math.random()*VOTD.length)]); openReader(r.book,r.ch,r.verses); }
+};
+
+/* ---------- Reader ---------- */
+let R = {book:S.last.book, ch:S.last.ch, verses:[], focus:[], sel:new Set()};
+function openReader(book,ch,focus){ R.book=book; R.ch=ch; R.focus=focus||[]; R.sel.clear(); if(location.hash==='#read') renderReader(); else go('read'); }
+async function renderReader(){
+  const tr=S.settings.tr;
+  S.last={book:R.book,ch:R.ch}; persist();
+  $('#rBook').textContent=`${bookName(R.book)} ${R.ch}`; $('#rTr').textContent=tr;
+  $('#trNote').textContent=trName(tr);
+  const box=$('#scripture'); box.className='scripture serif '+(S.settings.layout==='list'?'list-mode':'para-mode');
+  box.innerHTML='<div class="loading">Loading...</div>';
+  $('#rPrev').disabled = R.book===1&&R.ch===1; $('#rNext').disabled = R.book===66&&R.ch===22;
+  try{
+    R.verses = await getChapter(tr,R.book,R.ch);
+    const savedSet=new Set(S.saved.filter(s=>s.book===R.book&&s.ch===R.ch).flatMap(s=>s.verses));
+    box.innerHTML = `<h3>${esc(bookName(R.book))} ${R.ch}</h3>` + R.verses.map(v=>{
+      const k=`${R.book}:${R.ch}:${v.verse}`, hl=S.hl[k];
+      return `<span class="v ${hl?'hl-'+hl:''} ${savedSet.has(v.verse)?'saved':''}" data-v="${v.verse}"><sup>${v.verse}</sup>${v.html} </span>`; }).join('');
+    if(R.focus.length){ const el=box.querySelector(`.v[data-v="${R.focus[0]}"]`); if(el){ R.focus.forEach(n=>{const x=box.querySelector(`.v[data-v="${n}"]`); if(x){x.classList.add('sel'); R.sel.add(n);} });
+      setTimeout(()=>{ el.scrollIntoView({block:'center'}); },60); setTimeout(()=>{ R.focus.forEach(n=>{const x=box.querySelector(`.v[data-v="${n}"]`); if(x) x.classList.remove('sel');}); R.sel.clear(); },2500);} R.focus=[]; }
+  }catch(e){ box.innerHTML='<div class="empty">This chapter could not load. Check your connection and try again.<br><br><button class="btn" onclick="renderReader()">Try Again</button></div>'; }
+}
+function stepChapter(d){
+  let b=R.book, c=R.ch+d;
+  if(c<1){ b--; if(b<1) return; c=bookChapters(b); } else if(c>bookChapters(b)){ b++; if(b>66) return; c=1; }
+  stopSpeak(); openReader(b,c);
+}
+$('#rPrev').onclick=()=>stepChapter(-1); $('#rNext').onclick=()=>stepChapter(1);
+(()=>{ let x0=null,y0=null; const el=$('#scripture');
+  el.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+  el.addEventListener('touchend',e=>{ if(x0==null) return; const dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;
+    if(Math.abs(dx)>90&&Math.abs(dy)<50) stepChapter(dx<0?1:-1); x0=null; },{passive:true}); })();
+$('#scripture').addEventListener('click',e=>{
+  const v=e.target.closest('.v'); if(!v) return; const n=+v.dataset.v;
+  if(R.sel.has(n)){ R.sel.delete(n); v.classList.remove('sel'); } else { R.sel.add(n); v.classList.add('sel'); }
+  if(R.sel.size) verseSheet(); else closeSheet();
+});
+
+/* Book / chapter picker */
+$('#rBook').onclick=()=>{
+  const mk=(from,to)=>BOOKS.slice(from,to).map((b,i)=>`<button data-b="${from+i+1}" class="${from+i+1===R.book?'cur':''}">${esc(b[0])}</button>`).join('');
+  openSheet(`<button class="close" data-x>X</button><h3>Choose a Book</h3>
+   <div class="tabs" style="margin-top:12px" id="tsTabs"><button data-t="ot" class="${R.book<40?'on':''}">Old Testament</button><button data-t="nt" class="${R.book>=40?'on':''}">New Testament</button></div>
+   <div class="bookgrid" id="bgOT" style="${R.book>=40?'display:none':''}">${mk(0,39)}</div><div class="bookgrid" id="bgNT" style="${R.book<40?'display:none':''}">${mk(39,66)}</div>`);
+  $('#tsTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; $$('#tsTabs button').forEach(x=>x.classList.toggle('on',x===b)); $('#bgOT').style.display=b.dataset.t==='ot'?'':'none'; $('#bgNT').style.display=b.dataset.t==='nt'?'':'none'; };
+  $$('.bookgrid button').forEach(b=>b.onclick=()=>chapterPicker(+b.dataset.b));
+};
+function chapterPicker(book){
+  const n=bookChapters(book); if(n===1){ closeSheet(); openReader(book,1); return; }
+  let h=`<button class="close" data-x>X</button><h3>${esc(bookName(book))}</h3><p class="muted small">Choose a chapter</p><div class="chapgrid">`;
+  for(let i=1;i<=n;i++) h+=`<button data-c="${i}" class="${book===R.book&&i===R.ch?'cur':''}">${i}</button>`;
+  openSheet(h+'</div>');
+  $$('.chapgrid button').forEach(b=>b.onclick=()=>{ closeSheet(); openReader(book,+b.dataset.c); });
+}
+$('#rTr').onclick=()=>{
+  openSheet(`<button class="close" data-x>X</button><h3>Translation</h3><p class="muted small">Popular translations are listed first.</p>`+
+   TRANSLATIONS.map(t=>`<button class="btn full" style="justify-content:flex-start;margin-bottom:8px;${t.short_name===S.settings.tr?'background:var(--red);color:#fff;border-color:var(--red)':''}" data-tr="${esc(t.short_name)}"><b style="min-width:70px;text-align:left">${esc(t.short_name)}</b><span style="font-weight:400">${esc(t.full_name)}</span></button>`).join(''));
+  $$('[data-tr]').forEach(b=>b.onclick=()=>{ S.settings.tr=b.dataset.tr; persist(); closeSheet(); renderReader(); });
+};
+$('#rAa').onclick=()=>{
+  openSheet(`<button class="close" data-x>X</button><h3>Text Size</h3>
+   <div class="row" style="margin:14px 0"><button class="btn grow" id="aaSm">A&minus;</button><div id="aaLbl" style="align-self:center;min-width:70px;text-align:center;font-weight:700">${S.settings.fs}</div><button class="btn grow" id="aaLg">A+</button></div>
+   <div class="tabs" id="aaLay"><button data-m="para" class="${S.settings.layout==='para'?'on':''}">Paragraph</button><button data-m="list" class="${S.settings.layout==='list'?'on':''}">One per line</button></div>
+   <div class="tabs" id="aaTh"><button data-m="light" class="${S.settings.theme==='light'?'on':''}">Day</button><button data-m="dark" class="${S.settings.theme==='dark'?'on':''}">Night</button></div>`);
+  const upd=()=>{ $('#aaLbl').textContent=S.settings.fs; applySettings(); };
+  $('#aaSm').onclick=()=>{ S.settings.fs=Math.max(15,S.settings.fs-1); persist(); upd(); };
+  $('#aaLg').onclick=()=>{ S.settings.fs=Math.min(34,S.settings.fs+1); persist(); upd(); };
+  $('#aaLay').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.layout=b.dataset.m; persist(); $$('#aaLay button').forEach(x=>x.classList.toggle('on',x===b)); renderReader(); };
+  $('#aaTh').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.theme=b.dataset.m; persist(); $$('#aaTh button').forEach(x=>x.classList.toggle('on',x===b)); applySettings(); };
+};
+
+/* Verse action sheet */
+function selRef(){ const vs=[...R.sel].sort((a,b)=>a-b); return {book:R.book,ch:R.ch,verses:vs}; }
+function selText(){ const r=selRef(); return R.verses.filter(v=>r.verses.includes(v.verse)).map(v=>plain(v.html)).join(' '); }
+function verseSheet(){
+  const r=selRef(), label=refLabel(r.book,r.ch,r.verses);
+  openSheet(`<button class="close" data-x>X</button><h3>${esc(label)}</h3><p class="small muted" style="margin:0">Tap more verses to add them.</p>
+   <div class="swatches"><button class="sw gold" data-hl="gold" aria-label="Gold"></button><button class="sw green" data-hl="green" aria-label="Green"></button><button class="sw blue" data-hl="blue" aria-label="Blue"></button><button class="sw rose" data-hl="rose" aria-label="Rose"></button><button class="sw none" data-hl="">Clear</button></div>
+   <div class="actions">
+    <button class="btn red" id="vaSave">Save</button><button class="btn" id="vaNote">Save with Note</button>
+    <button class="btn" id="vaCopy">Copy</button><button class="btn" id="vaShare">Share</button>
+    <button class="btn" id="vaImg">Picture</button><button class="btn" id="vaCmp">Compare</button>
+    <button class="btn dark" id="vaSpeech" style="grid-column:1/-1">Use in a Speech</button>
+   </div>`, true);
+  $$('[data-hl]').forEach(b=>b.onclick=()=>{ r.verses.forEach(n=>{ const k=`${r.book}:${r.ch}:${n}`; if(b.dataset.hl) S.hl[k]=b.dataset.hl; else delete S.hl[k]; }); persist(); clearSel(); renderReader(); });
+  const full=()=>`"${selText()}"\n— ${label} (${S.settings.tr})`;
+  $('#vaSave').onclick=()=>{ saveVerse(r,selText()); clearSel(); renderReader(); };
+  $('#vaNote').onclick=()=>noteSheet(r,selText());
+  $('#vaCopy').onclick=()=>{ copyText(full()); clearSel(); };
+  $('#vaShare').onclick=()=>{ shareText(label,full()); clearSel(); };
+  $('#vaImg').onclick=()=>{ verseImage(selText(),`${label} (${S.settings.tr})`); clearSel(); };
+  $('#vaCmp').onclick=()=>compareSheet(r);
+  $('#vaSpeech').onclick=()=>{ SP.customRef=label; clearSel(); go('speech'); };
+}
+function clearSel(){ R.sel.clear(); $$('#scripture .v.sel').forEach(x=>x.classList.remove('sel')); closeSheet(); }
+function saveVerse(r,text,note='',coll=''){
+  const label=refLabel(r.book,r.ch,r.verses);
+  if(S.saved.some(s=>s.label===label&&s.tr===S.settings.tr&&!note)){ toast('Already saved'); return; }
+  S.saved.unshift({id:uid(),book:r.book,ch:r.ch,verses:r.verses,label,tr:S.settings.tr,text,note,coll,ts:Date.now()}); persist(); toast('Saved');
+}
+function collections(){ return [...new Set(S.saved.map(s=>s.coll).filter(Boolean))].sort(); }
+function noteSheet(r,text,existing){
+  const label=refLabel(r.book,r.ch,r.verses);
+  openSheet(`<button class="close" data-x>X</button><h3>${esc(label)}</h3><div class="serif" style="margin:8px 0 12px">${esc(text)}</div>
+   <label class="lbl">Note</label><textarea id="nNote" placeholder="What is this verse saying to you?">${esc(existing?existing.note:'')}</textarea>
+   <label class="lbl">Collection (optional)</label><input type="text" id="nColl" list="collList" placeholder="e.g. Leadership, For the team, Hard days" value="${esc(existing?existing.coll:'')}">
+   <datalist id="collList">${collections().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+   <button class="btn red full" id="nSave" style="margin-top:14px">Save</button>`, true);
+  $('#nSave').onclick=()=>{
+    const note=$('#nNote').value.trim(), coll=$('#nColl').value.trim();
+    if(existing){ existing.note=note; existing.coll=coll; persist(); toast('Updated'); closeSheet(); renderSaved(); return; }
+    S.saved.unshift({id:uid(),book:r.book,ch:r.ch,verses:r.verses,label,tr:S.settings.tr,text,note,coll,ts:Date.now()}); persist(); toast('Saved'); clearSel(); renderReader();
+  };
+}
+async function compareSheet(r){
+  const label=refLabel(r.book,r.ch,r.verses);
+  const list=TRANSLATIONS.map(t=>t.short_name).filter(t=>POPULAR.includes(t)).slice(0,7);
+  openSheet(`<button class="close" data-x>X</button><h3>Compare ${esc(label)}</h3><div id="cmpBox"><div class="loading">Loading translations...</div></div>`, true);
+  const out = await Promise.all(list.map(async tr=>{ try{ const vs=await getPassage(tr,r); return {tr,text:vs.map(v=>plain(v.html)).join(' ')}; }catch(e){ return {tr,text:''}; } }));
+  const box=$('#cmpBox'); if(!box) return;
+  box.innerHTML = out.filter(o=>o.text).map(o=>`<div class="item"><div class="ref">${esc(o.tr)} <span class="muted small" style="font-weight:400">${esc(trName(o.tr))}</span></div><div class="txt serif">${esc(o.text)}</div></div>`).join('') || '<div class="empty">Could not load other translations right now.</div>';
+}
+
+/* Sheet plumbing */
+function openSheet(html,keepSel){ $('#sheetInner').innerHTML=html; $('#sheet').classList.add('on'); $('#scrim').classList.add('on'); $('#sheet').scrollTop=0; $('#sheet').dataset.keep=keepSel?'1':''; }
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
+$('#scrim').onclick=()=>{ if($('#sheet').dataset.keep) clearSel(); else closeSheet(); };
+$('#sheet').addEventListener('click',e=>{ if(e.target.closest('[data-x]')){ if($('#sheet').dataset.keep) clearSel(); else closeSheet(); } });
+
+/* ---------- Read aloud ---------- */
+let speaking=false;
+function speak(text,onEnd){
+  if(!('speechSynthesis' in window)){ toast('Read aloud is not supported on this device'); return; }
+  speechSynthesis.cancel();
+  const chunks = text.match(/[^.!?;:]+[.!?;:]*/g)||[text]; let i=0; speaking=true;
+  const voices=speechSynthesis.getVoices(); const voice=voices.find(v=>/en-US/i.test(v.lang)&&/natural|enhanced|premium|samantha|aaron/i.test(v.name))||voices.find(v=>/en-US/i.test(v.lang));
+  const next=()=>{ if(!speaking||i>=chunks.length){ speaking=false; onEnd&&onEnd(); return; }
+    const u=new SpeechSynthesisUtterance(chunks[i++].trim()); u.rate=+S.settings.rate||0.95; if(voice) u.voice=voice; u.onend=next; u.onerror=next; speechSynthesis.speak(u); };
+  next();
+}
+function stopSpeak(){ speaking=false; if('speechSynthesis' in window) speechSynthesis.cancel(); $('#rListen').classList.remove('red'); }
+$('#rListen').onclick=()=>{
+  if(speaking){ stopSpeak(); return; }
+  $('#rListen').classList.add('red');
+  speak(`${bookName(R.book)} chapter ${R.ch}. `+R.verses.map(v=>plain(v.html)).join(' '), ()=>$('#rListen').classList.remove('red'));
+};
+
+/* ---------- Search ---------- */
+$('#sGo').onclick=doSearch; $('#sq').addEventListener('keydown',e=>{ if(e.key==='Enter') doSearch(); });
+async function doSearch(){
+  const q=$('#sq').value.trim(); if(!q) return; $('#sq').blur();
+  const out=$('#sResults');
+  const ref=parseRef(q);
+  if(ref && /\d/.test(q)){
+    out.innerHTML='<div class="loading">Looking up...</div>';
+    try{ const vs=await getPassage(S.settings.tr,ref); const label=refLabel(ref.book,ref.ch,ref.verses);
+      out.innerHTML=`<div class="item"><div class="ref">${esc(label)} (${esc(S.settings.tr)})</div><div class="txt serif">${vs.map(v=>`<sup style="color:var(--red);font-weight:800">${v.verse}</sup> ${v.html}`).join(' ')}</div>
+       <div class="tools"><button class="btn sm red" id="srOpen">Open in Reader</button><button class="btn sm" id="srSave">Save</button><button class="btn sm" id="srShare">Share</button></div></div>`;
+      const txt=vs.map(v=>plain(v.html)).join(' ');
+      $('#srOpen').onclick=()=>openReader(ref.book,ref.ch,ref.verses);
+      $('#srSave').onclick=()=>saveVerse(ref.verses.length?ref:{...ref,verses:vs.map(v=>v.verse)},txt);
+      $('#srShare').onclick=()=>shareText(label,`"${txt}"\n— ${label} (${S.settings.tr})`);
+    }catch(e){ out.innerHTML='<div class="empty">Could not load that passage. Check your connection.</div>'; }
+    return;
+  }
+  out.innerHTML='<div class="loading">Searching...</div>';
+  try{
+    const exact=$('#sExact').checked, scope=$('#sScope').value;
+    let u=`${API}/v2/find/${encodeURIComponent(S.settings.tr)}?search=${encodeURIComponent(q)}&match_case=false&match_whole=${exact}&limit=60&page=1`;
+    if(scope) u+=`&book=${scope}`;
+    const d=await getJSON(u); const res=(d&&d.results)||(Array.isArray(d)?d:[]);
+    if(!res.length){ out.innerHTML='<div class="empty">No verses found. Try different words, or turn off "Exact words only".</div>'; return; }
+    out.innerHTML=`<p class="muted small">${exact?`${d.total||res.length} verses contain those words`:'Verses closest in meaning to your search'}${res.length<(d.total||0)?` — showing first ${res.length}`:''}</p>`+
+      res.map((v,i)=>`<div class="item"><div class="ref">${esc(refLabel(v.book,v.chapter,[v.verse]))}</div><div class="txt serif">${cleanHTML(v.text)}</div>
+       <div class="tools"><button class="btn sm" data-o="${i}">Read in Context</button><button class="btn sm" data-s="${i}">Save</button></div></div>`).join('');
+    out.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{ const v=res[+b.dataset.o]; openReader(v.book,v.chapter,[v.verse]); });
+    out.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const v=res[+b.dataset.s]; saveVerse({book:v.book,ch:v.chapter,verses:[v.verse]},plain(v.text)); });
+  }catch(e){ out.innerHTML='<div class="empty">Search needs an internet connection. Please try again.</div>'; }
+}
+
+/* ---------- Topics ---------- */
+let curTopic=null;
+function renderTopics(){
+  $('#topicChips').innerHTML=THEMES.map(t=>`<button class="chip ${curTopic===t.id?'on':''}" data-t="${t.id}">${esc(t.name)}</button>`).join('');
+  $$('#topicChips .chip').forEach(c=>c.onclick=()=>{ curTopic=c.dataset.t; renderTopics(); showTopic(); });
+  if(curTopic) showTopic(); else $('#topicResults').innerHTML='<div class="empty">Choose a topic above.</div>';
+}
+async function showTopic(){
+  const t=THEMES.find(x=>x.id===curTopic); const box=$('#topicResults');
+  box.innerHTML=`<div class="card"><b style="font-size:19px">${esc(t.name)}</b><div class="small muted" style="margin-top:6px">${esc(t.hook)}</div>
+   <div class="row" style="margin-top:12px"><button class="btn sm red" id="tpSpeech">Build a Speech on ${esc(t.name)}</button><button class="btn sm" id="tpMore">Search for More</button></div></div><div id="tpList"><div class="loading">Loading verses...</div></div>`;
+  $('#tpSpeech').onclick=()=>{ SP.theme=t.id; SP.customRef=''; go('speech'); };
+  $('#tpMore').onclick=()=>{ $('#sq').value=t.name; $('#sExact').checked=false; go('search'); setTimeout(doSearch,50); };
+  const items=await Promise.all(t.verses.map(async ref=>{ try{ return {ref,text:await passageText(S.settings.tr,ref)}; }catch(e){ return {ref,text:''}; } }));
+  if(curTopic!==t.id) return;
+  $('#tpList').innerHTML=items.map((it,i)=>`<div class="item"><div class="ref">${esc(it.ref)}</div><div class="txt serif">${esc(it.text||'Connect to load this verse.')}</div>
+   <div class="tools"><button class="btn sm" data-o="${i}">Read in Context</button><button class="btn sm" data-s="${i}">Save</button><button class="btn sm" data-i="${i}">Picture</button></div></div>`).join('');
+  $$('#tpList [data-o]').forEach(b=>b.onclick=()=>{ const r=parseRef(items[+b.dataset.o].ref); openReader(r.book,r.ch,r.verses); });
+  $$('#tpList [data-s]').forEach(b=>b.onclick=()=>{ const it=items[+b.dataset.s]; saveVerse(parseRef(it.ref),it.text,'',t.name); });
+  $$('#tpList [data-i]').forEach(b=>b.onclick=()=>{ const it=items[+b.dataset.i]; verseImage(it.text,`${it.ref} (${S.settings.tr})`); });
+}
+
+/* ---------- Saved ---------- */
+let savedTab='verses', savedColl='';
+$('#savedTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; savedTab=b.dataset.t; $$('#savedTabs button').forEach(x=>x.classList.toggle('on',x===b)); renderSaved(); };
+function renderSaved(){
+  const box=$('#savedList'), chips=$('#collChips');
+  if(savedTab==='verses'){
+    const cs=collections();
+    chips.style.display=cs.length?'':'none';
+    chips.innerHTML=`<button class="chip ${!savedColl?'on':''}" data-c="">All</button>`+cs.map(c=>`<button class="chip ${savedColl===c?'on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+    chips.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ savedColl=c.dataset.c; renderSaved(); });
+    const list=S.saved.filter(s=>!savedColl||s.coll===savedColl);
+    if(!list.length){ box.innerHTML='<div class="empty">No saved verses yet. In the Reader, tap any verse to save it.</div>'; return; }
+    box.innerHTML=list.map(s=>`<div class="item" data-id="${s.id}"><div class="ref">${esc(s.label)} <span class="muted small" style="font-weight:400">${esc(s.tr)}${s.coll?' \u2022 '+esc(s.coll):''}</span></div>
+      <div class="txt serif">${esc(s.text)}</div>${s.note?`<div class="note">${esc(s.note)}</div>`:''}
+      <div class="tools"><button class="btn sm" data-a="open">Open</button><button class="btn sm" data-a="note">${s.note?'Edit Note':'Add Note'}</button><button class="btn sm" data-a="share">Share</button><button class="btn sm" data-a="img">Picture</button><button class="btn sm" data-a="del">Remove</button></div></div>`).join('');
+    box.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+      const s=S.saved.find(x=>x.id===b.closest('.item').dataset.id); const a=b.dataset.a;
+      if(a==='open') openReader(s.book,s.ch,s.verses);
+      if(a==='note') noteSheet({book:s.book,ch:s.ch,verses:s.verses},s.text,s);
+      if(a==='share') shareText(s.label,`"${s.text}"\n— ${s.label} (${s.tr})${s.note?'\n\n'+s.note:''}`);
+      if(a==='img') verseImage(s.text,`${s.label} (${s.tr})`);
+      if(a==='del'&&confirm('Remove this saved verse?')){ S.saved=S.saved.filter(x=>x.id!==s.id); persist(); renderSaved(); }
+    });
+  } else if(savedTab==='hl'){
+    chips.style.display='none';
+    const keys=Object.keys(S.hl).map(k=>k.split(':').map(Number)).sort((a,b)=>a[0]-b[0]||a[1]-b[1]||a[2]-b[2]);
+    if(!keys.length){ box.innerHTML='<div class="empty">No highlights yet. In the Reader, tap a verse and pick a color.</div>'; return; }
+    box.innerHTML=keys.map(([b,c,v])=>`<div class="item" style="border-left-color:var(--hl-${S.hl[`${b}:${c}:${v}`]})"><div class="ref">${esc(refLabel(b,c,[v]))}</div><div class="tools"><button class="btn sm" data-o="${b}:${c}:${v}">Open</button></div></div>`).join('');
+    box.querySelectorAll('[data-o]').forEach(x=>x.onclick=()=>{ const [b,c,v]=x.dataset.o.split(':').map(Number); openReader(b,c,[v]); });
+  } else {
+    chips.style.display='none';
+    if(!S.speeches.length){ box.innerHTML='<div class="empty">No saved speeches yet.<br><br><button class="btn red" data-go="speech">Open Speech Builder</button></div>'; return; }
+    box.innerHTML=S.speeches.map(s=>`<div class="item" data-id="${s.id}"><div class="ref">${esc(s.title)}</div><div class="small muted">${new Date(s.ts).toLocaleDateString()}</div>
+      <div class="txt" style="font-size:16px">${esc(s.body.slice(0,180))}...</div>
+      <div class="tools"><button class="btn sm dark" data-a="present">Present</button><button class="btn sm" data-a="edit">Edit</button><button class="btn sm" data-a="share">Share</button><button class="btn sm" data-a="del">Delete</button></div></div>`).join('');
+    box.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+      const s=S.speeches.find(x=>x.id===b.closest('.item').dataset.id); const a=b.dataset.a;
+      if(a==='present') present(s.title+'\n\n'+s.body);
+      if(a==='edit'){ SP.editId=s.id; go('speech'); setTimeout(()=>{ $('#spOut').style.display=''; $('#spTitle').value=s.title; $('#spText').value=s.body; $('#spOut').scrollIntoView(); },80); }
+      if(a==='share') shareText(s.title,s.title+'\n\n'+s.body);
+      if(a==='del'&&confirm('Delete this speech?')){ S.speeches=S.speeches.filter(x=>x.id!==s.id); persist(); renderSaved(); }
+    });
+  }
+}
+
+/* ---------- Speech Builder ---------- */
+const SP={theme:'integrity',len:'standard',customRef:'',editId:null};
+function initSpeech(){
+  $('#spThemes').innerHTML=THEMES.map(t=>`<button class="chip ${SP.theme===t.id?'on':''}" data-t="${t.id}">${esc(t.name)}</button>`).join('');
+  $$('#spThemes .chip').forEach(c=>c.onclick=()=>{ SP.theme=c.dataset.t; SP.customRef=''; initSpeech(); });
+  if(!$('#spOcc').options.length) $('#spOcc').innerHTML=OCCASIONS.map(o=>`<option value="${o.id}">${esc(o.name)}</option>`).join('');
+  const t=THEMES.find(x=>x.id===SP.theme);
+  const opts=[...(SP.customRef?[SP.customRef]:[]), ...t.verses, ...S.saved.slice(0,25).map(s=>s.label)];
+  $('#spVerse').innerHTML=[...new Set(opts)].map((r,i)=>`<option value="${esc(r)}">${esc(r)}${i===0&&SP.customRef?' (selected in Reader)':t.verses.includes(r)?'':' (saved)'}</option>`).join('');
+}
+$('#spLen').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; SP.len=b.dataset.l; $$('#spLen button').forEach(x=>x.classList.toggle('on',x===b)); };
+$('#spBuild').onclick=async()=>{
+  const t=THEMES.find(x=>x.id===SP.theme), o=OCCASIONS.find(x=>x.id===$('#spOcc').value)||OCCASIONS[0];
+  const ref=$('#spVerse').value, aud=$('#spAud').value.trim(), tr=S.settings.tr, L=SP.len;
+  $('#spBuild').textContent='Building...';
+  let vt=''; try{ vt=await passageText(tr,ref); }catch(e){}
+  let second=t.verses.find(v=>v!==ref)||'', st=''; if(L==='long'&&second){ try{ st=await passageText(tr,second); }catch(e){} }
+  const n=L==='short'?1:L==='standard'?3:4;
+  const p=[];
+  p.push((aud?`Good morning, ${aud}. `:'')+o.open);
+  p.push(t.hook);
+  p.push(`Listen to these words from ${ref}:\n\n"${vt||'[read the verse here]'}"`);
+  p.push(t.reflect);
+  if(L!=='short') p.push(t.reflect2);
+  if(L==='long'&&second) p.push(`We see the same truth in ${second}:\n\n"${st||'[read the verse here]'}"`);
+  if(L==='long') p.push(`[Share a short personal story here: ${t.story}.]`);
+  p.push((n===1?'Here is what that looks like for us:':'So what does that look like here, at work, this week?')+'\n\n'+t.apply.slice(0,n).map((a,i)=>`${i+1}. ${a}`).join('\n'));
+  p.push('My challenge for you: '+t.challenge);
+  if(L!=='short') p.push('Let\u2019s pray.\n\n'+t.prayer);
+  p.push(o.close);
+  $('#spTitle').value=`${t.name} — ${o.name}`;
+  $('#spText').value=p.join('\n\n');
+  SP.editId=null;
+  $('#spOut').style.display=''; $('#spBuild').textContent='Build It Again';
+  $('#spOut').scrollIntoView({behavior:'smooth'});
+};
+$('#spSave').onclick=()=>{
+  const title=$('#spTitle').value.trim()||'My Speech', body=$('#spText').value.trim(); if(!body) return;
+  if(SP.editId){ const s=S.speeches.find(x=>x.id===SP.editId); if(s){ s.title=title; s.body=body; s.ts=Date.now(); } }
+  else { SP.editId=uid(); S.speeches.unshift({id:SP.editId,title,body,ts:Date.now()}); }
+  persist(); toast('Speech saved');
+};
+$('#spPresent').onclick=()=>present($('#spTitle').value+'\n\n'+$('#spText').value);
+$('#spShare').onclick=()=>shareText($('#spTitle').value,$('#spTitle').value+'\n\n'+$('#spText').value);
+$('#spClaude').onclick=()=>copyText(`Please polish this short faith-based talk I will give at work. Keep it warm, plain-spoken and under the same length. Keep the Scripture quotes exactly as written. Suggest a short personal story where I have [brackets].\n\nTITLE: ${$('#spTitle').value}\n\n${$('#spText').value}`);
+
+/* ---------- Presenter ---------- */
+let pFs=30, pTimer=null;
+function present(text){ $('#pText').textContent=text; $('#pText').style.fontSize=pFs+'px'; $('#presenter').classList.add('on'); $('#pText').scrollTop=0;
+  try{ if(navigator.wakeLock) navigator.wakeLock.request('screen').then(l=>window._wl=l).catch(()=>{}); }catch(e){} }
+$('#pClose').onclick=()=>{ $('#presenter').classList.remove('on'); clearInterval(pTimer); pTimer=null; $('#pScroll').classList.remove('red'); stopSpeak(); try{ window._wl&&window._wl.release(); }catch(e){} };
+$('#pSm').onclick=()=>{ pFs=Math.max(20,pFs-3); $('#pText').style.fontSize=pFs+'px'; };
+$('#pLg').onclick=()=>{ pFs=Math.min(60,pFs+3); $('#pText').style.fontSize=pFs+'px'; };
+$('#pScroll').onclick=()=>{ if(pTimer){ clearInterval(pTimer); pTimer=null; $('#pScroll').classList.remove('red'); return; }
+  $('#pScroll').classList.add('red'); pTimer=setInterval(()=>{ $('#pText').scrollTop+=1; },45); };
+$('#pRead').onclick=()=>{ if(speaking){ stopSpeak(); return; } speak($('#pText').textContent); };
+
+/* ---------- Verse picture ---------- */
+function verseImage(text,ref){
+  if(!text){ toast('Verse not loaded yet'); return; }
+  const c=$('#cv'), x=c.getContext('2d'), W=1080;
+  x.fillStyle='#141414'; x.fillRect(0,0,W,W);
+  x.fillStyle='#C41230'; x.fillRect(0,0,W,90); x.fillRect(0,W-14,W,14);
+  x.fillStyle='#000'; x.fillRect(0,90,W,10);
+  x.fillStyle='#fff'; x.font='bold 34px Arial, sans-serif'; x.textBaseline='middle'; x.fillText('LOGISTICS WAREHOUSE, INC.',60,46);
+  let size=62, lines;
+  const wrap=(s)=>{ x.font=`${size}px Georgia, serif`; const words=('\u201C'+text+'\u201D').split(' '); const out=[]; let ln='';
+    words.forEach(w=>{ const t=ln?ln+' '+w:w; if(x.measureText(t).width>W-160){ out.push(ln); ln=w; } else ln=t; }); if(ln) out.push(ln); return out; };
+  do{ lines=wrap(); if(lines.length*size*1.35<=640) break; size-=4; }while(size>28);
+  const lh=size*1.35, top=120+(700-lines.length*lh)/2;
+  x.fillStyle='#fff'; x.font=`${size}px Georgia, serif`; x.textBaseline='top';
+  lines.forEach((l,i)=>x.fillText(l,80,top+i*lh));
+  x.fillStyle='#C41230'; x.fillRect(80,top+lines.length*lh+24,120,6);
+  x.fillStyle='#f3b2bd'; x.font='bold 40px Arial, sans-serif'; x.fillText(ref,80,top+lines.length*lh+50);
+  c.toBlob(async b=>{
+    const file=new File([b],'verse.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:ref}); return; }catch(e){ if(e.name==='AbortError') return; } }
+    const url=URL.createObjectURL(b);
+    openSheet(`<button class="close" data-x>X</button><h3>Verse Picture</h3><p class="small muted">Press and hold the picture to save or share it.</p><img src="${url}" style="width:100%;border:2px solid #000"><a class="btn red full" style="margin-top:10px;text-decoration:none" href="${url}" download="verse.png">Download</a>`);
+  },'image/png');
+}
+
+/* ---------- Reading plans ---------- */
+function chaptersOf(books){ const out=[]; books.forEach(b=>{ for(let c=1;c<=bookChapters(b);c++) out.push([b,c]); }); return out; }
+const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>a+i);
+const PLANS=[
+ {id:'gospels',name:'The Gospels in 30 Days',desc:'Matthew, Mark, Luke and John — the life of Jesus in a month.',books:range(40,43),days:30},
+ {id:'psalms',name:'Psalms in 60 Days',desc:'Two or three psalms a day for prayer and encouragement.',books:[19],days:60},
+ {id:'wisdom',name:'Wisdom for Leaders — 40 Days',desc:'Proverbs, Ecclesiastes and James — practical wisdom for work and life.',books:[20,21,59],days:40},
+ {id:'nt90',name:'New Testament in 90 Days',desc:'All 27 books in about three chapters a day.',books:range(40,66),days:90},
+ {id:'year',name:'Whole Bible in a Year',desc:'Genesis to Revelation, about three to four chapters a day.',books:range(1,66),days:365}
+];
+function planDays(p){ if(p._d) return p._d; const ch=chaptersOf(p.books), out=[]; for(let d=0;d<p.days;d++){ const a=Math.floor(d*ch.length/p.days), b=Math.floor((d+1)*ch.length/p.days); out.push(ch.slice(a,b)); } return p._d=out; }
+const planPct=p=>{ const st=S.plans[p.id]; return st?100*st.done.length/p.days:0; };
+const activePlan=()=>PLANS.find(p=>S.plans[p.id]&&S.plans[p.id].done.length<p.days);
+function dayLabel(chs){ const g={}; chs.forEach(([b,c])=>{ (g[b]=g[b]||[]).push(c); }); return Object.keys(g).map(b=>{ const cs=g[b]; return bookName(+b)+' '+(cs.length>1?cs[0]+'-'+cs[cs.length-1]:cs[0]); }).join(', '); }
+function renderPlans(){
+  const box=$('#plansList');
+  box.innerHTML=PLANS.map(p=>{
+    const st=S.plans[p.id];
+    if(!st) return `<div class="card plain"><b style="font-size:19px">${esc(p.name)}</b><div class="small muted" style="margin:4px 0 12px">${esc(p.desc)}</div><button class="btn red" data-start="${p.id}">Start This Plan</button></div>`;
+    const days=planDays(p), next=days.findIndex((_,i)=>!st.done.includes(i));
+    if(next<0) return `<div class="card"><b style="font-size:19px">${esc(p.name)}</b><div style="margin:8px 0">Completed. Well done, good and faithful servant.</div><button class="btn sm" data-reset="${p.id}">Start Over</button></div>`;
+    return `<div class="card"><b style="font-size:19px">${esc(p.name)}</b><div class="small muted" style="margin:4px 0 8px">Day ${next+1} of ${p.days} \u2022 ${Math.round(planPct(p))}% complete</div>
+      <div class="progress"><i style="width:${planPct(p)}%"></i></div>
+      <div style="margin:12px 0 8px;font-weight:700">Today: ${esc(dayLabel(days[next]))}</div>
+      <div class="row">${days[next].map(([b,c])=>`<button class="btn sm" data-read="${b}:${c}">${esc(bookName(b))} ${c}</button>`).join('')}</div>
+      <div class="row" style="margin-top:10px"><button class="btn red grow" data-done="${p.id}:${next}">Mark Day ${next+1} Complete</button><button class="btn sm" data-reset="${p.id}">Stop</button></div></div>`;
+  }).join('');
+  box.querySelectorAll('[data-start]').forEach(b=>b.onclick=()=>{ S.plans[b.dataset.start]={start:Date.now(),done:[]}; persist(); renderPlans(); });
+  box.querySelectorAll('[data-reset]').forEach(b=>b.onclick=()=>{ if(confirm('Stop this plan and clear its progress?')){ delete S.plans[b.dataset.reset]; persist(); renderPlans(); } });
+  box.querySelectorAll('[data-read]').forEach(b=>b.onclick=()=>{ const [bk,c]=b.dataset.read.split(':').map(Number); openReader(bk,c); });
+  box.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{ const [id,d]=b.dataset.done.split(':'); S.plans[id].done.push(+d); persist(); toast('Day complete'); renderPlans(); });
+}
+
+/* ---------- Prayer list ---------- */
+let prTab='open';
+$('#prTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; prTab=b.dataset.t; $$('#prTabs button').forEach(x=>x.classList.toggle('on',x===b)); renderPrayers(); };
+$('#prAdd').onclick=()=>{ const t=$('#prText').value.trim(); if(!t) return; S.prayers.unshift({id:uid(),text:t,cat:$('#prCat').value,ts:Date.now(),answered:false}); persist(); $('#prText').value=''; toast('Added'); renderPrayers(); };
+function renderPrayers(){
+  const list=S.prayers.filter(p=>prTab==='open'?!p.answered:p.answered), box=$('#prList');
+  if(!list.length){ box.innerHTML=`<div class="empty">${prTab==='open'?'Nothing on your list yet.':'Answered prayers will be kept here as a record of God\u2019s faithfulness.'}</div>`; return; }
+  box.innerHTML=list.map(p=>`<div class="item" data-id="${p.id}"><div class="ref">${esc(p.cat)}</div><div class="txt">${esc(p.text)}</div>
+    <div class="small muted">Added ${new Date(p.ts).toLocaleDateString()}${p.answered?` \u2022 Answered ${new Date(p.ansTs).toLocaleDateString()}`:''}</div>${p.ansNote?`<div class="note">${esc(p.ansNote)}</div>`:''}
+    <div class="tools">${p.answered?'<button class="btn sm" data-a="reopen">Move Back</button>':'<button class="btn sm red" data-a="ans">Mark Answered</button>'}<button class="btn sm" data-a="del">Delete</button></div></div>`).join('');
+  box.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+    const p=S.prayers.find(x=>x.id===b.closest('.item').dataset.id), a=b.dataset.a;
+    if(a==='ans'){ const n=prompt('How was it answered? (optional)')||''; p.answered=true; p.ansTs=Date.now(); p.ansNote=n.trim(); }
+    if(a==='reopen'){ p.answered=false; delete p.ansNote; }
+    if(a==='del'){ if(!confirm('Delete this request?')) return; S.prayers=S.prayers.filter(x=>x.id!==p.id); }
+    persist(); renderPrayers();
+  });
+}
+
+/* ---------- Settings ---------- */
+function applySettings(){
+  document.documentElement.style.setProperty('--fs',S.settings.fs+'px');
+  document.documentElement.dataset.theme=S.settings.theme;
+  document.querySelector('meta[name=theme-color]').content = S.settings.theme==='dark'?'#141414':'#C41230';
+}
+function renderSettings(){
+  $('#stName').value=S.settings.name; fillTrSelect(); $('#stFsLbl').textContent=S.settings.fs; $('#stRate').value=String(S.settings.rate);
+  $$('#stLayout button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.layout));
+  $$('#stTheme button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.theme));
+  $('#verLbl').textContent='Version '+APP_VERSION;
+}
+$('#stName').onchange=()=>{ S.settings.name=$('#stName').value.trim(); persist(); toast('Saved'); };
+$('#stTr').onchange=()=>{ S.settings.tr=$('#stTr').value; persist(); toast('Translation set to '+S.settings.tr); };
+$('#stSm').onclick=()=>{ S.settings.fs=Math.max(15,S.settings.fs-1); persist(); applySettings(); renderSettings(); };
+$('#stLg').onclick=()=>{ S.settings.fs=Math.min(34,S.settings.fs+1); persist(); applySettings(); renderSettings(); };
+$('#stLayout').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.layout=b.dataset.m; persist(); renderSettings(); };
+$('#stTheme').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.theme=b.dataset.m; persist(); applySettings(); renderSettings(); };
+$('#stRate').onchange=()=>{ S.settings.rate=+$('#stRate').value; persist(); };
+$('#stWxFs').onclick=()=>{ Object.assign(S.settings,{lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR'}); persist(); loadWeather(); toast('Weather set to Fort Smith'); };
+$('#stWxGps').onclick=()=>{ if(!navigator.geolocation){ toast('Location not available'); return; }
+  navigator.geolocation.getCurrentPosition(p=>{ Object.assign(S.settings,{lat:+p.coords.latitude.toFixed(3),lon:+p.coords.longitude.toFixed(3),place:'Your location'}); persist(); loadWeather(); toast('Weather set to your location'); },()=>toast('Location permission was not given')); };
+$('#stExport').onclick=()=>{ const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`daily-word-backup-${new Date().toISOString().slice(0,10)}.json`; a.click(); };
+$('#stImport').onclick=()=>$('#stFile').click();
+$('#stFile').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ const d=JSON.parse(await f.text()); if(!d.settings) throw 0;
+  if(!confirm('Replace everything on this phone with the backup?')) return; S=Object.assign({},DEF,d); S.settings=Object.assign({},DEF.settings,d.settings); persist(); applySettings(); toast('Backup restored'); route(); }catch(err){ toast('That file is not a Daily Word backup'); } };
+
+/* ---------- First run ---------- */
+function firstRun(){
+  if(S.settings.name || localStorage.getItem(KEY+'.welcomed')) return;
+  openSheet(`<h3>Welcome</h3><p>This Bible was put together for you by the team at Logistics Warehouse, Inc.</p>
+   <label class="lbl">What is your first name?</label><input type="text" id="frName" placeholder="First name">
+   <button class="btn red full" id="frGo" style="margin-top:14px">Get Started</button>
+   <p class="small muted">Tip: on iPhone, tap the Share button and choose "Add to Home Screen" so this opens like an app.</p>`);
+  $('#frGo').onclick=()=>{ S.settings.name=$('#frName').value.trim(); persist(); localStorage.setItem(KEY+'.welcomed','1'); closeSheet(); renderHome(); };
+}
+
+/* ---------- Boot ---------- */
+applySettings(); tick(); setInterval(tick,15000);
+loadWeather(); setInterval(loadWeather,30*60*1000);
+loadTranslations();
+route(); firstRun();
+if('speechSynthesis' in window) speechSynthesis.getVoices();
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>

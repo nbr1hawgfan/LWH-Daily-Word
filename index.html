@@ -294,6 +294,13 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 #cover.open .book{transform:rotateY(-105deg);opacity:0}
 
 /* ---------- Presentation page ---------- */
+.giftcard{margin-top:16px;background:var(--card);border:1px solid var(--line);padding:22px 18px 18px;text-align:center;position:relative}
+.giftcard::before{content:"";position:absolute;inset:6px;border:1px solid var(--goldsoft,rgba(176,141,60,.35));pointer-events:none}
+.gc-ttl{font-family:var(--serif);font-size:24px;font-weight:600;position:relative}
+.gc-qr{width:min(64vw,260px);margin:16px auto 6px;padding:10px;background:#fff;border:1px solid var(--gold);position:relative}
+.gc-qr svg{display:block;width:100%;height:auto}
+.gc-cap{font-size:14px;color:var(--muted);letter-spacing:.04em}
+#gfLink{font-size:15px;font-family:ui-monospace,Menlo,Consolas,monospace}
 .prespage{background:var(--page);border:1px solid var(--pageline);padding:34px 22px 30px;text-align:center;position:relative;margin-bottom:16px}
 .prespage::before{content:"";position:absolute;inset:10px;border:2px solid var(--gold);pointer-events:none}
 .prespage::after{content:"";position:absolute;inset:16px;border:1px solid var(--gold);opacity:.6;pointer-events:none}
@@ -563,7 +570,20 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
   <h2>Give a Copy to Someone</h2>
   <p class="small muted">Makes a personal link. When they open it, the cover and presentation page carry their name. Their notes stay on their own phone.</p>
   <label class="lbl">Their full name</label><input type="text" id="gfName" placeholder="e.g. Ronnie Robertson">
+  <p class="small muted" style="margin:6px 0 0">Leave the name blank for a general link anyone can use.</p>
   <button class="btn dark full" id="gfGo" style="margin-top:10px">Create Link</button>
+  <div id="gfOut" class="giftcard" style="display:none">
+    <div class="gc-ttl" id="gfTtl"></div>
+    <div class="gc-qr" id="gfQr"></div>
+    <div class="gc-cap">Scan with a phone camera to open</div>
+    <label class="lbl" style="text-align:left">The link</label>
+    <input type="text" id="gfLink" readonly>
+    <div class="grid3" style="margin-top:10px">
+      <button class="btn red" id="gfCopy">Copy</button>
+      <button class="btn" id="gfShare">Share</button>
+      <button class="btn" id="gfSave">Picture</button>
+    </div>
+  </div>
 
   <h2>Backup</h2>
   <p class="small muted">Saved verses, highlights, journal entries, speeches, plans and prayers live on this phone. Make a backup file before changing phones.</p>
@@ -603,9 +623,10 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 <div class="toast" id="toast"></div>
 <canvas id="cv" width="1080" height="1080" style="display:none"></canvas>
 
+<script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.2.1';
+const APP_VERSION = '1.2.2';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -1582,10 +1603,43 @@ $('#cover').onclick=()=>{
 
 /* ---------- Personal links ---------- */
 const URLP=new URLSearchParams(location.search);
+const GF={name:'',url:''};
+function appBaseUrl(){ return `${location.origin}${location.pathname.replace(/index\.html$/,'')}`; }
+function qrModules(text){ const q=qrcode(0,'M'); q.addData(text); q.make(); const n=q.getModuleCount(), m=[];
+  for(let r=0;r<n;r++){ const row=[]; for(let c=0;c<n;c++) row.push(q.isDark(r,c)); m.push(row); } return m; }
+function qrSvg(text){ const m=qrModules(text), n=m.length, pad=3, sz=n+pad*2; let d='';
+  m.forEach((row,r)=>row.forEach((on,c)=>{ if(on) d+=`M${c+pad} ${r+pad}h1v1h-1z`; }));
+  return `<svg viewBox="0 0 ${sz} ${sz}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${sz}" height="${sz}" fill="#fff"/><path d="${d}" fill="#2a0a10"/></svg>`; }
 $('#gfGo').onclick=()=>{
-  const n=$('#gfName').value.trim(); if(!n){ toast('Enter their name first'); return; }
-  const u=`${location.origin}${location.pathname.replace(/index\.html$/,'')}?for=${encodeURIComponent(n)}`;
-  shareText('A Bible for you',`${n.split(' ')[0]}, this Bible app was made for you. Open this link, then add it to your Home Screen:\n${u}`);
+  const n=$('#gfName').value.trim();
+  GF.name=n; GF.url = n ? `${appBaseUrl()}?for=${encodeURIComponent(n)}` : appBaseUrl();
+  $('#gfTtl').textContent = n ? `A Bible for ${n}` : 'LWH Daily Word';
+  $('#gfLink').value=GF.url;
+  try{ $('#gfQr').innerHTML=qrSvg(GF.url); }catch(e){ $('#gfQr').innerHTML='<div class="small muted">QR code unavailable</div>'; }
+  $('#gfOut').style.display=''; $('#gfOut').scrollIntoView({behavior:'smooth',block:'start'});
+};
+$('#gfLink').onclick=()=>{ $('#gfLink').select(); };
+$('#gfCopy').onclick=()=>copyText(GF.url);
+$('#gfShare').onclick=()=>{ const first=GF.name.split(' ')[0];
+  shareText('A Bible for you',`${first?first+', this':'This'} Bible app was made for you. Open this link, then add it to your Home Screen:\n${GF.url}`); };
+$('#gfSave').onclick=()=>{
+  const m=qrModules(GF.url), n=m.length, W=1080, H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d');
+  x.fillStyle='#fbf7ee'; x.fillRect(0,0,W,H);
+  x.fillStyle='#3d0b15'; x.fillRect(0,0,W,150); x.fillStyle='#b08d3c'; x.fillRect(0,150,W,4);
+  x.textAlign='center'; x.textBaseline='middle'; x.fillStyle='#e6cc84'; x.font='600 54px "Crimson Pro", Georgia, serif'; x.fillText('DAILY WORD',W/2,62);
+  x.fillStyle='rgba(243,231,201,.8)'; x.font='600 22px Arial, sans-serif'; x.fillText('LOGISTICS WAREHOUSE, INC.',W/2,112);
+  x.fillStyle='#2a2420'; x.font='600 58px "Crimson Pro", Georgia, serif'; x.fillText(GF.name?`A Bible for ${GF.name}`:'A Bible for You',W/2,250,W-80);
+  const box=720, cell=Math.floor(box/(n+6)), qs=cell*(n+6), ox=(W-qs)/2, oy=330;
+  x.fillStyle='#fff'; x.fillRect(ox,oy,qs,qs); x.strokeStyle='#b08d3c'; x.lineWidth=3; x.strokeRect(ox-14,oy-14,qs+28,qs+28);
+  x.fillStyle='#2a0a10'; m.forEach((row,r)=>row.forEach((on,cc)=>{ if(on) x.fillRect(ox+(cc+3)*cell,oy+(r+3)*cell,cell,cell); }));
+  x.fillStyle='#7a6d5f'; x.font='30px Arial, sans-serif'; x.fillText('Point your phone camera here, then tap the link.',W/2,oy+qs+70);
+  x.fillStyle='#A8142C'; x.font='italic 34px "Crimson Pro", Georgia, serif'; x.fillText('\u201CThy word is a lamp unto my feet.\u201D \u2014 Psalm 119:105',W/2,H-90,W-80);
+  c.toBlob(async b=>{ const fname=`daily-word-${(GF.name||'link').toLowerCase().replace(/[^a-z0-9]+/g,'-')}.png`;
+    const file=new File([b],fname,{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:'Daily Word QR code'}); return; }catch(e){ if(e.name==='AbortError') return; } }
+    const url=URL.createObjectURL(b);
+    openSheet(`<button class="close" data-x>X</button><h3>QR Code Picture</h3><p class="small muted">Press and hold the picture to save it to Photos.</p><img src="${url}" style="width:100%;border:1px solid var(--line2)"><a class="btn red full" style="margin-top:10px;text-decoration:none" href="${url}" download="${fname}">Download</a>`);
+  },'image/png');
 };
 
 /* ---------- First run ---------- */

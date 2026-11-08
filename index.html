@@ -544,6 +544,10 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
   <div class="tabs" id="stTheme"><button data-m="light">Day</button><button data-m="dark">Night</button></div>
   <label class="lbl">Reading voice speed</label>
   <select id="stRate"><option value="0.8">Slow</option><option value="0.95">Normal</option><option value="1.1">Faster</option></select>
+  <label class="lbl">Reading voice</label>
+  <div class="row"><select id="stVoice" class="grow"></select><button class="btn" id="stVoicePlay">Preview</button></div>
+  <p class="small muted" id="stVoiceTip">Voices marked <b>Premium</b> or <b>Enhanced</b> sound the most natural.</p>
+  <button class="btn full" id="stVoiceHelp">How to Get More Natural Voices</button>
   <label class="lbl">Weather location</label>
   <div class="row"><button class="btn grow" id="stWxFs">Fort Smith</button><button class="btn grow" id="stWxGps">Use My Location</button></div>
 
@@ -601,7 +605,7 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 
 <script>
 'use strict';
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.2.1';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -1106,11 +1110,30 @@ $('#sheet').addEventListener('click',e=>{ if(e.target.closest('[data-x]')){ if($
 
 /* ---------- Read aloud ---------- */
 let speaking=false;
+/* Voice choice: prefer the user's pick, else the most natural English voice on the device */
+const NOVELTY=/albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|ralph|kathy|grandma|grandpa|rocko|shelley|eddy|flo|reed|sandy/i;
+function voiceScore(v){ const n=v.name; let sc=0;
+  if(/premium/i.test(n)) sc+=60; else if(/enhanced|neural|natural/i.test(n)) sc+=45; else if(/siri/i.test(n)) sc+=40;
+  if(/google/i.test(n)) sc+=30; if(/^en-US/i.test(v.lang)) sc+=8; else if(/^en-(GB|AU|IE|CA)/i.test(v.lang)) sc+=5;
+  if(/samantha|ava|zoe|evan|nathan|tom|allison|susan|daniel|serena|karen|moira/i.test(n)) sc+=6;
+  if(v.localService) sc+=1; return sc; }
+function englishVoices(){ if(!('speechSynthesis' in window)) return [];
+  return speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!NOVELTY.test(v.name)).sort((a,b)=>voiceScore(b)-voiceScore(a)||a.name.localeCompare(b.name)); }
+function pickVoice(){ const vs=englishVoices(); return vs.find(v=>v.voiceURI===S.settings.voice)||vs[0]||null; }
+function voiceLabel(v){ const q=/premium/i.test(v.name)?'Premium':/enhanced|neural|natural/i.test(v.name)?'Enhanced':'';
+  const nm=v.name.replace(/\s*\((premium|enhanced)\)\s*/i,'').replace(/^(Microsoft|Google)\s+/,'');
+  const reg={'en-US':'American','en-GB':'British','en-AU':'Australian','en-IE':'Irish','en-CA':'Canadian','en-ZA':'South African','en-IN':'Indian'}[v.lang.replace('_','-')]||v.lang;
+  return `${nm} \u2014 ${reg}${q?' \u2022 '+q:''}`; }
+function fillVoices(){ const sel=$('#stVoice'); if(!sel) return; const vs=englishVoices(), cur=pickVoice();
+  sel.innerHTML = vs.length ? vs.map(v=>`<option value="${esc(v.voiceURI)}" ${cur&&v.voiceURI===cur.voiceURI?'selected':''}>${esc(voiceLabel(v))}</option>`).join('') : '<option>No voices found on this device</option>';
+  const hasGood=vs.some(v=>/premium|enhanced|neural|natural|google/i.test(v.name));
+  $('#stVoiceTip').innerHTML = hasGood ? 'Voices marked <b>Premium</b> or <b>Enhanced</b> sound the most natural. Tap Preview to hear one.' : 'Only basic voices are installed on this phone right now. Tap the button below to add natural-sounding ones \u2014 it takes about a minute.'; }
+if('speechSynthesis' in window) speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged',fillVoices);
 function speak(text,onEnd){
   if(!('speechSynthesis' in window)){ toast('Read aloud is not supported on this device'); return; }
   speechSynthesis.cancel();
   const chunks = text.match(/[^.!?;:]+[.!?;:]*/g)||[text]; let i=0; speaking=true;
-  const voices=speechSynthesis.getVoices(); const voice=voices.find(v=>/en-US/i.test(v.lang)&&/natural|enhanced|premium|samantha|aaron/i.test(v.name))||voices.find(v=>/en-US/i.test(v.lang));
+  const voice=pickVoice();
   const next=()=>{ if(!speaking||i>=chunks.length){ speaking=false; onEnd&&onEnd(); return; }
     const u=new SpeechSynthesisUtterance(chunks[i++].trim()); u.rate=+S.settings.rate||0.95; if(voice) u.voice=voice; u.onend=next; u.onerror=next; speechSynthesis.speak(u); };
   next();
@@ -1363,7 +1386,7 @@ function applySettings(){
   document.querySelector('meta[name=theme-color]').content = '#3d0b15';
 }
 function renderSettings(){
-  $('#stName').value=S.settings.name; fillTrSelect(); $('#stFsLbl').textContent=S.settings.fs; $('#stRate').value=String(S.settings.rate);
+  $('#stName').value=S.settings.name; fillTrSelect(); fillVoices(); $('#stFsLbl').textContent=S.settings.fs; $('#stRate').value=String(S.settings.rate);
   $$('#stLayout button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.layout));
   $$('#stTheme button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.theme));
   $('#verLbl').textContent='Version '+APP_VERSION;
@@ -1381,6 +1404,24 @@ $('#stLg').onclick=()=>{ S.settings.fs=Math.min(34,S.settings.fs+1); persist(); 
 $('#stLayout').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.layout=b.dataset.m; persist(); renderSettings(); };
 $('#stTheme').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; S.settings.theme=b.dataset.m; persist(); applySettings(); renderSettings(); };
 $('#stRate').onchange=()=>{ S.settings.rate=+$('#stRate').value; persist(); };
+$('#stVoice').onchange=()=>{ S.settings.voice=$('#stVoice').value; persist(); toast('Voice saved'); };
+$('#stVoicePlay').onclick=()=>{ if(speaking){ stopSpeak(); return; } S.settings.voice=$('#stVoice').value; persist();
+  speak('The Lord is my shepherd; I shall not want. He maketh me to lie down in green pastures: he leadeth me beside the still waters.'); };
+$('#stVoiceHelp').onclick=()=>{
+  const ios=/iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  openSheet(`<button class="close" data-x>X</button><h3>More Natural Voices</h3>`+(ios?
+   `<p>Your iPhone has free, natural-sounding voices that just need to be downloaded once.</p>
+    <ol style="font-size:18px;line-height:1.6;padding-left:22px">
+     <li>Open the <b>Settings</b> app.</li>
+     <li>Tap <b>Accessibility</b>, then <b>Spoken Content</b>, then <b>Voices</b>.</li>
+     <li>Tap <b>English</b>.</li>
+     <li>Pick a voice, such as <b>Ava</b>, <b>Zoe</b>, <b>Evan</b> or <b>Nathan</b>, and choose <b>Premium</b> or <b>Enhanced</b>. Tap the download arrow.</li>
+     <li>When it finishes, <b>close this app completely</b> and open it again.</li>
+     <li>Come back here and choose the new voice from the list.</li>
+    </ol>
+    <p class="small muted">Wi-Fi is best — Premium voices are a larger download. The "Siri" voices cannot be used by apps like this one.</p>`
+   :`<p>On Android, open <b>Settings</b> and search for <b>Text-to-speech</b>. Choose <b>Speech Services by Google</b>, tap the gear, then <b>Install voice data</b> and download an English voice. Then close and reopen this app and pick the voice here.</p>`)
+   +`<button class="btn red full" data-x>Got It</button>`); };
 $('#stWxFs').onclick=()=>{ Object.assign(S.settings,{lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR'}); persist(); loadWeather(); toast('Weather set to Fort Smith'); };
 $('#stWxGps').onclick=()=>{ if(!navigator.geolocation){ toast('Location not available'); return; }
   navigator.geolocation.getCurrentPosition(p=>{ Object.assign(S.settings,{lat:+p.coords.latitude.toFixed(3),lon:+p.coords.longitude.toFixed(3),place:'Your location'}); persist(); loadWeather(); toast('Weather set to your location'); },()=>toast('Location permission was not given')); };

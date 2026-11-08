@@ -20,6 +20,16 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.1
+- **Cover** — leather-look Bible cover with the owner's name stamped in gold; tap to open. Can be turned off in Settings.
+- **Presentation page** — "Presented to / by / on" with a dedication message and a blessing (Numbers 6:24-26). Fully editable in Settings.
+- **Book-style pages** — chapter headings with ornament, drop cap, red letters (when the translation marks the words of Jesus), and a **ribbon bookmark** (tap the ribbon to mark the page).
+- **Journal** — Journal, Sermon Notes (church and speaker) and Gratitude entries. **Tap to Speak** dictation, with spoken "period", "comma", "question mark" and "new paragraph". Saves automatically. Searchable, grouped by month.
+- **Margin marks** — verses with a journal entry or note show a small pen mark; tapping the verse shows your notes.
+- **On This Day** — home card showing what was written or saved on this date in past years.
+- **Cross references** — tap a verse → Cross References (OpenBible.info data via bible.helloao.org).
+- **Give a copy to someone** — Settings → create a personal link like `.../?for=Ronnie%20Robertson`. The name pre-fills on first open.
+
 ## Data and privacy
 Everything (saved verses, notes, speeches, prayers) is stored only on that phone in browser storage. Nothing is sent to LWH or anyone else. Use **Settings → Save Backup** before changing phones.
 

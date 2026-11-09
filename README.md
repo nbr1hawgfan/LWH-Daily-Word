@@ -23,7 +23,8 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 ### Added in 1.3
 - **Morning Devotional** — a guided 10–15 minute quiet time from the Home screen: Be Still (call-to-worship verse, optional minute of quiet) → Read (today's reading-plan chapters, or a Psalm and a Proverb) → Reflect (a daily question, answered by voice or typing, saved to the Journal) → Pray (ACTS prompts plus requests from the Prayer List) → Go (verse to carry and a blessing). Completing it marks the reading-plan day and fills a monthly reading-log calendar.
 - **Sync across devices** — Settings → Sync Across Devices. Name + PIN sign-in; journal, saved verses, highlights, prayers, speeches, plans and devotional log stay the same on phone and PC. Data lives in the LWH Companion Supabase project (`dw_users`, `dw_sessions`, `dw_state`), reachable only through the `dw_login / dw_pull / dw_push / dw_logout` functions.
-- **Add a reader or reset a PIN** (Supabase SQL editor): `select dw_admin_set_user('Doug Moore', '123456');`
+- **Accounts** — readers create their own account (name + PIN) in Settings → Sync Across Devices. Admins get **Manage Readers**: reset a forgotten PIN (one-time temporary PIN, reader chooses a new one at sign-in), unlock, or remove access. Admins never see anyone's notes.
+- **Make someone an admin** (Supabase SQL editor, after they create their account): `select dw_admin_set_admin('Ronnie Robertson', true);`
 
 ### Added in 1.2
 - **Book design** — Crimson Pro book typography, cream paper, oxblood leather header, gold rules; Home and More laid out like a table of contents.

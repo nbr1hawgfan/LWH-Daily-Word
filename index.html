@@ -710,7 +710,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -1805,36 +1805,105 @@ function relTime(t){ if(!t) return 'not yet'; const m=Math.round((Date.now()-t)/
 function setSyncStatus(msg){ const el=$('#syStat'); if(!el||!SY) return; el.textContent = msg || (syncErr?`Offline — will sync when connected. Last synced ${relTime(SY.at)}.`:`Last synced ${relTime(SY.at)}`); }
 function signOutLocal(msg){ SY=null; saveSY(); if(msg) toast(msg); renderSync(); }
 function deviceLabel(){ const u=navigator.userAgent; return /iPhone/.test(u)?'iPhone':/iPad/.test(u)?'iPad':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows PC':/Mac/.test(u)?'Mac':'Browser'; }
+let syncTab='in';
+const pinField=(id,ph)=>`<input type="password" id="${id}" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" placeholder="${ph||'4 to 8 digits'}">`;
+function startSession(r){
+  SY={token:r.token,name:r.name,admin:!!r.is_admin,rev:0,base:null,at:0}; saveSY();
+  if(!S.settings.name){ S.settings.name=r.name; if(!S.pres.to) S.pres.to=r.name; }
+  localStorage.setItem(KEY+'.welcomed','1');
+}
+function newPinSheet(forced){
+  openSheet(`${forced?'':'<button class="close" data-x>X</button>'}<h3>${forced?'Choose Your New PIN':'Change My PIN'}</h3>
+    <p class="small muted">${forced?'Your PIN was reset. Choose a new one that only you know.':'Pick 4 to 8 digits that are easy for you to remember and hard for others to guess.'}</p>
+    ${forced?'':`<label class="lbl">Current PIN</label>${pinField('cpOld','Current PIN')}`}
+    <label class="lbl">New PIN</label>${pinField('cpNew')}
+    <label class="lbl">New PIN again</label>${pinField('cpNew2','Type it once more')}
+    <button class="btn red full" id="cpGo" style="margin-top:14px">Save New PIN</button>`);
+  $('#cpGo').onclick=async()=>{
+    const a=$('#cpNew').value.trim(), b=$('#cpNew2').value.trim(), old=forced?'':$('#cpOld').value.trim();
+    if(a!==b){ toast('The two new PINs do not match'); return; }
+    $('#cpGo').disabled=true;
+    try{ const r=await rpc('dw_change_pin',{p_token:SY.token,p_old_pin:old,p_new_pin:a});
+      if(!r.ok){ toast(r.error==='signed_out'?'Please sign in again':r.error); if(r.error==='signed_out') signOutLocal(); return; }
+      SY.mustChange=false; saveSY(); closeSheet(); toast('Your new PIN is saved'); renderSync();
+    }catch(e){ toast('Could not reach the server. Check the connection.'); }
+    finally{ const g=$('#cpGo'); if(g) g.disabled=false; }
+  };
+}
+async function adminSheet(){
+  openSheet(`<button class="close" data-x>X</button><h3>Manage Readers</h3>
+    <p class="small muted">Names and sign-in dates only — no one's notes, prayers or journal are ever visible here.</p><div id="admList"><div class="loading">Loading…</div></div>`);
+  let r; try{ r=await rpc('dw_admin_list',{p_token:SY.token}); }catch(e){ $('#admList').innerHTML='<div class="empty">Could not reach the server.</div>'; return; }
+  if(!r.ok){ $('#admList').innerHTML='<div class="empty">This account is not an administrator.</div>'; return; }
+  const d=t=>t?new Date(t).toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}):'never';
+  $('#admList').innerHTML=`<div class="small muted" style="margin-bottom:10px">${r.users.filter(u=>u.active).length} active readers</div>`+r.users.map(u=>`
+    <div class="item" data-id="${u.id}" style="${u.active?'':'opacity:.6'}">
+      <div class="ref" style="color:var(--ink)">${esc(u.name)}${u.is_admin?' <span class="jtype devo" style="margin-left:6px">Admin</span>':''}</div>
+      <div class="small muted">Last signed in ${esc(d(u.last_login))} · ${u.devices} device${u.devices===1?'':'s'}${u.locked?' · <b style="color:var(--red)">Locked</b>':''}${u.must_change?' · Waiting for new PIN':''}${u.active?'':' · Access removed'}</div>
+      <div class="tools"><button class="btn sm red" data-a="reset">${u.active?'Reset PIN':'Restore with New PIN'}</button>${u.is_admin?'':(u.active?'<button class="btn sm" data-a="off">Remove Access</button>':'')}</div>
+    </div>`).join('');
+  $$('#admList [data-a]').forEach(b=>b.onclick=async()=>{
+    const it=b.closest('.item'), id=+it.dataset.id, u=r.users.find(x=>x.id===id);
+    if(b.dataset.a==='reset'){
+      if(!confirm(`Reset the PIN for ${u.name}? They will sign in with a temporary PIN and choose a new one.`)) return;
+      const x=await rpc('dw_admin_reset',{p_token:SY.token,p_user_id:id}).catch(()=>null);
+      if(!x||!x.ok){ toast('Could not reset right now'); return; }
+      openSheet(`<button class="close" data-x>X</button><h3>Temporary PIN</h3><p>Give <b>${esc(x.name)}</b> this one-time PIN:</p>
+        <div style="font-family:var(--serif);font-size:52px;font-weight:600;letter-spacing:.18em;text-align:center;margin:18px 0;color:var(--red)">${esc(x.temp_pin)}</div>
+        <p class="small muted">They sign in with their name and this PIN, then the app asks them to choose their own. Their notes are untouched.</p>
+        <div class="grid2"><button class="btn" id="tpCopy">Copy</button><button class="btn red" id="tpBack">Back to Readers</button></div>`);
+      $('#tpCopy').onclick=()=>copyText(`Your Daily Word temporary PIN is ${x.temp_pin}. Sign in with your name and this PIN, then choose a new one.`);
+      $('#tpBack').onclick=adminSheet;
+    } else if(b.dataset.a==='off'){
+      if(!confirm(`Remove access for ${u.name}? They will be signed out on every device. Notes on their phone stay on their phone.`)) return;
+      const x=await rpc('dw_admin_set_active',{p_token:SY.token,p_user_id:id,p_active:false}).catch(()=>null);
+      if(!x||!x.ok){ toast(x&&x.error||'Could not update right now'); return; }
+      toast('Access removed'); adminSheet();
+    }
+  });
+}
 function renderSync(){
   const box=$('#syncBox'); if(!box) return;
   if(SY&&SY.token){
-    box.innerHTML=`<div class="sync-card"><b>Signed in as ${esc(SY.name)}</b><div class="small muted" id="syStat"></div></div>
+    box.innerHTML=`<div class="sync-card"><b>Signed in as ${esc(SY.name)}</b>${SY.admin?' <span class="jtype devo" style="margin-left:6px">Admin</span>':''}<div class="small muted" id="syStat"></div></div>
       <p class="small muted">Your journal, saved verses, highlights, prayers, speeches, plans and devotional log stay the same on every phone and computer where you sign in. Text size and appearance stay separate on each device.</p>
-      <div class="grid2"><button class="btn red" id="sySync">Sync Now</button><button class="btn" id="syOut">Sign Out Here</button></div>`;
+      <div class="grid2"><button class="btn red" id="sySync">Sync Now</button><button class="btn" id="syPinBtn">Change My PIN</button></div>
+      ${SY.admin?'<button class="btn dark full" id="syAdmin" style="margin-top:10px">Manage Readers</button>':''}
+      <button class="btn full" id="syOut" style="margin-top:10px">Sign Out on This Device</button>`;
     setSyncStatus();
     $('#sySync').onclick=()=>syncNow(true);
+    $('#syPinBtn').onclick=()=>newPinSheet(false);
+    if($('#syAdmin')) $('#syAdmin').onclick=adminSheet;
     $('#syOut').onclick=()=>{ if(!confirm('Sign out of sync on this device? Your notes stay on this device and on your other devices.')) return;
       const t=SY.token; signOutLocal('Signed out on this device'); rpc('dw_logout',{p_token:t}).catch(()=>{}); };
-  } else {
-    box.innerHTML=`<p class="small muted">Sign in to keep your journal, saved verses, prayers and plans the same on your phone and your computer at work — and safely backed up if a phone is lost or replaced.</p>
-      <label class="lbl">Your name</label><input type="text" id="syName" value="${esc(S.settings.name||'')}" autocomplete="username">
-      <label class="lbl">PIN</label><input type="password" id="syPin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="current-password" placeholder="4 to 8 digits">
-      <button class="btn red full" id="syGo" style="margin-top:12px">Sign In and Sync</button>
-      <p class="small muted">Your PIN is set up by LWH. Ask Tim if you need one.</p>`;
-    $('#syPin').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#syGo').click(); });
-    $('#syGo').onclick=async()=>{
-      const n=$('#syName').value.trim(), pin=$('#syPin').value.trim(); if(!n||!pin){ toast('Enter your name and PIN'); return; }
-      $('#syGo').disabled=true; $('#syGo').textContent='Signing in…';
-      try{ const r=await rpc('dw_login',{p_name:n,p_pin:pin,p_device:deviceLabel()});
-        if(!r.ok){ toast(r.error||'Could not sign in'); return; }
-        SY={token:r.token,name:r.name,rev:0,base:null,at:0}; saveSY();
-        if(!S.settings.name){ S.settings.name=r.name; if(!S.pres.to) S.pres.to=r.name; }
-        localStorage.setItem(KEY+'.welcomed','1');
-        renderSync(); await syncNow(true); renderSync();
-      }catch(e){ toast('Could not reach the server. Check the connection.'); }
-      finally{ const b=$('#syGo'); if(b){ b.disabled=false; b.textContent='Sign In and Sync'; } }
-    };
+    if(!SY.checked){ SY.checked=true; rpc('dw_whoami',{p_token:SY.token}).then(w=>{ if(!w.ok){ if(w.error==='signed_out') signOutLocal('Your sync sign-in has ended. Please sign in again.'); return; }
+      const ch=(SY.admin!==w.is_admin)||(SY.name!==w.name); SY.admin=w.is_admin; SY.name=w.name; saveSY(); if(w.must_change) newPinSheet(true); else if(ch) renderSync(); }).catch(()=>{}); }
+    return;
   }
+  const isNew=syncTab==='new';
+  box.innerHTML=`<p class="small muted">Keep your journal, saved verses, prayers and plans the same on your phone and computer — and safely backed up if a phone is lost or replaced.</p>
+    <div class="tabs" id="syTabs"><button data-t="in" class="${isNew?'':'on'}">Sign In</button><button data-t="new" class="${isNew?'on':''}">Create Account</button></div>
+    <label class="lbl">Your first and last name</label><input type="text" id="syName" value="${esc(S.settings.name||'')}" autocomplete="username">
+    <label class="lbl">${isNew?'Choose a PIN':'PIN'}</label>${pinField('syPin',isNew?'4 to 8 digits you will remember':'Your PIN')}
+    ${isNew?`<label class="lbl">PIN again</label>${pinField('syPin2','Type it once more')}`:''}
+    <button class="btn red full" id="syGo" style="margin-top:14px">${isNew?'Create My Account':'Sign In and Sync'}</button>
+    <p class="small muted">${isNew?'Avoid easy PINs like 1234 or 1111. Your notes are private to you.':'Forgot your PIN? Ask Tim or Ronnie — they can give you a temporary one.'}</p>`;
+  $('#syTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; const keep=$('#syName').value; syncTab=b.dataset.t; renderSync(); $('#syName').value=keep; };
+  const last=isNew?'#syPin2':'#syPin'; $(last).addEventListener('keydown',e=>{ if(e.key==='Enter') $('#syGo').click(); });
+  $('#syGo').onclick=async()=>{
+    const n=$('#syName').value.trim(), pin=$('#syPin').value.trim();
+    if(!n||!pin){ toast('Enter your name and PIN'); return; }
+    if(isNew&&pin!==$('#syPin2').value.trim()){ toast('The two PINs do not match'); return; }
+    const btn=$('#syGo'), label=btn.textContent; btn.disabled=true; btn.textContent=isNew?'Creating…':'Signing in…';
+    try{
+      const r=await rpc(isNew?'dw_register':'dw_login',{p_name:n,p_pin:pin,p_device:deviceLabel()});
+      if(!r.ok){ toast(r.error||'Could not sign in'); return; }
+      startSession(r); SY.checked=true; saveSY(); syncTab='in';
+      renderSync(); await syncNow(true); renderSync();
+      if(r.must_change) newPinSheet(true); else if(isNew) toast('Your account is ready');
+    }catch(e){ toast('Could not reach the server. Check the connection.'); }
+    finally{ const b=$('#syGo'); if(b){ b.disabled=false; b.textContent=label; } }
+  };
 }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') syncNow(false); });
 window.addEventListener('online',()=>syncNow(false));

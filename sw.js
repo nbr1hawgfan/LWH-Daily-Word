@@ -1,5 +1,5 @@
 /* LWH Daily Word service worker */
-const VERSION = 'dw-1.2.2';
+const VERSION = 'dw-1.3.0';
 const SHELL = ['./', './index.html', './manifest.json', './qrcode.js', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

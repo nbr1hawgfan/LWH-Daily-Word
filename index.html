@@ -243,7 +243,7 @@ body.reading .page{margin-top:calc(var(--safet) + 58px)}
 .jcard .ttl{font-family:var(--serif);font-size:21px;font-weight:600;margin:3px 0}
 .jcard .snip{font-family:var(--serif);font-size:17px;margin-top:4px;line-height:1.5}
 .jtype{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;background:#2a2420;color:#fbf3df;margin-right:8px;vertical-align:1px}
-.jtype.sermon{background:var(--brand)} .jtype.grat{background:#8a6a1f}
+.jtype.sermon{background:var(--brand)} .jtype.grat{background:#8a6a1f} .jtype.devo{background:#b08d3c}
 .lined{background-image:repeating-linear-gradient(transparent 0 34px,var(--pageline) 34px 35px) !important;line-height:35px !important;padding-top:6px !important;background-color:var(--page) !important;font-family:var(--serif)}
 .micbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:64px;color:#f3e7c9;border:none;font-size:19px;font-weight:700;margin:12px 0;letter-spacing:.02em;
   background:var(--leather),linear-gradient(180deg,var(--ox2),var(--ox));box-shadow:inset 0 0 0 1px rgba(201,162,74,.5)}
@@ -312,6 +312,73 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 .prespage .bless{font-family:var(--serif);font-size:19px;line-height:1.6;margin:16px 8px 4px}
 .prespage .bref{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
+
+/* ---------- Morning devotional ---------- */
+body.focus header.top, body.focus nav.bottom{display:none}
+body.focus{background:var(--page) var(--grain);padding-bottom:calc(92px + var(--safeb))}
+body.focus main{padding-top:calc(var(--safet) + 62px)}
+body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:var(--safet);background:var(--ox);z-index:46}
+.dv-top{position:fixed;top:0;left:0;right:0;z-index:45;display:flex;align-items:center;gap:8px;padding:calc(var(--safet) + 4px) 8px 4px;
+  background:rgba(251,247,238,.95);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+:root[data-theme="dark"] .dv-top,:root[data-theme="dark"] .dv-nav{background:rgba(23,19,15,.95)}
+#dvClose{min-width:72px;font-size:15px;letter-spacing:.04em;color:var(--muted)}
+.dv-dots{flex:1;display:flex;justify-content:center;gap:12px}
+.dv-dots i{display:block;width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--gold)}
+.dv-dots i.on{background:var(--gold)}
+.dv-dots i.cur{background:var(--brand);border-color:var(--brand)}
+.dv-step{min-width:72px;text-align:right;font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding-right:8px}
+.dv-nav{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:10px 16px calc(10px + var(--safeb));
+  background:rgba(251,247,238,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line2)}
+.dv-nav .btn{min-height:56px;font-size:17px}
+.dv-wrap{max-width:680px;margin:0 auto;padding:0 6px;animation:fadeIn .3s ease}
+.dv-eyebrow{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:700;margin-top:14px}
+.dv-p{font-family:var(--serif);font-size:20px;line-height:1.6;margin:0 0 16px}
+.dv-call{text-align:center;margin:6px 0 22px;padding:24px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dv-call .txt{font-family:var(--serif);font-style:italic;font-size:calc(var(--fs) + 6px);line-height:1.5}
+.dv-call .ref,.dv-bless .ref{margin-top:12px;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dv-timer{text-align:center;font-family:var(--serif);font-size:46px;margin:14px 0 4px;color:var(--gold);min-height:56px}
+.dv-q{font-family:var(--serif);font-size:25px;line-height:1.4;font-weight:600;margin:22px 0 4px}
+.dv-verse{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);padding:14px 16px;font-family:var(--serif);font-size:calc(var(--fs) + 1px);line-height:1.55}
+.dv-verse .ref{display:block;margin-top:8px;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700;font-family:var(--sans)}
+.dv-read .chead{padding-top:22px}
+.acts{border-top:1px solid var(--line);margin:4px 0 22px}
+.acts div{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.acts b{flex:0 0 100px;font-family:var(--serif);font-size:19px;font-weight:600;color:var(--red)}
+.acts span{font-family:var(--serif);font-size:18px;line-height:1.5}
+.pr-item{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);padding:12px 14px;margin-bottom:10px}
+.pr-item .tx{flex:1;font-family:var(--serif);font-size:19px;line-height:1.45}
+.pr-item .cat{display:block;font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+.btn.done{background:var(--soft);color:var(--muted);border-color:var(--line)}
+.dv-bless{text-align:center;font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.55;margin:8px 6px 20px}
+.dv-done{text-align:center;padding:26px 0 4px}
+.seal{width:54px;height:54px;margin:6px auto 22px;border:2px solid var(--gold);transform:rotate(45deg);display:flex;align-items:center;justify-content:center}
+.seal::after{content:"";width:20px;height:20px;background:var(--brand)}
+.dv-done h1::after{margin:14px auto 18px}
+.cal{background:var(--card);border:1px solid var(--line);padding:14px 14px 10px;margin:18px 0}
+.cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.cal-h b{font-family:var(--serif);font-size:21px;font-weight:600;flex:1;text-align:center}
+.cal-h button{background:none;border:none;font-size:26px;color:var(--gold);min-width:44px;min-height:40px}
+.cal-n{text-align:center;font-size:14px;color:var(--muted);margin-bottom:8px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal-g .dw{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted);padding:4px 0}
+.cal-g .d{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:17px;color:var(--muted)}
+.cal-g .d span{position:relative}
+.cal-g .d.done{color:#fff8ec;font-weight:600}
+.cal-g .d.done::before{content:"";position:absolute;inset:20%;background:var(--brand);transform:rotate(45deg)}
+.cal-g .d.today{box-shadow:inset 0 0 0 1px var(--gold)}
+.devo-cta{position:relative;background:var(--card);border:1px solid var(--gold);padding:22px 18px 18px;margin:0 0 16px;text-align:center}
+.devo-cta::before{content:"";position:absolute;inset:5px;border:1px solid rgba(176,141,60,.35);pointer-events:none}
+.devo-cta .ey{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--red);font-weight:700}
+.devo-cta .tt{font-family:var(--serif);font-size:27px;font-weight:600;margin:6px 0 2px}
+.devo-cta .sb{font-size:15px;color:var(--muted);margin-bottom:14px}
+.devo-cta .btn{position:relative}
+.wk{display:flex;justify-content:center;gap:16px;margin:2px 0 16px}
+.wk div{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em}
+.wk i{display:block;width:10px;height:10px;border:1px solid var(--gold);transform:rotate(45deg)}
+.wk i.on{background:var(--brand);border-color:var(--brand)}
+.wk .t{color:var(--red)}
+.sync-card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);padding:14px 16px;margin-bottom:10px}
+.sync-card b{font-family:var(--serif);font-size:20px}
 @media (min-width:640px){.bookgrid{grid-template-columns:repeat(3,1fr)}.chapgrid{grid-template-columns:repeat(8,1fr)}}
 @media (min-width:760px){body.reading .page{border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 48px 8px}}
 </style>
@@ -347,6 +414,8 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
   <h1 id="greet">Good day</h1>
   <div class="wxline" id="wxCard"><span id="wxTemp"></span><span id="wxDesc"></span><span id="wxHiLo"></span><span id="wxRain"></span><span id="wxPlace" hidden></span></div>
 
+  <div id="devoCta"></div>
+
   <div class="card votd" id="votdCard">
     <div class="lab">Verse of the Day</div>
     <div class="txt" id="votdText">Loading...</div>
@@ -380,6 +449,17 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
   </div>
 </section>
 
+<!-- MORNING DEVOTIONAL -->
+<section class="view" id="v-devo">
+  <div class="dv-top">
+    <button class="rb-ic" id="dvClose" aria-label="Close">Close</button>
+    <div class="dv-dots" id="dvDots"></div>
+    <div class="dv-step" id="dvStepLbl"></div>
+  </div>
+  <div class="dv-wrap" id="dvBody"></div>
+  <div class="dv-nav" id="dvNav"><button class="btn" id="dvBack">Back</button><button class="btn red" id="dvNext">Continue</button></div>
+</section>
+
 <!-- PRESENTATION PAGE -->
 <section class="view" id="v-presented">
   <div class="prespage" id="presBox"></div>
@@ -401,7 +481,7 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 <!-- JOURNAL ENTRY -->
 <section class="view" id="v-entry">
   <div class="row" style="align-items:center;margin-bottom:6px"><button class="btn sm" id="eBack">&larr; Journal</button><div class="grow"></div><div class="muted small" id="eDate"></div></div>
-  <div class="tabs" id="eType"><button data-t="journal">Journal</button><button data-t="sermon">Sermon Notes</button><button data-t="grat">Gratitude</button></div>
+  <div class="tabs" id="eType"><button data-t="journal">Journal</button><button data-t="sermon">Sermon</button><button data-t="grat">Gratitude</button><button data-t="devo">Devotional</button></div>
   <input type="text" id="eTitle" placeholder="Title (optional)">
   <div id="eSermonFields" style="display:none">
     <div class="grid2" style="margin-top:10px"><input type="text" id="eChurch" placeholder="Church"><input type="text" id="eSpeaker" placeholder="Pastor or speaker"></div>
@@ -471,6 +551,7 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 <section class="view" id="v-more">
   <h1>Contents</h1>
   <div class="toc">
+    <button class="toc-row" id="moreDevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span class="tx"><span class="t">Morning Devotional</span><span class="d">Read, reflect and pray</span></span></button>
     <button class="toc-row" data-go="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 3h12l4 4v14H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg><span class="tx"><span class="t">Journal</span><span class="d">Notes, sermons and gratitude</span></span></button>
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">Write a devotional or talk</span></span></button>
     <button class="toc-row" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span class="tx"><span class="t">Topics</span><span class="d">Verses by subject</span></span></button>
@@ -585,6 +666,9 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
     </div>
   </div>
 
+  <h2>Sync Across Devices</h2>
+  <div id="syncBox"></div>
+
   <h2>Backup</h2>
   <p class="small muted">Saved verses, highlights, journal entries, speeches, plans and prayers live on this phone. Make a backup file before changing phones.</p>
   <div class="grid2"><button class="btn" id="stExport">Save Backup</button><button class="btn" id="stImport">Restore Backup</button></div>
@@ -626,7 +710,7 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.2.2';
+const APP_VERSION = '1.3.0';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -686,12 +770,13 @@ const PRES_MSG = 'In honor of a leader whose faith has shaped not only a company
 const PRES_REF = 'Numbers 6:24-26';
 const PRES_BLESS = 'The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.';
 const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR',cover:true,red:true},
-  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null,
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{},
   pres:{to:'',by:'Your family at Logistics Warehouse, Inc.',date:'',msg:PRES_MSG,ref:PRES_REF,bless:PRES_BLESS}};
 let S;
 try{ S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); S.pres=Object.assign({},DEF.pres,S.pres||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
 const firstName = ()=>(S.settings.name||'').trim().split(/\s+/)[0]||'';
-function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ toast('Storage is full on this phone'); } }
+var SY=null, APPLYING=false;
+function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ toast('Storage is full on this phone'); } if(!APPLYING) scheduleSync(); }
 const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
 /* ---------- Helpers ---------- */
@@ -878,13 +963,13 @@ const OCCASIONS = [
 ];
 
 /* ---------- Router ---------- */
-const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry'];
-const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal'};
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home'};
 function go(v){ location.hash = v; }
 function route(){
   let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
   $$('.view').forEach(s=>s.classList.toggle('on', s.id==='v-'+v));
-  document.body.classList.toggle('reading', v==='read'); document.body.classList.remove('chrome-hidden');
+  document.body.classList.toggle('reading', v==='read'); document.body.classList.toggle('focus', v==='devo'); document.body.classList.remove('chrome-hidden');
   const nv = NAVMAP[v]||v; $$('#nav a').forEach(a=>a.classList.toggle('on', a.dataset.v===nv));
   window.scrollTo(0,0);
   if(v==='read') renderReader();
@@ -898,7 +983,9 @@ function route(){
   if(v==='presented') renderPres();
   if(v==='journal') renderJournal();
   if(v==='entry') renderEntry();
-  if(v!=='entry') stopDictation();
+  if(v==='devo') renderDevo(); else { stopQuiet(); }
+  if(v==='settings') renderSync();
+  if(v!=='entry'&&v!=='devo') stopDictation();
 }
 window.addEventListener('hashchange',route);
 document.addEventListener('click',e=>{ const t=e.target.closest('[data-go]'); if(t) go(t.dataset.go); });
@@ -929,7 +1016,7 @@ async function renderHome(){
   $('#todayDate').textContent = new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric',year:'numeric'});
   $('#hdrSub').textContent = S.settings.name ? `${S.settings.name}` : 'Logistics Warehouse, Inc.';
   const rb=$('#ribbonBtn'); if(S.ribbon){ rb.style.display=''; rb.textContent=`Open to Your Ribbon: ${bookName(S.ribbon.book)} ${S.ribbon.ch}`; } else rb.style.display='none';
-  renderOTD();
+  renderOTD(); renderDevoCTA();
   const dom=new Date().getDate(); $('#provTitle').textContent=`Proverbs ${dom}`+(S.prov[todayKey()]?' \u2014 read today':' \u2014 a chapter of wisdom for today');
   $('#contBtn').textContent = `Continue Reading: ${bookName(S.last.book)} ${S.last.ch}`;
   const open=S.prayers.filter(p=>!p.answered).length; $('#prayMini').textContent = open?`${open} open request${open>1?'s':''}`:'People and needs';
@@ -1491,14 +1578,14 @@ async function xrefSheet(r){
 
 /* ---------- Journal ---------- */
 const J={cur:null,draft:null,filter:'',q:'',e:null};
-const entryTypeName=t=>({journal:'Journal',sermon:'Sermon Notes',grat:'Gratitude'}[t]||'Journal');
+const entryTypeName=t=>({journal:'Journal',sermon:'Sermon Notes',grat:'Gratitude',devo:'Devotional'}[t]||'Journal');
 const firstLine=b=>{ const l=String(b||'').trim().split('\n')[0]; return l.length>60?l.slice(0,60)+'...':l||'Untitled'; };
 function newEntry(type,ref){ J.cur=null; J.draft={type:type||'journal',ref:ref||''}; if(location.hash==='#entry') renderEntry(); else go('entry'); }
 $('#jNew').onclick=()=>newEntry('journal');
 $('#jSermon').onclick=()=>newEntry('sermon');
 $('#jSearch').addEventListener('input',e=>{ J.q=e.target.value.toLowerCase(); renderJournalList(); });
 function renderJournal(){
-  const types=[['','All'],['journal','Journal'],['sermon','Sermon Notes'],['grat','Gratitude']];
+  const types=[['','All'],['devo','Devotional'],['journal','Journal'],['sermon','Sermon Notes'],['grat','Gratitude']];
   $('#jChips').innerHTML=types.map(([k,n])=>`<button class="chip ${J.filter===k?'on':''}" data-k="${k}">${n}</button>`).join('');
   $$('#jChips .chip').forEach(c=>c.onclick=()=>{ J.filter=c.dataset.k; renderJournal(); });
   renderJournalList();
@@ -1545,34 +1632,36 @@ $('#eDel').onclick=()=>{ if(!J.e||!J.e.id) return; if(!confirm('Delete this jour
 /* Dictation */
 let rec=null, recOn=false;
 const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
-function micUI(){ $('#eMic').classList.toggle('live',recOn); $('#eMicLbl').textContent=recOn?'Listening — Tap to Stop':'Tap to Speak'; }
+const DICT_ENTRY={btn:'#eMic',lbl:'#eMicLbl',ta:'#eBody',interim:'#eInterim',save:()=>saveEntry(true)};
+let DICT=DICT_ENTRY;
+function micUI(){ const b=$(DICT.btn), l=$(DICT.lbl); if(b) b.classList.toggle('live',recOn); if(l) l.textContent=recOn?'Listening \u2014 Tap to Stop':'Tap to Speak'; }
 function speechToText(t){
   return t.replace(/\s*\b(new paragraph)\b\s*/gi,'\n\n').replace(/\s*\b(new line|next line)\b\s*/gi,'\n')
     .replace(/\s*\bperiod\b/gi,'.').replace(/\s*\bcomma\b/gi,',').replace(/\s*\bquestion mark\b/gi,'?').replace(/\s*\bexclamation (point|mark)\b/gi,'!');
 }
 function appendDictation(t){
   t=speechToText(t.trim()); if(!t) return;
-  const ta=$('#eBody'), v=ta.value, pos=ta.selectionStart!=null&&document.activeElement===ta?ta.selectionStart:v.length;
+  const ta=$(DICT.ta); if(!ta) return; const v=ta.value, pos=ta.selectionStart!=null&&document.activeElement===ta?ta.selectionStart:v.length;
   const before=v.slice(0,pos), after=v.slice(pos);
   const needCap = !before.trim() || /[.!?\n]\s*$/.test(before);
   if(needCap) t=t.charAt(0).toUpperCase()+t.slice(1);
   t=t.replace(/([.!?]\s+|\n+)([a-z])/g,(m,a,c)=>a+c.toUpperCase());
   const sep = !before || /[\s\n]$/.test(before) || /^[.,?!\n]/.test(t) ? '' : ' ';
   ta.value=before+sep+t+after; const np=(before+sep+t).length; try{ ta.setSelectionRange(np,np); }catch(e){}
-  ta.scrollTop=ta.scrollHeight; saveEntry(true);
+  ta.scrollTop=ta.scrollHeight; DICT.save&&DICT.save();
 }
 function startDictation(){
-  if(!SR){ $('#eBody').focus(); openSheet(`<button class="close" data-x>X</button><h3>Speak with Your Keyboard</h3><p>This phone does not allow the app to listen directly, but you can still talk instead of type:</p><p><b>Tap in the writing area</b>, then tap the <b>microphone</b> on your keyboard (bottom row) and start speaking. Tap it again when you are done.</p><button class="btn red full" data-x>Got It</button>`); return; }
+  if(!SR){ const ta=$(DICT.ta); ta&&ta.focus(); openSheet(`<button class="close" data-x>X</button><h3>Speak with Your Keyboard</h3><p>This phone does not allow the app to listen directly, but you can still talk instead of type:</p><p><b>Tap in the writing area</b>, then tap the <b>microphone</b> on your keyboard (bottom row) and start speaking. Tap it again when you are done.</p><button class="btn red full" data-x>Got It</button>`); return; }
   try{
     rec=new SR(); rec.lang='en-US'; rec.continuous=true; rec.interimResults=true;
-    rec.onresult=e=>{ let interim=''; for(let i=e.resultIndex;i<e.results.length;i++){ const r=e.results[i]; if(r.isFinal) appendDictation(r[0].transcript); else interim+=r[0].transcript; } $('#eInterim').textContent=interim; };
+    rec.onresult=e=>{ let interim=''; for(let i=e.resultIndex;i<e.results.length;i++){ const r=e.results[i]; if(r.isFinal) appendDictation(r[0].transcript); else interim+=r[0].transcript; } const ie=$(DICT.interim); if(ie) ie.textContent=interim; };
     rec.onerror=e=>{ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ recOn=false; micUI(); toast('Please allow the microphone for this app'); } };
-    rec.onend=()=>{ $('#eInterim').textContent=''; if(recOn){ try{ rec.start(); }catch(_){ recOn=false; micUI(); } } else micUI(); };
+    rec.onend=()=>{ const ie=$(DICT.interim); if(ie) ie.textContent=''; if(recOn){ try{ rec.start(); }catch(_){ recOn=false; micUI(); } } else micUI(); };
     recOn=true; rec.start(); micUI();
   }catch(e){ recOn=false; micUI(); toast('Could not start the microphone'); }
 }
 function stopDictation(){ if(!recOn&&!rec) return; recOn=false; try{ rec&&rec.stop(); }catch(e){} micUI(); }
-$('#eMic').onclick=()=>{ if(recOn) stopDictation(); else startDictation(); };
+$('#eMic').onclick=()=>{ if(recOn){ stopDictation(); return; } DICT=DICT_ENTRY; startDictation(); };
 
 /* ---------- Presentation page ---------- */
 const longDate=d=>d.toLocaleDateString([], {month:'long',day:'numeric',year:'numeric'});
@@ -1642,6 +1731,297 @@ $('#gfSave').onclick=()=>{
   },'image/png');
 };
 
+/* ---------- Sync across devices (Supabase: LWH Companion, dw_ tables) ---------- */
+const SB_URL='https://tjivcqxnkftujceumdtx.supabase.co';
+const SB_KEY='sb_publishable_PYlWSW6-Gi-QZl91IXUq0Q_W5mO3sDT';
+const SYNC_KEY=KEY+'.sync';
+try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ SY=null; }
+function saveSY(){ try{ if(SY) localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); else localStorage.removeItem(SYNC_KEY); }catch(e){} }
+const SYNC_ARR=['saved','speeches','prayers','journal'];
+const SYNC_MAP=['hl','plans','prov','devo'];
+const SYNC_ONE=['pres','ribbon','last','presSeen','name'];
+function canon(x){ if(Array.isArray(x)) return x.map(canon); if(x&&typeof x==='object'){ const o={}; Object.keys(x).sort().forEach(k=>{ if(x[k]!==undefined) o[k]=canon(x[k]); }); return o; } return x; }
+const J_=x=>JSON.stringify(canon(x===undefined?null:x));
+function syncable(){ const o={}; [...SYNC_ARR,...SYNC_MAP].forEach(f=>o[f]=S[f]||(SYNC_ARR.includes(f)?[]:{}));
+  ['pres','ribbon','last','presSeen'].forEach(f=>{ if(S[f]!==undefined) o[f]=S[f]; }); o.name=S.settings.name||''; return JSON.parse(JSON.stringify(o)); }
+const stamp=v=>v&&typeof v==='object'?(v.updated||v.u||v.ansTs||v.lastPrayed||v.ts||v.at||0):0;
+function merge3(b,l,r,field){ b=b||{}; l=l||{}; r=r||{}; const out={};
+  new Set([...Object.keys(b),...Object.keys(l),...Object.keys(r)]).forEach(k=>{
+    const B=J_(b[k]),L=J_(l[k]),R=J_(r[k]); let v;
+    if(L===R) v=l[k]; else if(L===B) v=r[k]; else if(R===B) v=l[k];
+    else if(l[k]===undefined) v=r[k]; else if(r[k]===undefined) v=l[k];
+    else if(field==='plans') v={...l[k],done:[...new Set([...(l[k].done||[]),...(r[k].done||[])])].sort((a,c)=>a-c)};
+    else v=stamp(r[k])>stamp(l[k])?r[k]:l[k];
+    if(v!==undefined&&v!==null) out[k]=v; });
+  return out; }
+const byId=a=>{ const m={}; (a||[]).forEach(it=>{ if(it&&it.id) m[it.id]=it; }); return m; };
+function mergeAll(B,L,R,first){ const o={};
+  SYNC_ARR.forEach(f=>{ o[f]=Object.values(merge3(byId(B[f]),byId(L[f]),byId(R[f]),f)).sort((a,c)=>(c.ts||0)-(a.ts||0)); });
+  SYNC_MAP.forEach(f=>{ o[f]=merge3(B[f],L[f],R[f],f); });
+  SYNC_ONE.forEach(f=>{ let v; if(first) v=(R[f]!==undefined&&R[f]!==''&&R[f]!==null)?R[f]:L[f]; else v=J_(L[f])===J_(B[f])?R[f]:L[f]; if(v!==undefined) o[f]=v; });
+  return o; }
+function applyMerged(m){
+  m=JSON.parse(JSON.stringify(m)); APPLYING=true;
+  [...SYNC_ARR,...SYNC_MAP,'pres','ribbon','last','presSeen'].forEach(f=>{ if(m[f]!==undefined) S[f]=m[f]; });
+  if(m.name) S.settings.name=m.name;
+  persist(); APPLYING=false;
+  const v=(location.hash||'#home').slice(1), typing=document.activeElement&&document.activeElement.matches('input,textarea');
+  if(typing) return;
+  ({home:renderHome,saved:renderSaved,journal:renderJournal,plans:renderPlans,prayer:renderPrayers,presented:renderPres}[v]||(()=>{}))();
+}
+async function rpc(fn,args){
+  const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+  if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }
+let syncBusy=false, syncAgain=false, syncT=null, syncErr='';
+function scheduleSync(){ if(!SY||!SY.token) return; clearTimeout(syncT); syncT=setTimeout(()=>syncNow(false),2500); }
+async function syncNow(manual){
+  if(!SY||!SY.token) return;
+  if(syncBusy){ syncAgain=true; return; }
+  syncBusy=true; syncErr=''; setSyncStatus('Syncing…');
+  try{
+    for(let attempt=0;attempt<3;attempt++){
+      const p=await rpc('dw_pull',{p_token:SY.token});
+      if(!p.ok){ if(p.error==='signed_out') signOutLocal('Your sync sign-in has ended. Please sign in again.'); return; }
+      const local=syncable(), first=!SY.base;
+      const merged=mergeAll(SY.base||{},local,p.data||{},first);
+      let rev=p.rev;
+      if(J_(merged)!==J_(p.data||{})){
+        const w=await rpc('dw_push',{p_token:SY.token,p_data:merged,p_base_rev:p.rev});
+        if(!w.ok){ if(w.error==='conflict') continue; throw new Error(w.error); }
+        rev=w.rev;
+      }
+      SY.base=JSON.parse(JSON.stringify(merged)); SY.rev=rev; SY.at=Date.now(); saveSY();
+      const now=syncable(); let fin=merged;
+      if(J_(now)!==J_(local)){ fin=mergeAll(local,now,merged,false); syncAgain=true; }
+      if(J_(fin)!==J_(now)) applyMerged(fin);
+      if(manual) toast('Everything is in sync');
+      break;
+    }
+  }catch(e){ syncErr='offline'; if(manual) toast('Could not sync right now. Check the connection.'); }
+  finally{ syncBusy=false; setSyncStatus(); if(syncAgain){ syncAgain=false; setTimeout(()=>syncNow(false),800); } }
+}
+function relTime(t){ if(!t) return 'not yet'; const m=Math.round((Date.now()-t)/60000); if(m<1) return 'just now'; if(m<60) return `${m} min ago`; const d=new Date(t);
+  return d.toDateString()===new Date().toDateString()?d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):d.toLocaleDateString([], {month:'short',day:'numeric'})+' '+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }
+function setSyncStatus(msg){ const el=$('#syStat'); if(!el||!SY) return; el.textContent = msg || (syncErr?`Offline — will sync when connected. Last synced ${relTime(SY.at)}.`:`Last synced ${relTime(SY.at)}`); }
+function signOutLocal(msg){ SY=null; saveSY(); if(msg) toast(msg); renderSync(); }
+function deviceLabel(){ const u=navigator.userAgent; return /iPhone/.test(u)?'iPhone':/iPad/.test(u)?'iPad':/Android/.test(u)?'Android':/Windows/.test(u)?'Windows PC':/Mac/.test(u)?'Mac':'Browser'; }
+function renderSync(){
+  const box=$('#syncBox'); if(!box) return;
+  if(SY&&SY.token){
+    box.innerHTML=`<div class="sync-card"><b>Signed in as ${esc(SY.name)}</b><div class="small muted" id="syStat"></div></div>
+      <p class="small muted">Your journal, saved verses, highlights, prayers, speeches, plans and devotional log stay the same on every phone and computer where you sign in. Text size and appearance stay separate on each device.</p>
+      <div class="grid2"><button class="btn red" id="sySync">Sync Now</button><button class="btn" id="syOut">Sign Out Here</button></div>`;
+    setSyncStatus();
+    $('#sySync').onclick=()=>syncNow(true);
+    $('#syOut').onclick=()=>{ if(!confirm('Sign out of sync on this device? Your notes stay on this device and on your other devices.')) return;
+      const t=SY.token; signOutLocal('Signed out on this device'); rpc('dw_logout',{p_token:t}).catch(()=>{}); };
+  } else {
+    box.innerHTML=`<p class="small muted">Sign in to keep your journal, saved verses, prayers and plans the same on your phone and your computer at work — and safely backed up if a phone is lost or replaced.</p>
+      <label class="lbl">Your name</label><input type="text" id="syName" value="${esc(S.settings.name||'')}" autocomplete="username">
+      <label class="lbl">PIN</label><input type="password" id="syPin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="current-password" placeholder="4 to 8 digits">
+      <button class="btn red full" id="syGo" style="margin-top:12px">Sign In and Sync</button>
+      <p class="small muted">Your PIN is set up by LWH. Ask Tim if you need one.</p>`;
+    $('#syPin').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#syGo').click(); });
+    $('#syGo').onclick=async()=>{
+      const n=$('#syName').value.trim(), pin=$('#syPin').value.trim(); if(!n||!pin){ toast('Enter your name and PIN'); return; }
+      $('#syGo').disabled=true; $('#syGo').textContent='Signing in…';
+      try{ const r=await rpc('dw_login',{p_name:n,p_pin:pin,p_device:deviceLabel()});
+        if(!r.ok){ toast(r.error||'Could not sign in'); return; }
+        SY={token:r.token,name:r.name,rev:0,base:null,at:0}; saveSY();
+        if(!S.settings.name){ S.settings.name=r.name; if(!S.pres.to) S.pres.to=r.name; }
+        localStorage.setItem(KEY+'.welcomed','1');
+        renderSync(); await syncNow(true); renderSync();
+      }catch(e){ toast('Could not reach the server. Check the connection.'); }
+      finally{ const b=$('#syGo'); if(b){ b.disabled=false; b.textContent='Sign In and Sync'; } }
+    };
+  }
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') syncNow(false); });
+window.addEventListener('online',()=>syncNow(false));
+setInterval(()=>{ if(document.visibilityState==='visible') syncNow(false); },4*60*1000);
+
+/* ---------- Morning Devotional ---------- */
+const CALLS=['Psalms 46:10','Psalms 5:3','Psalms 143:8','Psalms 118:24','Psalms 90:14','Psalms 19:14','Psalms 63:1','Psalms 92:1-2','Psalms 59:16','Psalms 27:4',
+ 'Psalms 100:1-2','Psalms 145:1-2','Psalms 34:1','Psalms 95:6-7','Psalms 96:1-2','Psalms 113:3','Lamentations 3:22-23','Isaiah 50:4','Mark 1:35','Psalms 57:7-8',
+ 'Psalms 119:147','Psalms 130:5-6','Psalms 139:1-2','Psalms 16:11','Psalms 62:1-2','Psalms 23:1-3','Psalms 121:1-2','Psalms 84:10','Psalms 33:20-22','Psalms 37:7','Isaiah 30:15'];
+const QUESTIONS=['What is God saying to you through this verse this morning?','Where do you need God’s strength most today?','Who on your team needs encouragement from you this week?',
+ 'What decision in front of you needs God’s wisdom?','What are you most grateful for right now?','Is there a worry you need to hand over to God today?',
+ 'How can you serve someone today without being asked?','What does faithfulness look like in your work today?','Who do you need to forgive, or ask forgiveness from?',
+ 'Where have you seen God’s hand in this company lately?','What would it look like to lead like Jesus in today’s meetings?','What promise from Scripture can you stand on today?',
+ 'Is there a conversation you have been putting off that needs courage?','How has God been faithful to you this past year?','What is one way you can bless a customer or coworker today?',
+ 'Where are you relying on your own strength instead of God’s?','What does this verse teach you about God’s character?','Who could you pray for by name today?',
+ 'What would you like your team to remember about how you led this week?','What is one thing you can let go of so you can focus on what matters most?',
+ 'Where do you need patience today?','How can you show integrity in a small thing today?','What is God teaching you in this season?',
+ 'Who has been a blessing to you that you could thank today?','What does rest look like for you this week?','How can your words build someone up today?',
+ 'What is one fear you can bring into God’s light today?','Where can you be generous today — with time, money or kindness?','What legacy are you building through your daily choices?',
+ 'What would change today if you truly trusted God with the outcome?','How will you carry this morning’s verse into your day?'];
+const BLESSINGS=['Numbers 6:24-26','2 Thessalonians 3:16','Romans 15:13','Philippians 4:7','Jude 1:24-25','Hebrews 13:20-21','2 Corinthians 13:14','Psalms 121:7-8','Ephesians 3:20-21','1 Thessalonians 5:23-24','Psalms 20:4','Isaiah 26:3'];
+const ACTS=[['Adore','Praise God for who He is. Name one thing about His character you are thankful for this morning.'],
+ ['Confess','Ask forgiveness for anything that stands between you and God, and receive His mercy.'],
+ ['Give Thanks','Thank Him for specific blessings — your family, this company and the people you work with.'],
+ ['Ask','Bring your needs and the needs of others to Him. Ask for wisdom and strength for today.']];
+const DV_STEPS=['Be Still','Read','Reflect','Pray','Go'];
+const DV={date:'',step:0,start:0,reading:null,prayed:{}};
+let quietT=null;
+function stopQuiet(){ clearInterval(quietT); quietT=null; }
+const pickDay=list=>list[dayOfYear()%list.length];
+const chLabel=(b,c)=>bookChapters(b)===1?bookName(b):`${b===19?'Psalm':bookName(b)} ${c}`;
+function devoReading(){
+  const ap=activePlan();
+  if(ap){ const st=S.plans[ap.id], days=planDays(ap), next=days.findIndex((_,i)=>!st.done.includes(i));
+    if(next>=0) return {label:`${ap.name} — Day ${next+1} of ${ap.days}`, chs:days[next], plan:ap.id, day:next}; }
+  const doy=dayOfYear(); return {label:'A Psalm and a Proverb for today', chs:[[19,((doy-1)%150)+1],[20,new Date().getDate()]]};
+}
+function startDevo(){
+  const k=todayKey();
+  if(DV.date!==k){ Object.assign(DV,{date:k,step:(S.devo[k]&&S.devo[k].done)?5:0,start:Date.now(),reading:devoReading(),prayed:{}}); }
+  if(location.hash==='#devo') renderDevo(); else go('devo');
+}
+$('#moreDevo').onclick=startDevo;
+function devoJournalEntry(){ const d=S.devo[todayKey()]; return d&&d.jid?S.journal.find(j=>j.id===d.jid):null; }
+function saveDevoAnswer(){
+  const ta=$('#dvAns'); if(!ta) return; const body=ta.value, k=todayKey();
+  let e=devoJournalEntry();
+  if(!e){ if(!body.trim()) return; const ref=VOTD[dayOfYear()%VOTD.length], r=parseRef(ref);
+    e={id:uid(),type:'devo',title:pickDay(QUESTIONS),ref,refObj:r?{book:r.book,ch:r.ch,verses:r.verses}:null,body:'',church:'',speaker:'',ts:Date.now()};
+    S.journal.unshift(e); S.devo[k]=Object.assign(S.devo[k]||{},{jid:e.id}); }
+  e.body=body; e.updated=Date.now(); persist();
+}
+function calHTML(y,m){
+  const first=new Date(y,m,1), days=new Date(y,m+1,0).getDate(), lead=first.getDay(), tk=todayKey();
+  let n=0, cells='';
+  for(let i=0;i<lead;i++) cells+='<div></div>';
+  for(let d=1;d<=days;d++){ const k=`${y}-${m+1}-${d}`, done=S.devo[k]&&S.devo[k].done; if(done) n++;
+    cells+=`<div class="d${done?' done':''}${k===tk?' today':''}"><span>${d}</span></div>`; }
+  const name=first.toLocaleDateString([], {month:'long',year:'numeric'});
+  return `<div class="cal" data-y="${y}" data-m="${m}"><div class="cal-h"><button data-cal="-1" aria-label="Previous month">&lsaquo;</button><b>${esc(name)}</b><button data-cal="1" aria-label="Next month">&rsaquo;</button></div>
+    <div class="cal-n">${n} morning${n===1?'':'s'} in the Word</div>
+    <div class="cal-g">${['S','M','T','W','T','F','S'].map(x=>`<div class="dw">${x}</div>`).join('')}${cells}</div></div>`;
+}
+function wireCal(root){ root.querySelectorAll('[data-cal]').forEach(b=>b.onclick=()=>{ const c=b.closest('.cal'); let y=+c.dataset.y, m=+c.dataset.m+ +b.dataset.cal;
+  if(m<0){m=11;y--;} if(m>11){m=0;y++;} c.outerHTML=calHTML(y,m); wireCal(root); }); }
+function renderDevoCTA(){
+  const box=$('#devoCta'); if(!box) return; const k=todayKey(), d=S.devo[k];
+  const now=new Date(); let wk='';
+  for(let i=6;i>=0;i--){ const x=new Date(now); x.setDate(now.getDate()-i); const kk=`${x.getFullYear()}-${x.getMonth()+1}-${x.getDate()}`;
+    wk+=`<div class="${i===0?'t':''}"><i class="${S.devo[kk]&&S.devo[kk].done?'on':''}"></i>${'SMTWTFS'[x.getDay()]}</div>`; }
+  if(d&&d.done){
+    box.innerHTML=`<div class="devo-cta"><div class="ey">Morning Devotional</div><div class="tt">Completed this morning</div>
+      <div class="sb">${d.mins?`${d.mins} minute${d.mins===1?'':'s'} · `:''}${esc((d.refs||[]).join(', '))}</div><div class="wk">${wk}</div>
+      <button class="btn full" id="ctaMonth">View Your Month</button></div>`;
+    $('#ctaMonth').onclick=()=>{ const n=new Date(); openSheet(`<button class="close" data-x>X</button><h3>Your Mornings</h3>${calHTML(n.getFullYear(),n.getMonth())}`); wireCal($('#sheetInner')); };
+  } else {
+    const r=DV.date===k&&DV.reading?DV.reading:devoReading();
+    box.innerHTML=`<div class="devo-cta"><div class="ey">Morning Devotional</div><div class="tt">${DV.date===k&&DV.step>0?'Continue Your Quiet Time':'Begin Your Quiet Time'}</div>
+      <div class="sb">About 10 to 15 minutes · ${esc(r.chs.map(([b,c])=>chLabel(b,c)).join(', '))}</div><div class="wk">${wk}</div>
+      <button class="btn red full" id="ctaBegin">${DV.date===k&&DV.step>0?'Continue':'Begin'}</button></div>`;
+    $('#ctaBegin').onclick=startDevo;
+  }
+}
+async function renderDevo(){
+  if(DV.date!==todayKey()){ startDevo(); return; }
+  stopSpeak(); stopQuiet(); if(recOn) stopDictation();
+  const st=DV.step, body=$('#dvBody');
+  $('#dvDots').innerHTML=DV_STEPS.map((_,i)=>`<i class="${i<st?'on':i===st?'cur':''}"></i>`).join('');
+  $('#dvStepLbl').textContent=st<5?`${st+1} of 5`:'Done';
+  $('#dvNav').style.display=st<5?'':'none';
+  $('#dvBack').style.visibility=st>0?'':'hidden';
+  $('#dvNext').textContent=['Begin','Continue','Continue','Continue','Finish'][st]||'';
+  window.scrollTo(0,0);
+  const tr=S.settings.tr, votdR=VOTD[dayOfYear()%VOTD.length];
+  const verse=async(ref,id)=>{ try{ const t=await passageText(tr,ref); const el=$('#'+id); if(el) el.textContent=t||''; }catch(e){ const el=$('#'+id); if(el) el.textContent='Connect to the internet to load this verse.'; } };
+  if(st===0){
+    const ref=pickDay(CALLS);
+    body.innerHTML=`<div class="dv-eyebrow">Morning Devotional · ${esc(new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'}))}</div>
+      <h1>Be Still</h1>
+      <div class="dv-call"><div class="txt" id="dvCall">…</div><div class="ref">${esc(ref)}</div></div>
+      <p class="dv-p">Take a quiet moment before you begin. Breathe slowly, set the day aside, and invite God into this time.</p>
+      <button class="btn full" id="dvQuiet">One Minute of Quiet</button><div class="dv-timer" id="dvQuietT"></div>`;
+    verse(ref,'dvCall');
+    $('#dvQuiet').onclick=()=>{ if(quietT){ stopQuiet(); $('#dvQuietT').textContent=''; $('#dvQuiet').textContent='One Minute of Quiet'; return; }
+      let left=60; const show=()=>{ $('#dvQuietT').textContent=`0:${String(left).padStart(2,'0')}`; };
+      show(); $('#dvQuiet').textContent='Stop';
+      quietT=setInterval(()=>{ left--; if(left<=0){ stopQuiet(); $('#dvQuietT').textContent='Amen'; $('#dvQuiet').textContent='One Minute of Quiet'; try{ navigator.vibrate&&navigator.vibrate(120); }catch(e){} return; } show(); },1000); };
+  }
+  else if(st===1){
+    const r=DV.reading;
+    body.innerHTML=`<div class="dv-eyebrow">Today’s Reading</div><h1>Read</h1><p class="dv-p muted" style="font-style:italic">${esc(r.label)}</p>
+      <button class="btn sm" id="dvListen">Listen</button>
+      <div class="dv-read" id="dvRead"><div class="loading">Opening the Scriptures…</div></div>`;
+    let all='';
+    try{
+      const parts=await Promise.all(r.chs.map(([b,c])=>getChapter(tr,b,c).then(vs=>({b,c,vs}))));
+      if(DV.step!==1) return;
+      $('#dvRead').innerHTML=parts.map(({b,c,vs})=>{
+        all+=`${bookName(b)} chapter ${c}. `+vs.map(v=>plain(v.html)).join(' ')+' ';
+        const head=`<div class="chead"><div class="bk">${esc(bookName(b))}</div><div class="num">${c}</div><div class="orn"><i></i><b></b><i></i></div></div>`;
+        return head+`<div class="scripture ${S.settings.layout==='list'?'list-mode':'para-mode'}${S.settings.red?'':' nored'}">`+vs.map((v,i)=>{ let h=v.html;
+          if(i===0) h=h.replace(/^((?:<[^>]+>|\s|["'“‘(])*)([A-Za-z])/,'$1<span class="dropcap">$2</span>');
+          return `<span class="v ${i===0?'first':''}"><sup>${v.verse}</sup>${h} </span>`; }).join('')+'<div style="clear:both"></div></div>';
+      }).join('');
+    }catch(e){ $('#dvRead').innerHTML='<div class="empty">The reading could not load. Check your connection and tap Back, then Continue to try again.</div>'; }
+    $('#dvListen').onclick=()=>{ if(speaking){ stopSpeak(); $('#dvListen').textContent='Listen'; return; } if(!all) return; $('#dvListen').textContent='Stop';
+      speak(all,()=>{ const b=$('#dvListen'); if(b) b.textContent='Listen'; }); };
+  }
+  else if(st===2){
+    const q=pickDay(QUESTIONS), e=devoJournalEntry();
+    body.innerHTML=`<div class="dv-eyebrow">Reflect</div><h1>Reflect</h1>
+      <div class="dv-verse"><span id="dvVotd">…</span><span class="ref">${esc(votdR)}</span></div>
+      <div class="dv-q">${esc(q)}</div>
+      <p class="small muted" style="margin:4px 0 0">Write or speak a few lines. This is saved to your Journal.</p>
+      <button class="micbtn" id="dvMic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span id="dvMicLbl">Tap to Speak</span></button>
+      <div class="interim" id="dvInterim"></div>
+      <textarea id="dvAns" class="lined" style="min-height:220px" placeholder="Lord, this morning…">${esc(e?e.body:'')}</textarea>`;
+    verse(votdR,'dvVotd');
+    let t; $('#dvAns').addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(saveDevoAnswer,700); });
+    $('#dvMic').onclick=()=>{ if(recOn){ stopDictation(); return; } DICT={btn:'#dvMic',lbl:'#dvMicLbl',ta:'#dvAns',interim:'#dvInterim',save:saveDevoAnswer}; startDictation(); };
+  }
+  else if(st===3){
+    const open=S.prayers.filter(p=>!p.answered).sort((a,b)=>(a.lastPrayed||0)-(b.lastPrayed||0)).slice(0,3);
+    body.innerHTML=`<div class="dv-eyebrow">Pray</div><h1>Pray</h1>
+      <div class="acts">${ACTS.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
+      <h2>On Your Heart</h2>
+      <div id="dvPr">${open.length?open.map(p=>`<div class="pr-item" data-id="${p.id}"><div class="tx"><span class="cat">${esc(p.cat)}</span>${esc(p.text)}</div>
+        <button class="btn sm ${DV.prayed[p.id]?'done':''}" data-pray>${DV.prayed[p.id]?'Prayed':'I Prayed'}</button></div>`).join('')
+        :'<div class="empty" style="margin-bottom:10px">Your prayer list is empty. Add someone below.</div>'}</div>
+      <div class="row" style="margin-top:6px"><input type="text" class="grow" id="dvPrNew" placeholder="Add someone to pray for"><button class="btn" id="dvPrAdd">Add</button></div>`;
+    $$('#dvPr [data-pray]').forEach(b=>b.onclick=()=>{ const id=b.closest('.pr-item').dataset.id, p=S.prayers.find(x=>x.id===id); if(!p||DV.prayed[id]) return;
+      DV.prayed[id]=1; p.lastPrayed=Date.now(); p.prayedCount=(p.prayedCount||0)+1; persist(); b.classList.add('done'); b.textContent='Prayed'; });
+    $('#dvPrAdd').onclick=()=>{ const t=$('#dvPrNew').value.trim(); if(!t) return; S.prayers.unshift({id:uid(),text:t,cat:'Personal',ts:Date.now(),answered:false}); persist(); toast('Added to your prayer list'); renderDevo(); };
+  }
+  else if(st===4){
+    const bref=pickDay(BLESSINGS);
+    body.innerHTML=`<div class="dv-eyebrow">Go in Peace</div><h1>Go</h1>
+      <p class="dv-p">Carry this word with you today.</p>
+      <div class="card votd"><div class="lab">For Today</div><div class="txt" id="dvCarry">…</div><div class="ref">${esc(votdR)}</div></div>
+      <h2>A Blessing for Your Day</h2>
+      <div class="dv-bless"><div id="dvBless">…</div><div class="ref">${esc(bref)}</div></div>`;
+    verse(votdR,'dvCarry'); verse(bref,'dvBless');
+  }
+  else {
+    const d=S.devo[todayKey()]||{}, n=new Date();
+    body.innerHTML=`<div class="dv-done"><div class="seal"></div><div class="dv-eyebrow">Morning Devotional Complete</div><h1>Amen.</h1>
+      <p class="dv-p">${d.mins?`You spent ${d.mins} minute${d.mins===1?'':'s'} with God this morning.`:'Your quiet time is complete.'}${d.refs&&d.refs.length?`<br><span class="muted" style="font-size:17px">${esc(d.refs.join(', '))}</span>`:''}</p></div>
+      ${calHTML(n.getFullYear(),n.getMonth())}
+      <div class="grid2"><button class="btn" id="dvShare">Share Today’s Verse</button><button class="btn red" id="dvHome">Done</button></div>
+      <button class="btn full" id="dvAgain" style="margin-top:10px">Go Through It Again</button>`;
+    wireCal(body);
+    $('#dvHome').onclick=()=>go('home');
+    $('#dvAgain').onclick=()=>{ DV.step=0; DV.start=Date.now(); DV.reading=devoReading(); renderDevo(); };
+    $('#dvShare').onclick=async()=>{ let t=''; try{ t=await passageText(tr,votdR); }catch(e){} shareText(votdR,`"${t}"\n— ${votdR} (${tr})`); };
+  }
+}
+function finishDevo(){
+  const k=todayKey(), r=DV.reading, mins=Math.max(1,Math.round((Date.now()-DV.start)/60000));
+  const refs=r.chs.map(([b,c])=>chLabel(b,c));
+  S.devo[k]=Object.assign(S.devo[k]||{},{done:true,at:Date.now(),mins,refs});
+  if(r.plan&&S.plans[r.plan]&&!S.plans[r.plan].done.includes(r.day)) S.plans[r.plan].done.push(r.day);
+  persist(); DV.step=5; renderDevo();
+}
+$('#dvNext').onclick=()=>{ if(DV.step===2) saveDevoAnswer(); if(DV.step>=4){ finishDevo(); return; } DV.step++; renderDevo(); };
+$('#dvBack').onclick=()=>{ if(DV.step===2) saveDevoAnswer(); if(DV.step>0){ DV.step--; renderDevo(); } };
+$('#dvClose').onclick=()=>{ if(DV.step===2) saveDevoAnswer(); stopSpeak(); stopQuiet(); go('home'); };
+
 /* ---------- First run ---------- */
 function firstRun(){
   if(S.settings.name || localStorage.getItem(KEY+'.welcomed')){ if(S.settings.cover){ let shown=false; try{ shown=sessionStorage.getItem('dwCover'); }catch(e){} if(!shown) showCover(); } return; }
@@ -1650,7 +2030,9 @@ function firstRun(){
    <label class="lbl">Your full name</label><input type="text" id="frName" placeholder="First and last name" value="${esc(pre)}">
    <p class="small muted">Your name goes on the cover and the presentation page.</p>
    <button class="btn red full" id="frGo" style="margin-top:6px">Open My Bible</button>
+   <button class="btn full" id="frSync" style="margin-top:10px">I Already Use Daily Word on Another Device</button>
    <p class="small muted">Tip: on iPhone, tap the Share button and choose "Add to Home Screen" so this opens like an app.</p>`);
+  $('#frSync').onclick=()=>{ localStorage.setItem(KEY+'.welcomed','1'); closeSheet(); go('settings'); setTimeout(()=>{ const b=$('#syncBox'); b&&b.scrollIntoView({block:'center'}); const n=$('#syPin'); n&&n.focus(); },250); };
   $('#frGo').onclick=()=>{ const n=$('#frName').value.trim(); S.settings.name=n; if(!S.pres.to) S.pres.to=n; if(!S.pres.date) S.pres.date=longDate(new Date());
     persist(); localStorage.setItem(KEY+'.welcomed','1'); closeSheet(); renderHome(); if(S.settings.cover) showCover(); else { S.presSeen=true; persist(); go('presented'); } };
 }
@@ -1660,6 +2042,7 @@ applySettings(); tick(); setInterval(tick,15000);
 loadWeather(); setInterval(loadWeather,30*60*1000);
 loadTranslations();
 route(); firstRun();
+setTimeout(()=>syncNow(false),1200);
 if('speechSynthesis' in window) speechSynthesis.getVoices();
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>

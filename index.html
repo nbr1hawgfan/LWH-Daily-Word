@@ -269,6 +269,7 @@ nav.bottom a.on::before{content:"";position:absolute;top:-1px;left:24%;right:24%
 #presenter .pbar{display:flex;gap:8px;flex-wrap:wrap;padding:calc(var(--safet) + 10px) 12px 10px;background:var(--leather),linear-gradient(180deg,var(--ox2),var(--ox));border-bottom:1px solid var(--gold)}
 #presenter .pbar .btn{min-height:44px;background:transparent;color:#f3e7c9;border-color:rgba(201,162,74,.55)}
 #presenter .pbar .btn.red{background:var(--brand);border-color:var(--brand)}
+#presenter .ptime{margin-left:auto;align-self:center;color:#f3e7c9;font-family:var(--serif);font-size:24px;font-weight:600;padding:0 8px;min-width:64px;text-align:right}
 #presenter .ptext{flex:1;overflow:auto;padding:26px 24px 40vh;font-family:var(--serif);font-size:30px;line-height:1.6;white-space:pre-wrap}
 
 .toast{position:fixed;left:50%;bottom:calc(var(--navh) + var(--safeb) + 18px);transform:translateX(-50%);background:#2a2420;color:#fbf3df;
@@ -444,6 +445,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   <div class="sect">For Leading Others</div>
   <div class="toc">
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">A devotional for your next meeting</span></span></button>
+    <button class="toc-row" data-go="study" id="homeStudy" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 8h6M8 12h6M18 20V8"/></svg><span class="tx"><span class="t">Pastor’s Study</span><span class="d">Sermon prep, outlines and your sermons</span></span></button>
     <button class="toc-row" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span class="tx"><span class="t">Topics</span><span class="d">Hand-picked verses for any need</span></span></button>
     <button class="toc-row" data-go="presented"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3h14v18l-7-4-7 4z"/><path d="M12 7v6M9 10h6"/></svg><span class="tx"><span class="t">Presentation Page</span><span class="d">The front page of your Bible</span></span></button>
   </div>
@@ -458,6 +460,29 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   </div>
   <div class="dv-wrap" id="dvBody"></div>
   <div class="dv-nav" id="dvNav"><button class="btn" id="dvBack">Back</button><button class="btn red" id="dvNext">Continue</button></div>
+</section>
+
+<!-- PASTOR'S STUDY -->
+<section class="view" id="v-study">
+  <h1>Pastor’s Study</h1>
+  <div class="tabs" id="stTabs"><button data-t="study" class="on">Study</button><button data-t="outlines">Outlines</button><button data-t="mine">My Sermons</button></div>
+  <div id="stBody"></div>
+</section>
+
+<!-- SERMON EDITOR -->
+<section class="view" id="v-sermon">
+  <div class="row" style="align-items:center;margin-bottom:8px"><button class="btn sm" id="smBack">&larr; My Sermons</button><div class="grow"></div><div class="muted small" id="smSaved"></div></div>
+  <input type="text" id="smTitle" placeholder="Sermon title" style="font-family:var(--serif);font-size:22px;font-weight:600">
+  <div class="row" style="margin-top:10px"><input type="text" class="grow" id="smRef" placeholder="Main text, e.g. Romans 8:28-39"><button class="btn" id="smStudy">Study</button></div>
+  <div class="grid2" style="margin-top:10px"><input type="text" id="smTopic" placeholder="Topic or series"><select id="smStruct"><option value="">Add a template…</option><option value="expository">Expository</option><option value="topical">Topical</option><option value="narrative">Narrative</option></select></div>
+  <button class="micbtn" id="smMic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span id="smMicLbl">Tap to Speak</span></button>
+  <div class="interim" id="smInterim"></div>
+  <textarea id="smBody" class="lined" style="min-height:440px;font-size:19px"></textarea>
+  <div class="grid2" style="margin-top:10px">
+    <button class="btn dark" id="smPreach">Preach</button><button class="btn red" id="smMark">Mark as Preached</button>
+    <button class="btn" id="smShare">Share / Copy</button><button class="btn" id="smDel">Delete</button>
+  </div>
+  <div id="smHist"></div>
 </section>
 
 <!-- PRESENTATION PAGE -->
@@ -552,6 +577,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   <h1>Contents</h1>
   <div class="toc">
     <button class="toc-row" id="moreDevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span class="tx"><span class="t">Morning Devotional</span><span class="d">Read, reflect and pray</span></span></button>
+    <button class="toc-row" data-go="study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 8h6M8 12h6M18 20V8"/></svg><span class="tx"><span class="t">Pastor’s Study</span><span class="d">Study a passage, outlines and your sermons</span></span></button>
     <button class="toc-row" data-go="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 3h12l4 4v14H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg><span class="tx"><span class="t">Journal</span><span class="d">Notes, sermons and gratitude</span></span></button>
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">Write a devotional or talk</span></span></button>
     <button class="toc-row" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span class="tx"><span class="t">Topics</span><span class="d">Verses by subject</span></span></button>
@@ -622,6 +648,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   <input type="text" id="stName" placeholder="Shown on the cover; first name is used in your greeting">
   <div class="switch"><span>Show the Bible cover when the app opens</span><input type="checkbox" id="stCover"></div>
   <div class="switch"><span>Words of Jesus in red (when the translation marks them)</span><input type="checkbox" id="stRed"></div>
+  <div class="switch"><span>Show Pastor’s Study on the Home screen</span><input type="checkbox" id="stPastor"></div>
   <label class="lbl">Default translation</label>
   <select id="stTr"></select>
   <label class="lbl">Text size</label>
@@ -700,6 +727,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
     <button class="btn" id="pLg">A+</button>
     <button class="btn" id="pScroll">Auto-Scroll</button>
     <button class="btn" id="pRead">Read Aloud</button>
+    <div class="ptime" id="pTime" title="Time since you started">0:00</div>
   </div>
   <div class="ptext serif" id="pText"></div>
 </div>
@@ -710,7 +738,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.3.1';
+const APP_VERSION = '1.4.0';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -770,7 +798,7 @@ const PRES_MSG = 'In honor of a leader whose faith has shaped not only a company
 const PRES_REF = 'Numbers 6:24-26';
 const PRES_BLESS = 'The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.';
 const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR',cover:true,red:true},
-  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{},
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[],
   pres:{to:'',by:'Your family at Logistics Warehouse, Inc.',date:'',msg:PRES_MSG,ref:PRES_REF,bless:PRES_BLESS}};
 let S;
 try{ S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); S.pres=Object.assign({},DEF.pres,S.pres||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
@@ -963,8 +991,8 @@ const OCCASIONS = [
 ];
 
 /* ---------- Router ---------- */
-const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo'];
-const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home'};
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more'};
 function go(v){ location.hash = v; }
 function route(){
   let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
@@ -985,7 +1013,9 @@ function route(){
   if(v==='entry') renderEntry();
   if(v==='devo') renderDevo(); else { stopQuiet(); }
   if(v==='settings') renderSync();
-  if(v!=='entry'&&v!=='devo') stopDictation();
+  if(v==='study'&&typeof renderStudy==='function') renderStudy();
+  if(v==='sermon'&&typeof renderSermon==='function') renderSermon();
+  if(v!=='entry'&&v!=='devo'&&v!=='sermon') stopDictation();
 }
 window.addEventListener('hashchange',route);
 document.addEventListener('click',e=>{ const t=e.target.closest('[data-go]'); if(t) go(t.dataset.go); });
@@ -1017,6 +1047,7 @@ async function renderHome(){
   $('#hdrSub').textContent = S.settings.name ? `${S.settings.name}` : 'Logistics Warehouse, Inc.';
   const rb=$('#ribbonBtn'); if(S.ribbon){ rb.style.display=''; rb.textContent=`Open to Your Ribbon: ${bookName(S.ribbon.book)} ${S.ribbon.ch}`; } else rb.style.display='none';
   renderOTD(); renderDevoCTA();
+  $('#homeStudy').style.display=(S.settings.pastor||(S.sermons&&S.sermons.length))?'':'none';
   const dom=new Date().getDate(); $('#provTitle').textContent=`Proverbs ${dom}`+(S.prov[todayKey()]?' \u2014 read today':' \u2014 a chapter of wisdom for today');
   $('#contBtn').textContent = `Continue Reading: ${bookName(S.last.book)} ${S.last.ch}`;
   const open=S.prayers.filter(p=>!p.answered).length; $('#prayMini').textContent = open?`${open} open request${open>1?'s':''}`:'People and needs';
@@ -1401,9 +1432,10 @@ $('#spClaude').onclick=()=>copyText(`Please polish this short faith-based talk I
 
 /* ---------- Presenter ---------- */
 let pFs=30, pTimer=null;
-function present(text){ $('#pText').textContent=text; $('#pText').style.fontSize=pFs+'px'; $('#presenter').classList.add('on'); $('#pText').scrollTop=0;
+let pClock=null;
+function present(text){ const t0=Date.now(); clearInterval(pClock); const tick=()=>{ const s=Math.floor((Date.now()-t0)/1000); $('#pTime').textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }; tick(); pClock=setInterval(tick,1000); $('#pText').textContent=text; $('#pText').style.fontSize=pFs+'px'; $('#presenter').classList.add('on'); $('#pText').scrollTop=0;
   try{ if(navigator.wakeLock) navigator.wakeLock.request('screen').then(l=>window._wl=l).catch(()=>{}); }catch(e){} }
-$('#pClose').onclick=()=>{ $('#presenter').classList.remove('on'); clearInterval(pTimer); pTimer=null; $('#pScroll').classList.remove('red'); stopSpeak(); try{ window._wl&&window._wl.release(); }catch(e){} };
+$('#pClose').onclick=()=>{ clearInterval(pClock); $('#presenter').classList.remove('on'); clearInterval(pTimer); pTimer=null; $('#pScroll').classList.remove('red'); stopSpeak(); try{ window._wl&&window._wl.release(); }catch(e){} };
 $('#pSm').onclick=()=>{ pFs=Math.max(20,pFs-3); $('#pText').style.fontSize=pFs+'px'; };
 $('#pLg').onclick=()=>{ pFs=Math.min(60,pFs+3); $('#pText').style.fontSize=pFs+'px'; };
 $('#pScroll').onclick=()=>{ if(pTimer){ clearInterval(pTimer); pTimer=null; $('#pScroll').classList.remove('red'); return; }
@@ -1498,12 +1530,13 @@ function renderSettings(){
   $$('#stLayout button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.layout));
   $$('#stTheme button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.theme));
   $('#verLbl').textContent='Version '+APP_VERSION;
-  $('#stCover').checked=!!S.settings.cover; $('#stRed').checked=!!S.settings.red;
+  $('#stCover').checked=!!S.settings.cover; $('#stRed').checked=!!S.settings.red; $('#stPastor').checked=!!S.settings.pastor;
   const p=S.pres; $('#psTo').value=p.to||S.settings.name||''; $('#psBy').value=p.by; $('#psDate').value=p.date||longDate(new Date()); $('#psMsg').value=p.msg; $('#psRef').value=p.ref; $('#psBless').value=p.bless;
 }
 $('#stName').onchange=()=>{ const old=S.settings.name; S.settings.name=$('#stName').value.trim(); if(!S.pres.to||S.pres.to===old){ S.pres.to=S.settings.name; $('#psTo').value=S.pres.to; } persist(); toast('Saved'); };
 $('#stCover').onchange=()=>{ S.settings.cover=$('#stCover').checked; persist(); };
 $('#stRed').onchange=()=>{ S.settings.red=$('#stRed').checked; persist(); };
+$('#stPastor').onchange=()=>{ S.settings.pastor=$('#stPastor').checked; persist(); };
 $('#psSave').onclick=()=>{ Object.assign(S.pres,{to:$('#psTo').value.trim(),by:$('#psBy').value.trim(),date:$('#psDate').value.trim(),msg:$('#psMsg').value.trim(),ref:$('#psRef').value.trim(),bless:$('#psBless').value.trim()}); persist(); toast('Presentation page saved'); };
 $('#psView').onclick=()=>{ $('#psSave').click(); go('presented'); };
 $('#stTr').onchange=()=>{ S.settings.tr=$('#stTr').value; persist(); toast('Translation set to '+S.settings.tr); };
@@ -1737,7 +1770,7 @@ const SB_KEY='sb_publishable_PYlWSW6-Gi-QZl91IXUq0Q_W5mO3sDT';
 const SYNC_KEY=KEY+'.sync';
 try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ SY=null; }
 function saveSY(){ try{ if(SY) localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); else localStorage.removeItem(SYNC_KEY); }catch(e){} }
-const SYNC_ARR=['saved','speeches','prayers','journal'];
+const SYNC_ARR=['saved','speeches','prayers','journal','sermons'];
 const SYNC_MAP=['hl','plans','prov','devo'];
 const SYNC_ONE=['pres','ribbon','last','presSeen','name'];
 function canon(x){ if(Array.isArray(x)) return x.map(canon); if(x&&typeof x==='object'){ const o={}; Object.keys(x).sort().forEach(k=>{ if(x[k]!==undefined) o[k]=canon(x[k]); }); return o; } return x; }
@@ -2115,5 +2148,8 @@ setTimeout(()=>syncNow(false),1200);
 if('speechSynthesis' in window) speechSynthesis.getVoices();
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
+<script src="outlines.js"></script>
+<script src="spurgeon.js"></script>
+<script src="study.js"></script>
 </body>
 </html>

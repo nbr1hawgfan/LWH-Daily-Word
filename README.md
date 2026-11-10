@@ -20,6 +20,12 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.4 — Pastor's Study
+- **Study a passage** — text, top cross references, classic commentaries (Adam Clarke, Matthew Henry, John Gill, Jamieson-Fausset-Brown, Keil-Delitzsch, Calvin, Tyndale notes — list loaded live from bible.helloao.org), Spurgeon sermons on that text (429 indexed in `spurgeon.js`, plus links to the complete Spurgeon Gems Scripture index), and your own past sermons on the passage.
+- **Outlines** — 59 original, editable outlines in `outlines.js`, written for a Free Will Baptist pulpit (whosoever will, continuing in faith, believer's baptism by immersion, the Lord's Supper, washing the saints' feet), grouped by topic, church calendar and special services (funeral, wedding, homecoming, revival).
+- **My Sermons** — sermon editor with expository/topical/narrative templates, dictation, Preach (Present mode with a running timer) and a "preached on / where" history. Sermons sync with the user's account.
+- Settings → "Show Pastor's Study on the Home screen."
+
 ### Added in 1.3
 - **Morning Devotional** — a guided 10–15 minute quiet time from the Home screen: Be Still (call-to-worship verse, optional minute of quiet) → Read (today's reading-plan chapters, or a Psalm and a Proverb) → Reflect (a daily question, answered by voice or typing, saved to the Journal) → Pray (ACTS prompts plus requests from the Prayer List) → Go (verse to carry and a blessing). Completing it marks the reading-plan day and fills a monthly reading-log calendar.
 - **Sync across devices** — Settings → Sync Across Devices. Name + PIN sign-in; journal, saved verses, highlights, prayers, speeches, plans and devotional log stay the same on phone and PC. Data lives in the LWH Companion Supabase project (`dw_users`, `dw_sessions`, `dw_state`), reachable only through the `dw_login / dw_pull / dw_push / dw_logout` functions.

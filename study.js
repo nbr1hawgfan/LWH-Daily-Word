@@ -1,7 +1,7 @@
 /* ---------- Pastor's Study: passage study, sermon outlines, sermon builder and library ---------- */
 'use strict';
 const HELLO='https://bible.helloao.org';
-const STUDY={tab:'study',ref:'',comm:null,cat:'',q:'',mq:''};
+const STUDY={tab:'study',ref:'',comm:null,cat:'',q:'',mq:'',mk:''};
 const SM={cur:null};
 let COMMS=null;
 const COMM_PREF=[/clarke/i,/henry/i,/jamieson|fausset/i,/gill/i,/keil|delitzsch/i,/calvin/i,/tyndale/i];
@@ -51,6 +51,7 @@ function renderStudy(){
   $$('#stTabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===STUDY.tab));
   if(STUDY.tab==='study') renderStudyTab();
   else if(STUDY.tab==='outlines') renderOutlinesTab();
+  else if(STUDY.tab==='cer') renderCerTab();
   else renderMineTab();
 }
 $('#stTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; STUDY.tab=b.dataset.t; renderStudy(); };
@@ -180,17 +181,85 @@ function outlineSheet(o){
   $('#olStudy').onclick=()=>{ closeSheet(); openStudy(o.text.split(';')[0].trim()); };
 }
 
+
+/* ---- Ceremonies tab ---- */
+const KIND_NAME={wedding:'Wedding',funeral:'Funeral'};
+function renderCerTab(){
+  const card=t=>`<button class="jcard" data-c="${t.id}"><div class="meta"><span class="jtype ${t.kind==='wedding'?'devo':'sermon'}">${esc(t.style)}</span>${esc(t.mins)}</div><div class="ttl">${esc(t.title)}</div><div class="snip">${esc(t.desc)}</div></button>`;
+  const mine=S.sermons.filter(x=>x.kind).length;
+  $('#stBody').innerHTML=`<p class="small muted" style="margin-top:0">Complete orders of service. Fill in the names once and the whole script is ready to edit, print or read from in Officiate mode.</p>
+    <div class="jgroup">Weddings</div>${CEREMONIES.filter(t=>t.kind==='wedding').map(card).join('')}
+    <div class="jgroup">Funerals and Memorials</div>${CEREMONIES.filter(t=>t.kind==='funeral').map(card).join('')}
+    ${mine?`<button class="btn full" id="cerMine" style="margin-top:8px">Your Saved Services (${mine})</button>`:''}
+    <p class="small muted">Traditional services use the historic Book of Common Prayer wording (public domain) with King James readings. Modern services are original and free to change.</p>`;
+  $$('#stBody [data-c]').forEach(b=>b.onclick=()=>cerSheet(CEREMONIES.find(t=>t.id===b.dataset.c)));
+  if($('#cerMine')) $('#cerMine').onclick=()=>{ STUDY.tab='mine'; STUDY.mk='cer'; renderStudy(); };
+}
+const cerHeads=t=>t.body.split('\n').map(l=>l.trim()).filter(l=>{ const bare=l.replace(/\{\{[^}]+\}\}/g,'').replace(/\([^)]*\)/g,''); return l.length>3&&!/[a-z]/.test(bare)&&!/^[\[—"]/.test(l)&&/[A-Z]{3}/.test(bare); }).slice(1);
+const titleCase=h=>h.replace(/\{\{\w+\}\}['\u2019]S\s+/i,'Life ').replace(/\{\{(\w+)\}\}/g,'').replace(/\s+/g,' ').trim().toLowerCase().replace(/(^|[\s(])(\w)/g,(m,a,c)=>a+c.toUpperCase()).replace(/\b(Of|And|The|A|To|For|At|In|Or)\b/g,(m,w,i)=>i?w.toLowerCase():w).replace(/'s\b/gi,'’s');
+function cerSheet(t){
+  openSheet(`<button class="close" data-x>X</button><div class="small" style="letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700">${esc(KIND_NAME[t.kind])} · ${esc(t.style)}</div>
+    <h3 style="margin-top:4px">${esc(t.title)}</h3><div class="muted" style="font-weight:700">${esc(t.mins)}</div>
+    <p class="serif" style="font-size:18px">${esc(t.desc)}</p>
+    <h2>Order of Service</h2><ol class="serif" style="font-size:18px;line-height:1.7;padding-left:24px;margin-top:0">${cerHeads(t).map(h=>`<li>${esc(titleCase(h))}</li>`).join('')}</ol>
+    <button class="btn red full" id="cerUse">Use This Service</button>`);
+  $('#cerUse').onclick=()=>cerForm(t);
+}
+function cerForm(t){
+  const f=CER_FIELDS[t.kind];
+  openSheet(`<button class="close" data-x>X</button><h3>${esc(t.title)}</h3><p class="small muted">Fill in what you know now. Anything left blank shows as a [note] you can fill in later.</p>`+
+    f.map(([k,label,def])=>{ const v=k==='Officiant'?(S.settings.name||''):def;
+      if(k==='Pron') return `<label class="lbl">${esc(label)}</label><div class="tabs" id="cfPron"><button data-p="he" class="on">He</button><button data-p="she">She</button></div>`;
+      if(k==='Family'||k==='Story') return `<label class="lbl">${esc(label)}</label><textarea id="cf_${k}" style="min-height:110px" placeholder="${esc(CER_HINT[k]||'')}"></textarea>`;
+      return `<label class="lbl">${esc(label)}</label><input type="text" id="cf_${k}" value="${esc(v)}">`; }).join('')+
+    `<button class="btn red full" id="cfGo" style="margin-top:16px">Create the Service</button>`);
+  if($('#cfPron')) $('#cfPron').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; $$('#cfPron button').forEach(x=>x.classList.toggle('on',x===b)); };
+  $('#cfGo').onclick=async()=>{
+    const vals={}; f.forEach(([k])=>{ const el=$('#cf_'+k); if(el) vals[k]=el.value.trim(); });
+    if(t.kind==='funeral'){ const on=$('#cfPron .on'); vals.Pron=on?on.dataset.p:'he'; }
+    $('#cfGo').disabled=true; $('#cfGo').textContent='Preparing the service…';
+    const body=await fillCeremony(t,vals);
+    const who=t.kind==='wedding'?[vals.Bride,vals.Groom].filter(Boolean).map(n=>n.split(/\s+/)[0]).join(' & '):vals.Name;
+    closeSheet();
+    newSermon({title:`${KIND_NAME[t.kind]}${who?' — '+who:''}`,topic:t.title,kind:t.kind,body,structure:t.id});
+    setTimeout(()=>saveSermon(true),60);
+  };
+}
+async function fillCeremony(t,v){
+  const first=n=>(n||'').trim().split(/\s+/)[0]||'';
+  const ph=(k,label)=>v[k]?v[k]:`[${label}]`;
+  const she=v.Pron==='she';
+  const map={Groom:ph('Groom','groom’s name'),Bride:ph('Bride','bride’s name'),GroomFirst:first(v.Groom)||'[groom]',BrideFirst:first(v.Bride)||'[bride]',
+    Date:ph('Date','date'),Place:ph('Place','place'),Giver:v.Giver||'The one giving the bride',State:v.State||'Arkansas',Officiant:ph('Officiant','officiant'),
+    Name:ph('Name','full name'),First:v.First||first(v.Name)||'[name]',Born:ph('Born','date of birth'),Died:ph('Died','date of death'),
+    Family:v.Family||'[Family members]',Story:v.Story||'[Life story from the family visit]',
+    he:she?'she':'he',He:she?'She':'He',his:she?'her':'his',His:she?'Her':'His',him:she?'her':'him',brother:she?'sister':'brother'};
+  const reads=[...new Set([...t.body.matchAll(/\{\{read:([^}]+)\}\}/g)].map(m=>m[1]))];
+  const tr=t.style==='Traditional'?'KJV':S.settings.tr, texts={};
+  await Promise.all(reads.map(async r=>{ try{ texts[r]=await passageText(tr,r); }catch(e){ texts[r]=''; } }));
+  let body=t.body.replace(/\{\{read:([^}]+)\}\}(\n— [^\n]+)?/g,(m,r)=>texts[r]?`"${texts[r]}"\n— ${r.replace(/^Psalms (\d+)/,'Psalm $1')} (${tr})`:`[Read ${r}]`);
+  // headings stay in capitals even when a name is dropped into them
+  body=body.split('\n').map(l=>{ const bare=l.replace(/\{\{\w+\}\}/g,''); const isHead=bare.trim().length>2&&!/[a-z]/.test(bare)&&/[A-Z]{3}/.test(bare)&&!/^[\[—"]/.test(l.trim());
+    const out=l.replace(/\{\{(\w+)\}\}/g,(m,k)=>map[k]!==undefined?map[k]:m); return isHead?out.toUpperCase():out; }).join('\n');
+  return body;
+}
+
 /* ---- My Sermons tab ---- */
 function renderMineTab(){
   $('#stBody').innerHTML=`<div class="grid2" style="margin-bottom:12px"><button class="btn red" id="myNew">New Sermon</button><button class="btn" id="myOutline">Start from an Outline</button></div>
-    <input type="search" id="myQ" placeholder="Search your sermons" value="${esc(STUDY.mq)}"><div id="myList" style="margin-top:12px"></div>`;
+    <input type="search" id="myQ" placeholder="Search your sermons and services" value="${esc(STUDY.mq)}">
+    <div class="chips" id="myKinds" style="margin-top:12px">${[['','All'],['sermon','Sermons'],['wedding','Weddings'],['funeral','Funerals']].map(([k,n])=>`<button class="chip ${(STUDY.mk==='cer'?'':STUDY.mk)===k?'on':''}" data-k="${k}">${n}</button>`).join('')}</div>
+    <div id="myList" style="margin-top:12px"></div>`;
+  $$('#myKinds .chip').forEach(c=>c.onclick=()=>{ STUDY.mk=c.dataset.k; renderMineTab(); });
   $('#myNew').onclick=()=>newSermon({});
   $('#myOutline').onclick=()=>{ STUDY.tab='outlines'; renderStudy(); };
   const draw=()=>{
     const q=STUDY.mq.toLowerCase();
-    const list=S.sermons.filter(s=>!q||[s.title,s.ref,s.topic,s.body].join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.updated||b.ts)-(a.updated||a.ts));
+    const mk=STUDY.mk, kindOk=s=>!mk||(mk==='sermon'?!s.kind:mk==='cer'?!!s.kind:s.kind===mk);
+    const list=S.sermons.filter(s=>kindOk(s)&&(!q||[s.title,s.ref,s.topic,s.body].join(' ').toLowerCase().includes(q))).sort((a,b)=>(b.updated||b.ts)-(a.updated||a.ts));
     $('#myList').innerHTML=list.length?list.map(s=>{ const lp=lastPreached(s), n=(s.preached||[]).length;
-      return `<button class="jcard" data-sm="${s.id}"><div class="meta">${lp?`Preached ${esc(niceDay(lp.d))}${n>1?` · ${n} times`:''}`:'Not yet preached'}${s.topic?' · '+esc(s.topic):''}</div>
+      const verb=s.kind?'Officiated':'Preached';
+      return `<button class="jcard" data-sm="${s.id}"><div class="meta">${s.kind?`<span class="jtype ${s.kind==='wedding'?'devo':'sermon'}">${KIND_NAME[s.kind]}</span>`:''}${lp?`${verb} ${esc(niceDay(lp.d))}${n>1?` · ${n} times`:''}`:(s.kind?'Not yet held':'Not yet preached')}${s.topic&&!s.kind?' · '+esc(s.topic):''}</div>
         <div class="ttl">${esc(s.title||'Untitled sermon')}</div><div class="meta">${esc(s.ref||'')}</div></button>`; }).join('')
       :`<div class="empty">${S.sermons.length?'No sermons match that search.':'Your sermons will be kept here, searchable by passage and topic, on your phone and computer.'}</div>`;
     $$('#myList [data-sm]').forEach(b=>b.onclick=()=>openSermon(b.dataset.sm));
@@ -207,6 +276,7 @@ const SCAFFOLD={
 };
 function newSermon(o){
   const s={id:uid(),title:o.title||'',ref:o.ref||'',topic:o.topic||'',structure:o.structure||'',body:o.body||'',preached:[],ts:Date.now(),updated:Date.now()};
+  if(o.kind) s.kind=o.kind;
   const r=parseRef(s.ref); s.refObj=r?{book:r.book,ch:r.ch,verses:r.verses}:null;
   SM.cur=s.id; SM.draft=s; if(location.hash==='#sermon') renderSermon(); else go('sermon');
 }
@@ -216,13 +286,15 @@ function renderSermon(){
   const s=curSermon(); if(!s){ STUDY.tab='mine'; go('study'); return; }
   $('#smTitle').value=s.title; $('#smRef').value=s.ref; $('#smTopic').value=s.topic; $('#smBody').value=s.body; $('#smStruct').value='';
   $('#smSaved').textContent=S.sermons.includes(s)?'Saved':'';
+  $('#smMark').textContent=s.kind?'Mark as Officiated':'Mark as Preached'; $('#smPreach').textContent=s.kind?'Officiate':'Preach';
+  $('#smRef').placeholder=s.kind?'Main Scripture (optional)':'Main text, e.g. Romans 8:28-39'; $('#smStruct').style.display=s.kind?'none':''; $('#smTopic').style.gridColumn=s.kind?'1 / -1':'';
   $('#smDel').style.display=S.sermons.includes(s)?'':'none'; $('#smInterim').textContent='';
   if(!s.body&&!s.structure){ $('#smBody').placeholder='Pick a structure above to start with a template, or just begin writing or speaking.'; }
   renderSermonHist(s);
 }
 function renderSermonHist(s){
   const h=(s.preached||[]).slice().sort((a,b)=>a.d<b.d?1:-1);
-  $('#smHist').innerHTML=h.length?`<h2>Preached</h2>${h.map((p,i)=>`<div class="switch"><span>${esc(niceDay(p.d))}${p.at?' · '+esc(p.at):''}</span><button class="btn sm" data-ph="${esc(p.d)}|${esc(p.at||'')}">Remove</button></div>`).join('')}`:'';
+  $('#smHist').innerHTML=h.length?`<h2>${s.kind?'Officiated':'Preached'}</h2>${h.map((p,i)=>`<div class="switch"><span>${esc(niceDay(p.d))}${p.at?' · '+esc(p.at):''}</span><button class="btn sm" data-ph="${esc(p.d)}|${esc(p.at||'')}">Remove</button></div>`).join('')}`:'';
   $$('#smHist [data-ph]').forEach(b=>b.onclick=()=>{ const [d,at]=b.dataset.ph.split('|'); const i=s.preached.findIndex(p=>p.d===d&&(p.at||'')===at); if(i>=0){ s.preached.splice(i,1); s.updated=Date.now(); persist(); renderSermonHist(s); } });
 }
 function saveSermon(silent){
@@ -245,13 +317,13 @@ $('#smDel').onclick=()=>{ const s=curSermon(); if(!s||!confirm('Delete this serm
 $('#smMark').onclick=()=>{
   saveSermon(true); const s=curSermon(); if(!s||!S.sermons.includes(s)){ toast('Write something first'); return; }
   const lastPlace=S.sermons.flatMap(x=>x.preached||[]).sort((a,b)=>a.d<b.d?1:-1).map(p=>p.at).find(Boolean)||'';
-  openSheet(`<button class="close" data-x>X</button><h3>Mark as Preached</h3>
+  openSheet(`<button class="close" data-x>X</button><h3>${s.kind?'Mark as Officiated':'Mark as Preached'}</h3>
     <label class="lbl">Date</label><input type="text" id="mpD" value="${isoDay()}" inputmode="numeric" placeholder="YYYY-MM-DD">
     <label class="lbl">Where</label><input type="text" id="mpAt" value="${esc(lastPlace)}" placeholder="Church or event">
     <button class="btn red full" id="mpGo" style="margin-top:14px">Save</button>`);
   try{ $('#mpD').type='date'; }catch(e){}
   $('#mpGo').onclick=()=>{ const d=$('#mpD').value.trim(); if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){ toast('Pick a date'); return; }
-    s.preached=s.preached||[]; s.preached.push({d,at:$('#mpAt').value.trim()}); s.updated=Date.now(); persist(); closeSheet(); renderSermonHist(s); toast('Marked as preached'); };
+    s.preached=s.preached||[]; s.preached.push({d,at:$('#mpAt').value.trim()}); s.updated=Date.now(); persist(); closeSheet(); renderSermonHist(s); toast(s.kind?'Marked as officiated':'Marked as preached'); };
 };
 
 /* first render if the app opened on one of these screens */

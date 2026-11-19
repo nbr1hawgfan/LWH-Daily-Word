@@ -34,6 +34,7 @@ function npStop(){ if(NP.audio){ NP.audio.pause(); NP.audio.src=''; } NP.audio=n
 function npButtons(){
   const playing=NP.audio&&!NP.audio.paused, cur=NP.queue[NP.i];
   const rl=$('#rListen'); if(rl) rl.classList.toggle('red',!!(NP.audio&&cur&&cur[0]===R.book&&cur[1]===R.ch));
+  if(typeof listenLabel==='function') listenLabel(!!(NP.audio&&cur&&cur[0]===R.book&&cur[1]===R.ch));
   const dl=$('#dvListen'); if(dl&&NP.src==='devo') dl.textContent=NP.audio?'Stop':'Listen';
   if($('#npPlay')) $('#npPlay').textContent=playing?'Pause':'Play';
 }
@@ -80,7 +81,8 @@ function narrateToggle(queue,src){
   stopSpeak(); narrate(queue,src);
 }
 function npFallback(b,c){
-  getChapter(S.settings.tr,b,c).then(vs=>{ speak(`${bookName(b)} chapter ${c}. `+vs.map(v=>plain(v.html)).join(' ')); }).catch(()=>{});
+  const here=()=>R.book===b&&R.ch===c, done=()=>{ const rl=$('#rListen'); if(rl) rl.classList.remove('red'); listenLabel(false); };
+  getChapter(S.settings.tr,b,c).then(vs=>{ if(here()){ $('#rListen').classList.add('red'); listenLabel(true); } speak(`${bookName(b)} chapter ${c}. `+vs.map(v=>plain(v.html)).join(' '),done); }).catch(()=>{});
 }
 
 /* Settings: listening choices */

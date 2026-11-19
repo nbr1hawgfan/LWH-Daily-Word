@@ -20,6 +20,12 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.6
+- **Read Aloud, labeled** — the reader's top buttons now say "Text Size" and "Read Aloud" (switches to "Stop" while reading). When the bars slide away during reading, a large **Read Aloud** button stays at the bottom of the page.
+- **Shared Prayer Lists** (`shared.js`) — Prayer List → Shared Lists. Start a list (for a church, a team, a family), invite people with a six-letter code, QR code or link (`?join=CODE`). Everyone on the list can add requests (one at a time or a pasted list), tap **I Prayed**, and see "prayed for by N people." Pray Through walks the list one name at a time. The person who started the list and any leaders they choose can edit, mark answered, remove requests and members, make a new code, rename or delete the list. Members see who added each request but never anyone's private prayers or notes.
+- The Morning Devotional can pray from a shared list (Pray step → Pray from).
+- Data: `dw_lists`, `dw_list_members`, `dw_list_items`, `dw_list_prayed`, reachable only through the `dw_list_*` functions with a signed-in token. Requires a Sync account.
+
 ### Added in 1.5
 - **Prayer list for a whole church** — no limit on names. "Add Several at Once" takes a pasted or dictated list (one per line) into a group such as Church Family; duplicates are skipped. Groups, search, prayed counts and last-prayed dates. Tap a name to edit, mark answered or delete.
 - **Pray Through My List** — one person at a time, least recently prayed first, with group filter and progress.

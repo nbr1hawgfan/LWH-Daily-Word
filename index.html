@@ -414,6 +414,73 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 .sh-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;background:var(--gold);color:#fff;margin-left:6px;vertical-align:2px}
 @media (min-width:640px){.bookgrid{grid-template-columns:repeat(3,1fr)}.chapgrid{grid-template-columns:repeat(8,1fr)}}
 @media (min-width:760px){body.reading .page{border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 48px 8px}}
+
+/* Advent */
+.adv-candles{display:flex;justify-content:center;align-items:flex-end;gap:10px;height:62px}
+.adv-candles.big{height:96px;gap:14px;margin:4px 0 10px}
+.adv-candles .cd{position:relative;width:12px;height:38px;background:#5b3a6e;border:1px solid rgba(0,0,0,.25)}
+.adv-candles.big .cd{width:16px;height:58px}
+.adv-candles .cd.k{background:#c77d9a}
+.adv-candles .cd.w{background:#f6f1e6;height:48px}
+.adv-candles.big .cd.w{height:72px}
+.adv-candles .cd i{position:absolute;left:50%;bottom:100%;width:1px;height:6px;background:#3a2f25;transform:translateX(-50%)}
+.adv-candles .cd b{display:none;position:absolute;left:50%;bottom:calc(100% + 4px);width:9px;height:16px;margin-left:-4.5px;background:radial-gradient(ellipse at 50% 70%,#fff6c8 0,#f3c04f 45%,#d9822b 80%,transparent 82%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick 2.4s ease-in-out infinite}
+.adv-candles.big .cd b{width:12px;height:22px;margin-left:-6px}
+.adv-candles .cd.lit b{display:block}
+@keyframes flick{0%,100%{transform:scaleY(1) rotate(-1deg)}50%{transform:scaleY(1.08) rotate(1.5deg)}}
+@media (prefers-reduced-motion:reduce){.adv-candles .cd b{animation:none}}
+.adv-still{text-align:center;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:18px 0 16px;margin:6px 0 18px}
+.adv-k{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);font-weight:700}
+.adv-t{font-family:var(--serif);font-size:26px;font-weight:600;margin:6px 0 2px}
+.adv-s{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:17px}
+.adv-th{background:var(--page);border-left:3px solid var(--gold);padding:14px 16px;margin:14px 0}
+.adv-th .lab{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.adv-th p{font-family:var(--serif);font-size:19px;line-height:1.6;margin:0}
+.adv-bar,.adv-soon{display:flex;align-items:center;gap:14px;border-top:1px solid var(--line);margin:12px 0 4px;padding-top:12px;text-align:left}
+.adv-bar .adv-candles,.adv-soon .adv-candles{flex:0 0 auto;height:46px;gap:6px}
+.adv-bar .cd,.adv-soon .cd{width:8px;height:26px}.adv-bar .cd.w,.adv-soon .cd.w{height:32px}
+.adv-bar .cd b,.adv-soon .cd b{width:7px;height:12px;margin-left:-3.5px}
+.adv-bar b,.adv-soon b{display:block;font-family:var(--serif);font-size:19px}
+.adv-bar span,.adv-soon span{display:block;font-size:14px;opacity:.85}
+.chead .sub{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:16px;margin-top:6px}
+.adv-row{display:flex;gap:14px;align-items:flex-start;width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);padding:12px 2px;text-align:left;color:var(--ink)}
+.adv-row .dt{flex:0 0 58px;font-weight:700;font-size:14px;color:var(--muted);padding-top:3px}
+.adv-row .tx b{display:block;font-family:var(--serif);font-size:19px}
+.adv-row .tx span{font-size:14px;color:var(--muted)}
+.adv-row.cur{background:var(--soft);border-left:3px solid var(--brand);padding-left:8px}
+/* Family Record */
+.fr-title .val{cursor:pointer}
+.fr-sec{margin:22px 0 6px}
+.fr-h{text-align:center;margin-bottom:6px}
+.fr-h span{display:inline-block;font-family:var(--serif);font-size:15px;letter-spacing:.26em;text-transform:uppercase;color:var(--red);font-weight:600;padding:0 12px;border-bottom:1px solid var(--gold)}
+.fr-e{display:block;width:100%;text-align:left;background:var(--page);border:none;border-bottom:1px solid var(--pageline);padding:14px 10px;color:var(--ink)}
+.fr-e .nm{display:block;font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25}
+.fr-e .mt{display:block;font-size:15px;color:var(--muted);margin-top:3px}
+.fr-e .nt{display:block;font-family:var(--serif);font-style:italic;font-size:17px;margin-top:4px}
+.fr-blank{background:var(--page);padding:6px 10px}
+.fr-blank i{display:block;height:34px;border-bottom:1px solid var(--pageline)}
+.fr-add{display:block;margin:10px auto 0}
+.fe-date{display:grid;grid-template-columns:1.6fr 1fr 1.2fr;gap:8px}
+.fam-card{border-left:3px solid var(--gold)}
+.fam-card .lab{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.fam-card .fl{font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.3;margin:4px 0}
+.fam-card .fs{font-size:16px;color:var(--muted);margin-top:4px}
+/* Stones of Remembrance */
+.st-hero{text-align:center;padding:6px 6px 14px}
+.st-hero.sm{padding:0 0 4px}
+.st-mark{width:58px;height:44px;margin:0 auto 12px;background:linear-gradient(160deg,#9a907f,#6d6455);clip-path:polygon(12% 100%,0 62%,10% 24%,38% 4%,70% 0,94% 22%,100% 64%,88% 100%);position:relative}
+.st-hero.sm .st-mark{width:46px;height:34px}
+.st-hero p{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.6;margin:0}
+.st-hero .ref{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.st-count{text-align:center;font-family:var(--serif);font-size:18px;color:var(--red);margin:0 0 12px;letter-spacing:.04em}
+.st-yr{font-family:var(--serif);font-size:26px;font-weight:600;margin:22px 0 6px}
+.st-line{border-left:2px solid var(--gold);margin-left:10px;padding-left:0}
+.st-it{position:relative;display:block;width:100%;text-align:left;background:transparent;border:none;padding:10px 6px 16px 26px;color:var(--ink)}
+.st-it::before{content:"";position:absolute;left:-9px;top:14px;width:16px;height:12px;background:#857a69;clip-path:polygon(12% 100%,0 60%,14% 18%,45% 0,84% 10%,100% 56%,90% 100%)}
+.st-it .dt{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.st-it .tx{display:block;font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.3;margin-top:2px}
+.st-it .mt{display:block;font-size:15px;color:var(--muted);margin-top:3px}
+.st-it .nt{display:block;font-family:var(--serif);font-style:italic;font-size:18px;margin-top:6px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -464,6 +531,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
   <button class="resume" id="contBtn">Continue Reading</button>
   <button class="resume gold" id="ribbonBtn" style="display:none"></button>
 
+  <div id="famToday"></div>
   <div id="otdBox"></div>
 
   <div class="sect">Today</div>
@@ -480,6 +548,11 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">A devotional for your next meeting</span></span></button>
     <button class="toc-row" data-go="study" id="homeStudy" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 8h6M8 12h6M18 20V8"/></svg><span class="tx"><span class="t">Pastor’s Study</span><span class="d">Sermon prep, outlines and your sermons</span></span></button>
     <button class="toc-row" data-go="topics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 12 12 20 3 11V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span class="tx"><span class="t">Topics</span><span class="d">Hand-picked verses for any need</span></span></button>
+  </div>
+  <div class="sect">Keepsakes</div>
+  <div class="toc">
+    <button class="toc-row" data-go="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V9"/><path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5zM12 13c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg><span class="tx"><span class="t">Family Record</span><span class="d" id="homeFamD">Births, marriages and milestones of faith</span></span></button>
+    <button class="toc-row" data-go="stones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16"/><path d="M6 20c-1-4 0-9 3-12 2-2 5-2 7 0 3 3 3 8 2 12"/><path d="M10 12h4M12 10v4"/></svg><span class="tx"><span class="t">Stones of Remembrance</span><span class="d" id="homeStD">What God has done</span></span></button>
     <button class="toc-row" data-go="presented"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3h14v18l-7-4-7 4z"/><path d="M12 7v6M9 10h6"/></svg><span class="tx"><span class="t">Presentation Page</span><span class="d">The front page of your Bible</span></span></button>
   </div>
 </section>
@@ -499,6 +572,15 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 <section class="view" id="v-memory">
   <h1>Memory Verses</h1>
   <div id="mvBody"></div>
+</section>
+
+<!-- FAMILY RECORD -->
+<section class="view" id="v-family"><div id="frBody"></div></section>
+
+<!-- STONES OF REMEMBRANCE -->
+<section class="view" id="v-stones">
+  <h1>Stones of Remembrance</h1>
+  <div id="stoneBody"></div>
 </section>
 
 <!-- PASTOR'S STUDY -->
@@ -617,7 +699,10 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
   <h1>Contents</h1>
   <div class="toc">
     <button class="toc-row" id="moreDevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span class="tx"><span class="t">Morning Devotional</span><span class="d">Read, reflect and pray</span></span></button>
+    <button class="toc-row" id="moreAdvent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l1.5 3-1.5 2-1.5-2z"/><path d="M9 9h6v13H9z"/><path d="M5 22h14"/></svg><span class="tx"><span class="t">Advent and Christmas</span><span class="d">A reading for every day to Christmas</span></span></button>
     <button class="toc-row" data-go="memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 3.6 2.5 5 .7 1 .5 2 .5 3h6c0-1-.2-2 .5-3 1-1.4 2.5-2.5 2.5-5a6 6 0 0 0-6-6z"/><path d="M9 21h6"/></svg><span class="tx"><span class="t">Memory Verses</span><span class="d">Practice and keep verses by heart</span></span></button>
+    <button class="toc-row" data-go="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V9"/><path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5zM12 13c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg><span class="tx"><span class="t">Family Record</span><span class="d">Births, marriages, salvation and home-goings</span></span></button>
+    <button class="toc-row" data-go="stones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16"/><path d="M6 20c-1-4 0-9 3-12 2-2 5-2 7 0 3 3 3 8 2 12"/><path d="M10 12h4M12 10v4"/></svg><span class="tx"><span class="t">Stones of Remembrance</span><span class="d">Answered prayers and what God has done</span></span></button>
     <button class="toc-row" data-go="study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 8h6M8 12h6M18 20V8"/></svg><span class="tx"><span class="t">Pastor’s Study</span><span class="d">Study a passage, outlines, weddings, funerals and your sermons</span></span></button>
     <button class="toc-row" data-go="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 3h12l4 4v14H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg><span class="tx"><span class="t">Journal</span><span class="d">Notes, sermons and gratitude</span></span></button>
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">Write a devotional or talk</span></span></button>
@@ -679,6 +764,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
   <input type="search" id="prQ" placeholder="Search names and requests">
   <div class="chips" id="prCats" style="margin:12px 0"></div>
   <div class="tabs" id="prTabs"><button data-t="open" class="on">Praying</button><button data-t="answered">Answered</button></div>
+  <button class="btn full" id="prStones" data-go="stones" style="display:none;margin:12px 0">Open Stones of Remembrance</button>
   <div id="prList"></div>
   </div>
 </section>
@@ -782,7 +868,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.7.0';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -842,7 +928,7 @@ const PRES_MSG = 'In honor of a leader whose faith has shaped not only a company
 const PRES_REF = 'Numbers 6:24-26';
 const PRES_BLESS = 'The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.';
 const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR',cover:true,red:true},
-  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[], memory:[],
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[], memory:[], family:[], stones:[],
   pres:{to:'',by:'Your family at Logistics Warehouse, Inc.',date:'',msg:PRES_MSG,ref:PRES_REF,bless:PRES_BLESS}};
 let S;
 try{ S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); S.pres=Object.assign({},DEF.pres,S.pres||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
@@ -1035,8 +1121,8 @@ const OCCASIONS = [
 ];
 
 /* ---------- Router ---------- */
-const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon','memory'];
-const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more',memory:'more'};
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon','memory','family','stones'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more',memory:'more',family:'more',stones:'more'};
 function go(v){ location.hash = v; }
 function route(){
   let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
@@ -1060,6 +1146,8 @@ function route(){
   if(v==='study'&&typeof renderStudy==='function') renderStudy();
   if(v==='sermon'&&typeof renderSermon==='function') renderSermon();
   if(v==='memory'&&typeof renderMemory==='function') renderMemory();
+  if(v==='family'&&typeof renderFamily==='function') renderFamily();
+  if(v==='stones'&&typeof renderStones==='function') renderStones();
   if(v!=='entry'&&v!=='devo'&&v!=='sermon') stopDictation();
 }
 window.addEventListener('hashchange',route);
@@ -1091,7 +1179,8 @@ async function renderHome(){
   $('#todayDate').textContent = new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric',year:'numeric'});
   $('#hdrSub').textContent = S.settings.name ? `${S.settings.name}` : 'Logistics Warehouse, Inc.';
   const rb=$('#ribbonBtn'); if(S.ribbon){ rb.style.display=''; rb.textContent=`Open to Your Ribbon: ${bookName(S.ribbon.book)} ${S.ribbon.ch}`; } else rb.style.display='none';
-  renderOTD(); renderDevoCTA(); if(typeof renderMemoryHome==='function') renderMemoryHome();
+  renderOTD(); renderDevoCTA(); if(typeof renderMemoryHome==='function') renderMemoryHome(); if(typeof renderFamToday==='function') renderFamToday();
+  const nSt=typeof stoneItems==='function'?stoneItems().length:0; $('#homeStD').textContent=nSt?`${nSt} stone${nSt===1?'':'s'} of remembrance`:'What God has done';
   $('#homeStudy').style.display=(S.settings.pastor||(S.sermons&&S.sermons.length))?'':'none';
   const dom=new Date().getDate(); $('#provTitle').textContent=`Proverbs ${dom}`+(S.prov[todayKey()]?' \u2014 read today':' \u2014 a chapter of wisdom for today');
   $('#contBtn').textContent = `Continue Reading: ${bookName(S.last.book)} ${S.last.ch}`;
@@ -1588,7 +1677,7 @@ function prEditSheet(p){
   $('#peSave').onclick=()=>{ const t=$('#peText').value.trim(); if(!t){ toast('Enter a name or request'); return; } const cat=prGroupValue('peCat');
     if(isNew) S.prayers.unshift({id:uid(),text:t,cat,ts:Date.now(),answered:false}); else { p.text=t; p.cat=cat; p.updated=Date.now(); }
     persist(); closeSheet(); toast(isNew?'Added':'Saved'); renderPrayers(); };
-  if($('#peAns')) $('#peAns').onclick=()=>{ const n=prompt('How was it answered? (optional)')||''; p.answered=true; p.ansTs=Date.now(); p.ansNote=n.trim(); p.updated=Date.now(); persist(); closeSheet(); toast('Moved to Answered'); renderPrayers(); };
+  if($('#peAns')) $('#peAns').onclick=()=>{ const n=prompt('How was it answered? (optional)')||''; p.answered=true; p.ansTs=Date.now(); p.ansNote=n.trim(); p.updated=Date.now(); persist(); closeSheet(); toast('Set among your Stones of Remembrance'); renderPrayers(); };
   if($('#peReopen')) $('#peReopen').onclick=()=>{ p.answered=false; delete p.ansNote; p.updated=Date.now(); persist(); closeSheet(); renderPrayers(); };
   if($('#peDel')) $('#peDel').onclick=()=>{ if(!confirm('Delete this request?')) return; S.prayers=S.prayers.filter(x=>x.id!==p.id); persist(); closeSheet(); renderPrayers(); };
 }
@@ -1602,7 +1691,7 @@ function renderPrayers(){
   if(prCat&&!counts[prCat]) prCat='';
   $('#prCats').innerHTML=gs.length>1?[['','All'],...gs.map(g=>[g,`${g} (${counts[g]})`])].map(([k,n])=>`<button class="chip ${prCat===k?'on':''}" data-k="${esc(k)}">${esc(n)}</button>`).join(''):'';
   $$('#prCats .chip').forEach(c=>c.onclick=()=>{ prCat=c.dataset.k; renderPrayers(); });
-  $('#prPrayBtn').style.display=open.length?'':'none';
+  $('#prPrayBtn').style.display=open.length?'':'none'; $('#prStones').style.display=prTab==='answered'&&ans?'':'none';
   renderPrayerList();
 }
 function renderPrayerList(){
@@ -1900,7 +1989,7 @@ const SB_KEY='sb_publishable_PYlWSW6-Gi-QZl91IXUq0Q_W5mO3sDT';
 const SYNC_KEY=KEY+'.sync';
 try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ SY=null; }
 function saveSY(){ try{ if(SY) localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); else localStorage.removeItem(SYNC_KEY); }catch(e){} }
-const SYNC_ARR=['saved','speeches','prayers','journal','sermons','memory'];
+const SYNC_ARR=['saved','speeches','prayers','journal','sermons','memory','family','stones'];
 const SYNC_MAP=['hl','plans','prov','devo'];
 const SYNC_ONE=['pres','ribbon','last','presSeen','name'];
 function canon(x){ if(Array.isArray(x)) return x.map(canon); if(x&&typeof x==='object'){ const o={}; Object.keys(x).sort().forEach(k=>{ if(x[k]!==undefined) o[k]=canon(x[k]); }); return o; } return x; }
@@ -2130,8 +2219,8 @@ function devoJournalEntry(){ const d=S.devo[todayKey()]; return d&&d.jid?S.journ
 function saveDevoAnswer(){
   const ta=$('#dvAns'); if(!ta) return; const body=ta.value, k=todayKey();
   let e=devoJournalEntry();
-  if(!e){ if(!body.trim()) return; const ref=VOTD[dayOfYear()%VOTD.length], r=parseRef(ref);
-    e={id:uid(),type:'devo',title:pickDay(QUESTIONS),ref,refObj:r?{book:r.book,ch:r.ch,verses:r.verses}:null,body:'',church:'',speaker:'',ts:Date.now()};
+  if(!e){ if(!body.trim()) return; const AQ=DV.reading&&DV.reading.advent&&typeof adventToday==='function'?adventToday():null, ref=AQ?AQ.c:VOTD[dayOfYear()%VOTD.length], r=parseRef(ref);
+    e={id:uid(),type:'devo',title:AQ?AQ.q:pickDay(QUESTIONS),ref,refObj:r?{book:r.book,ch:r.ch,verses:r.verses}:null,body:'',church:'',speaker:'',ts:Date.now()};
     S.journal.unshift(e); S.devo[k]=Object.assign(S.devo[k]||{},{jid:e.id}); }
   e.body=body; e.updated=Date.now(); persist();
 }
@@ -2155,13 +2244,13 @@ function renderDevoCTA(){
     wk+=`<div class="${i===0?'t':''}"><i class="${S.devo[kk]&&S.devo[kk].done?'on':''}"></i>${'SMTWTFS'[x.getDay()]}</div>`; }
   if(d&&d.done){
     box.innerHTML=`<div class="devo-cta"><div class="ey">Morning Devotional</div><div class="tt">Completed this morning</div>
-      <div class="sb">${d.mins?`${d.mins} minute${d.mins===1?'':'s'} · `:''}${esc((d.refs||[]).join(', '))}</div><div class="wk">${wk}</div>
+      <div class="sb">${d.mins?`${d.mins} minute${d.mins===1?'':'s'} · `:''}${esc((d.refs||[]).join(', '))}</div>${typeof adventCTAExtra==='function'?adventCTAExtra():''}<div class="wk">${wk}</div>
       <button class="btn full" id="ctaMonth">View Your Month</button></div>`;
     $('#ctaMonth').onclick=()=>{ const n=new Date(); openSheet(`<button class="close" data-x>X</button><h3>Your Mornings</h3>${calHTML(n.getFullYear(),n.getMonth())}`); wireCal($('#sheetInner')); };
   } else {
     const r=DV.date===k&&DV.reading?DV.reading:devoReading();
     box.innerHTML=`<div class="devo-cta"><div class="ey">Morning Devotional</div><div class="tt">${DV.date===k&&DV.step>0?'Continue Your Quiet Time':'Begin Your Quiet Time'}</div>
-      <div class="sb">About 10 to 15 minutes · ${esc(r.chs.map(([b,c])=>chLabel(b,c)).join(', '))}</div><div class="wk">${wk}</div>
+      <div class="sb">About 10 to 15 minutes · ${esc((r.refs||r.chs.map(([b,c])=>chLabel(b,c))).join(', '))}</div>${typeof adventCTAExtra==='function'?adventCTAExtra():''}<div class="wk">${wk}</div>
       <button class="btn red full" id="ctaBegin">${DV.date===k&&DV.step>0?'Continue':'Begin'}</button></div>`;
     $('#ctaBegin').onclick=startDevo;
   }
@@ -2176,12 +2265,12 @@ async function renderDevo(){
   $('#dvBack').style.visibility=st>0?'':'hidden';
   $('#dvNext').textContent=['Begin','Continue','Continue','Continue','Finish'][st]||'';
   window.scrollTo(0,0);
-  const tr=S.settings.tr, votdR=VOTD[dayOfYear()%VOTD.length];
+  const tr=S.settings.tr, AD=DV.reading&&DV.reading.advent&&typeof adventToday==='function'?adventToday():null, votdR=AD?AD.c:VOTD[dayOfYear()%VOTD.length];
   const verse=async(ref,id)=>{ try{ const t=await passageText(tr,ref); const el=$('#'+id); if(el) el.textContent=t||''; }catch(e){ const el=$('#'+id); if(el) el.textContent='Connect to the internet to load this verse.'; } };
   if(st===0){
     const ref=pickDay(CALLS);
     body.innerHTML=`<div class="dv-eyebrow">Morning Devotional · ${esc(new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'}))}</div>
-      <h1>Be Still</h1>
+      <h1>Be Still</h1>${AD?adventStillHTML(AD):''}
       <div class="dv-call"><div class="txt" id="dvCall">…</div><div class="ref">${esc(ref)}</div></div>
       <p class="dv-p">Take a quiet moment before you begin. Breathe slowly, set the day aside, and invite God into this time.</p>
       <button class="btn full" id="dvQuiet">One Minute of Quiet</button><div class="dv-timer" id="dvQuietT"></div>`;
@@ -2198,24 +2287,25 @@ async function renderDevo(){
       <div class="dv-read" id="dvRead"><div class="loading">Opening the Scriptures…</div></div>`;
     let all='';
     try{
-      const parts=await Promise.all(r.chs.map(([b,c])=>getChapter(tr,b,c).then(vs=>({b,c,vs}))));
+      const parts=r.refs?await Promise.all(r.refs.map(x=>{ const p=parseRef(x); return getPassage(tr,p).then(vs=>({b:p.book,c:p.ch,vs,sub:x})); }))
+        :await Promise.all(r.chs.map(([b,c])=>getChapter(tr,b,c).then(vs=>({b,c,vs}))));
       if(DV.step!==1) return;
-      $('#dvRead').innerHTML=parts.map(({b,c,vs})=>{
+      $('#dvRead').innerHTML=parts.map(({b,c,vs,sub})=>{
         all+=`${bookName(b)} chapter ${c}. `+vs.map(v=>plain(v.html)).join(' ')+' ';
-        const head=`<div class="chead"><div class="bk">${esc(bookName(b))}</div><div class="num">${c}</div><div class="orn"><i></i><b></b><i></i></div></div>`;
+        const head=`<div class="chead"><div class="bk">${esc(bookName(b))}</div><div class="num">${c}</div><div class="orn"><i></i><b></b><i></i></div>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>`;
         return head+`<div class="scripture ${S.settings.layout==='list'?'list-mode':'para-mode'}${S.settings.red?'':' nored'}">`+vs.map((v,i)=>{ let h=v.html;
           if(i===0) h=h.replace(/^((?:<[^>]+>|\s|["'“‘(])*)([A-Za-z])/,'$1<span class="dropcap">$2</span>');
           return `<span class="v ${i===0?'first':''}"><sup>${v.verse}</sup>${h} </span>`; }).join('')+'<div style="clear:both"></div></div>';
       }).join('');
     }catch(e){ $('#dvRead').innerHTML='<div class="empty">The reading could not load. Check your connection and tap Back, then Continue to try again.</div>'; }
-    $('#dvListen').onclick=()=>{ if(typeof narrationWanted==='function'&&narrationWanted()&&!speaking){ narrateToggle(DV.reading.chs,'devo'); return; } if(speaking){ stopSpeak(); $('#dvListen').textContent='Listen'; return; } if(!all) return; $('#dvListen').textContent='Stop';
+    $('#dvListen').onclick=()=>{ if(!r.refs&&typeof narrationWanted==='function'&&narrationWanted()&&!speaking){ narrateToggle(DV.reading.chs,'devo'); return; } if(speaking){ stopSpeak(); $('#dvListen').textContent='Listen'; return; } if(!all) return; $('#dvListen').textContent='Stop';
       speak(all,()=>{ const b=$('#dvListen'); if(b) b.textContent='Listen'; }); };
   }
   else if(st===2){
-    const q=pickDay(QUESTIONS), e=devoJournalEntry();
+    const q=AD?AD.q:pickDay(QUESTIONS), e=devoJournalEntry();
     body.innerHTML=`<div class="dv-eyebrow">Reflect</div><h1>Reflect</h1>
       <div class="dv-verse"><span id="dvVotd">…</span><span class="ref">${esc(votdR)}</span></div>
-      <div class="dv-q">${esc(q)}</div>
+      ${AD?adventThoughtHTML(AD):''}<div class="dv-q">${esc(q)}</div>
       <p class="small muted" style="margin:4px 0 0">Write or speak a few lines. This is saved to your Journal.</p>
       <button class="micbtn" id="dvMic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span id="dvMicLbl">Tap to Speak</span></button>
       <div class="interim" id="dvInterim"></div>
@@ -2269,7 +2359,7 @@ async function renderDevo(){
 }
 function finishDevo(){
   const k=todayKey(), r=DV.reading, mins=Math.max(1,Math.round((Date.now()-DV.start)/60000));
-  const refs=r.chs.map(([b,c])=>chLabel(b,c));
+  const refs=r.refs||r.chs.map(([b,c])=>chLabel(b,c));
   S.devo[k]=Object.assign(S.devo[k]||{},{done:true,at:Date.now(),mins,refs});
   if(r.plan&&S.plans[r.plan]&&!S.plans[r.plan].done.includes(r.day)) S.plans[r.plan].done.push(r.day);
   (DV.shown||[]).forEach(it=>{ if(it&&!DV.prayed[it.id]){ it.pray(); DV.prayed[it.id]=1; } });
@@ -2309,5 +2399,6 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 <script src="study.js"></script>
 <script src="extras.js"></script>
 <script src="shared.js"></script>
+<script src="keepsake.js"></script>
 </body>
 </html>

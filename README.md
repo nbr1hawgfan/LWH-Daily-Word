@@ -20,6 +20,12 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.7 — Keepsakes (`keepsake.js`)
+- **Advent and Christmas** — from the first Sunday of Advent through Christmas Day, the Morning Devotional becomes a daily Advent reading: Advent candles that light week by week (Hope, Peace, Joy, Love, then the Christ candle), a Scripture passage, a short thought for the day, a reflection question and a verse to carry. Christmas Eve and Christmas Day have their own readings. Two weeks before, Home shows when Advent begins. Contents → Advent and Christmas lists every reading (useful for preaching) and has a switch to turn it off. Dates are worked out each year automatically.
+- **Family Record** — like the pages in the middle of a family Bible: Births, Marriages, New Life in Christ (saved, baptized, joined the church, called to preach, ordained) and Gone Home to Be with the Lord. Dates can be just a year. Birthdays, anniversaries and other dates show on Home on the day and during the week before.
+- **Stones of Remembrance** — every answered prayer (personal and shared lists) on a timeline by year, with how long it was prayed for and how God answered. "Raise a Stone" records something God did that was never on the list. Each stone can be shared.
+- Family Record and Stones sync with the reader's account.
+
 ### Added in 1.6
 - **Read Aloud, labeled** — the reader's top buttons now say "Text Size" and "Read Aloud" (switches to "Stop" while reading). When the bars slide away during reading, a large **Read Aloud** button stays at the bottom of the page.
 - **Shared Prayer Lists** (`shared.js`) — Prayer List → Shared Lists. Start a list (for a church, a team, a family), invite people with a six-letter code, QR code or link (`?join=CODE`). Everyone on the list can add requests (one at a time or a pasted list), tap **I Prayed**, and see "prayed for by N people." Pray Through walks the list one name at a time. The person who started the list and any leaders they choose can edit, mark answered, remove requests and members, make a new code, rename or delete the list. Members see who added each request but never anyone's private prayers or notes.

@@ -20,6 +20,14 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.5
+- **Prayer list for a whole church** — no limit on names. "Add Several at Once" takes a pasted or dictated list (one per line) into a group such as Church Family; duplicates are skipped. Groups, search, prayed counts and last-prayed dates. Tap a name to edit, mark answered or delete.
+- **Pray Through My List** — one person at a time, least recently prayed first, with group filter and progress.
+- **Morning devotional prayer** — choose 3, 5, 10, 15, 20, 30 or Everyone, and which group. It rotates through the whole list; "Show More" adds another set. People shown are counted as prayed for when the devotional is finished.
+- **Narrated audio** — "Listen" plays a professional narration of the Berean Standard Bible (public domain, via bible.helloao.org) with pause, back 15 seconds, speed, lock-screen controls and auto-continue to the next chapter. Settings → When you tap Listen: Narrator or Phone Voice. Audio streams and is not cached.
+- **Memory Verses** — add from any verse (Memorize) or a starter list; practice with Read, Fill In and First Letters; spaced review (1, 2, 4, 7, 14, 30, 60 days) until learned. Synced.
+- Fix: several verses can be selected while the verse menu is open.
+
 ### Added in 1.4 — Pastor's Study
 - **Study a passage** — text, top cross references, classic commentaries (Adam Clarke, Matthew Henry, John Gill, Jamieson-Fausset-Brown, Keil-Delitzsch, Calvin, Tyndale notes — list loaded live from bible.helloao.org), Spurgeon sermons on that text (429 indexed in `spurgeon.js`, plus links to the complete Spurgeon Gems Scripture index), and your own past sermons on the passage.
 - **Outlines** — 59 original, editable outlines in `outlines.js`, written for a Free Will Baptist pulpit (whosoever will, continuing in faith, believer's baptism by immersion, the Lord's Supper, washing the saints' feet), grouped by topic, church calendar and special services (funeral, wedding, homecoming, revival).

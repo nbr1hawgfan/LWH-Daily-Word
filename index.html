@@ -380,6 +380,24 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
 .wk .t{color:var(--red)}
 .sync-card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);padding:14px 16px;margin-bottom:10px}
 .sync-card b{font-family:var(--serif);font-size:20px}
+
+/* ---------- Narration player & memory verses ---------- */
+.np{position:fixed;left:0;right:0;bottom:calc(var(--navh) + var(--safeb));z-index:48;display:none;color:#f3e7c9;
+  background:var(--leather),linear-gradient(180deg,var(--ox2),var(--ox));border-top:1px solid var(--gold);transition:bottom .3s ease}
+.np.on{display:block}
+body.chrome-hidden .np{bottom:var(--safeb)}
+body.focus .np{bottom:calc(77px + var(--safeb))}
+body.np-on{padding-bottom:calc(var(--navh) + var(--safeb) + 76px)}
+.np-bar{height:3px;background:rgba(255,255,255,.15)}
+.np-bar i{display:block;height:100%;width:0;background:var(--gold2)}
+.np-row{display:flex;align-items:center;gap:6px;padding:8px 10px;max-width:760px;margin:0 auto}
+.np-t{flex:1;min-width:0;line-height:1.2}
+.np-t b{display:block;font-family:var(--serif);font-size:19px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.np-t span{display:block;font-size:12px;color:rgba(243,231,201,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.np-b{min-height:44px;min-width:46px;padding:0 10px;background:transparent;border:1px solid rgba(201,162,74,.55);color:#f3e7c9;font-weight:700;font-size:14px}
+.np-play{background:var(--brand);border-color:var(--brand);min-width:64px}
+.mv-blank{display:inline-block;border-bottom:2px solid var(--gold);color:transparent;cursor:pointer;line-height:1.2;letter-spacing:-1px}
+.mv-blank.shown{color:var(--red);letter-spacing:normal;border-bottom-color:transparent}
 @media (min-width:640px){.bookgrid{grid-template-columns:repeat(3,1fr)}.chapgrid{grid-template-columns:repeat(8,1fr)}}
 @media (min-width:760px){body.reading .page{border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 48px 8px}}
 </style>
@@ -439,6 +457,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
     <button class="toc-row" id="provBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 5h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg><span class="tx"><span class="t">Today's Proverb</span><span class="d" id="provTitle">One chapter of wisdom for each day of the month</span></span></button>
     <button class="toc-row" data-go="plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="17"/><path d="M3 9h18M8 2v4M16 2v4M8 14l3 3 5-5"/></svg><span class="tx"><span class="t">Reading Plan</span><span class="d" id="planMini">Pick a plan</span></span></button>
     <button class="toc-row" data-go="prayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"/></svg><span class="tx"><span class="t">Prayer List</span><span class="d" id="prayMini">People and needs</span></span></button>
+    <button class="toc-row" data-go="memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 3.6 2.5 5 .7 1 .5 2 .5 3h6c0-1-.2-2 .5-3 1-1.4 2.5-2.5 2.5-5a6 6 0 0 0-6-6z"/><path d="M9 21h6"/></svg><span class="tx"><span class="t">Memory Verses</span><span class="d" id="homeMemD">Hide God’s Word in your heart</span></span></button>
     <button class="toc-row" data-go="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 3h12l4 4v14H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg><span class="tx"><span class="t">Journal</span><span class="d">Thoughts, sermons and thanks</span></span></button>
     <button class="toc-row" id="homeSermon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tx"><span class="t">Sermon Notes</span><span class="d">Talk or type during the service</span></span></button>
   </div>
@@ -460,6 +479,12 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   </div>
   <div class="dv-wrap" id="dvBody"></div>
   <div class="dv-nav" id="dvNav"><button class="btn" id="dvBack">Back</button><button class="btn red" id="dvNext">Continue</button></div>
+</section>
+
+<!-- MEMORY VERSES -->
+<section class="view" id="v-memory">
+  <h1>Memory Verses</h1>
+  <div id="mvBody"></div>
 </section>
 
 <!-- PASTOR'S STUDY -->
@@ -577,6 +602,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   <h1>Contents</h1>
   <div class="toc">
     <button class="toc-row" id="moreDevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span class="tx"><span class="t">Morning Devotional</span><span class="d">Read, reflect and pray</span></span></button>
+    <button class="toc-row" data-go="memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 3.6 2.5 5 .7 1 .5 2 .5 3h6c0-1-.2-2 .5-3 1-1.4 2.5-2.5 2.5-5a6 6 0 0 0-6-6z"/><path d="M9 21h6"/></svg><span class="tx"><span class="t">Memory Verses</span><span class="d">Practice and keep verses by heart</span></span></button>
     <button class="toc-row" data-go="study"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 8h6M8 12h6M18 20V8"/></svg><span class="tx"><span class="t">Pastor’s Study</span><span class="d">Study a passage, outlines, weddings, funerals and your sermons</span></span></button>
     <button class="toc-row" data-go="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 3h12l4 4v14H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg><span class="tx"><span class="t">Journal</span><span class="d">Notes, sermons and gratitude</span></span></button>
     <button class="toc-row" data-go="speech"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg><span class="tx"><span class="t">Speech Builder</span><span class="d">Write a devotional or talk</span></span></button>
@@ -629,14 +655,11 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
 <!-- PRAYER -->
 <section class="view" id="v-prayer">
   <h1>Prayer List</h1>
-  <div class="card plain">
-    <label class="lbl" style="margin-top:0">New request</label>
-    <textarea id="prText" placeholder="Who or what are you praying for?" style="min-height:90px"></textarea>
-    <div class="row" style="margin-top:10px">
-      <select id="prCat" class="grow"><option>Our Team</option><option>Family</option><option>Company</option><option>Customers</option><option>Friends</option><option>Community</option><option>Personal</option></select>
-      <button class="btn red" id="prAdd">Add</button>
-    </div>
-  </div>
+  <div class="grid2" style="margin-bottom:10px"><button class="btn red" id="prNewBtn">Add a Request</button><button class="btn" id="prBulkBtn">Add Several at Once</button></div>
+  <button class="btn dark full" id="prPrayBtn">Pray Through My List</button>
+  <div class="small muted" id="prStats" style="margin:14px 0 8px"></div>
+  <input type="search" id="prQ" placeholder="Search names and requests">
+  <div class="chips" id="prCats" style="margin:12px 0"></div>
   <div class="tabs" id="prTabs"><button data-t="open" class="on">Praying</button><button data-t="answered">Answered</button></div>
   <div id="prList"></div>
 </section>
@@ -657,7 +680,9 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
   <div class="tabs" id="stLayout"><button data-m="para">Paragraph</button><button data-m="list">One per line</button></div>
   <label class="lbl">Appearance</label>
   <div class="tabs" id="stTheme"><button data-m="light">Day</button><button data-m="dark">Night</button></div>
-  <label class="lbl">Reading voice speed</label>
+  <label class="lbl">When you tap Listen</label>
+  <div id="stListenBox"></div>
+  <label class="lbl">Phone voice speed</label>
   <select id="stRate"><option value="0.8">Slow</option><option value="0.95">Normal</option><option value="1.1">Faster</option></select>
   <label class="lbl">Reading voice</label>
   <div class="row"><select id="stVoice" class="grow"></select><button class="btn" id="stVoicePlay">Preview</button></div>
@@ -738,7 +763,7 @@ body.focus .safe-top{display:block;position:fixed;top:0;left:0;right:0;height:va
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.4.1';
+const APP_VERSION = '1.5.0';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -798,7 +823,7 @@ const PRES_MSG = 'In honor of a leader whose faith has shaped not only a company
 const PRES_REF = 'Numbers 6:24-26';
 const PRES_BLESS = 'The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.';
 const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR',cover:true,red:true},
-  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[],
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[], memory:[],
   pres:{to:'',by:'Your family at Logistics Warehouse, Inc.',date:'',msg:PRES_MSG,ref:PRES_REF,bless:PRES_BLESS}};
 let S;
 try{ S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); S.pres=Object.assign({},DEF.pres,S.pres||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
@@ -991,8 +1016,8 @@ const OCCASIONS = [
 ];
 
 /* ---------- Router ---------- */
-const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon'];
-const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more'};
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon','memory'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more',memory:'more'};
 function go(v){ location.hash = v; }
 function route(){
   let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
@@ -1015,6 +1040,7 @@ function route(){
   if(v==='settings') renderSync();
   if(v==='study'&&typeof renderStudy==='function') renderStudy();
   if(v==='sermon'&&typeof renderSermon==='function') renderSermon();
+  if(v==='memory'&&typeof renderMemory==='function') renderMemory();
   if(v!=='entry'&&v!=='devo'&&v!=='sermon') stopDictation();
 }
 window.addEventListener('hashchange',route);
@@ -1046,7 +1072,7 @@ async function renderHome(){
   $('#todayDate').textContent = new Date().toLocaleDateString([], {weekday:'long',month:'long',day:'numeric',year:'numeric'});
   $('#hdrSub').textContent = S.settings.name ? `${S.settings.name}` : 'Logistics Warehouse, Inc.';
   const rb=$('#ribbonBtn'); if(S.ribbon){ rb.style.display=''; rb.textContent=`Open to Your Ribbon: ${bookName(S.ribbon.book)} ${S.ribbon.ch}`; } else rb.style.display='none';
-  renderOTD(); renderDevoCTA();
+  renderOTD(); renderDevoCTA(); if(typeof renderMemoryHome==='function') renderMemoryHome();
   $('#homeStudy').style.display=(S.settings.pastor||(S.sermons&&S.sermons.length))?'':'none';
   const dom=new Date().getDate(); $('#provTitle').textContent=`Proverbs ${dom}`+(S.prov[todayKey()]?' \u2014 read today':' \u2014 a chapter of wisdom for today');
   $('#contBtn').textContent = `Continue Reading: ${bookName(S.last.book)} ${S.last.ch}`;
@@ -1197,9 +1223,10 @@ function verseSheet(){
     <button class="btn" id="vaCopy">Copy</button><button class="btn" id="vaShare">Share</button>
     <button class="btn" id="vaImg">Picture</button><button class="btn" id="vaCmp">Compare</button>
     <button class="btn" id="vaXref">Cross References</button><button class="btn" id="vaJournal">Write in Journal</button>
-    <button class="btn dark" id="vaSpeech" style="grid-column:1/-1">Use in a Speech</button>
+    <button class="btn" id="vaMem">Memorize</button><button class="btn dark" id="vaSpeech">Use in a Speech</button>
    </div>${notesFor(r)}`, true);
   $('#vaXref').onclick=()=>xrefSheet(r);
+  $('#vaMem').onclick=async()=>{ const t=selText(); clearSel(); if(typeof memorize==='function') await memorize(label,t); };
   $('#vaJournal').onclick=()=>{ clearSel(); newEntry('journal',label); };
   $$('[data-jopen]').forEach(b=>b.onclick=()=>{ clearSel(); J.cur=b.dataset.jopen; go('entry'); });
   $$('[data-hl]').forEach(b=>b.onclick=()=>{ r.verses.forEach(n=>{ const k=`${r.book}:${r.ch}:${n}`; if(b.dataset.hl) S.hl[k]=b.dataset.hl; else delete S.hl[k]; }); persist(); clearSel(); renderReader(); });
@@ -1242,7 +1269,7 @@ async function compareSheet(r){
 }
 
 /* Sheet plumbing */
-function openSheet(html,keepSel){ $('#sheetInner').innerHTML=html; $('#sheet').classList.add('on'); $('#scrim').classList.add('on'); $('#sheet').scrollTop=0; $('#sheet').dataset.keep=keepSel?'1':''; }
+function openSheet(html,keepSel){ $('#sheetInner').innerHTML=html; $('#sheet').classList.add('on'); $('#scrim').classList.toggle('on',!keepSel); $('#sheet').scrollTop=0; $('#sheet').dataset.keep=keepSel?'1':''; }
 function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
 $('#scrim').onclick=()=>{ if($('#sheet').dataset.keep) clearSel(); else closeSheet(); };
 $('#sheet').addEventListener('click',e=>{ if(e.target.closest('[data-x]')){ if($('#sheet').dataset.keep) clearSel(); else closeSheet(); } });
@@ -1279,6 +1306,7 @@ function speak(text,onEnd){
 }
 function stopSpeak(){ speaking=false; if('speechSynthesis' in window) speechSynthesis.cancel(); $('#rListen').classList.remove('red'); }
 $('#rListen').onclick=()=>{
+  if(typeof narrationWanted==='function'&&narrationWanted()&&!speaking){ narrateToggle([[R.book,R.ch]],'read'); return; }
   if(speaking){ stopSpeak(); return; }
   $('#rListen').classList.add('red');
   speak(`${bookName(R.book)} chapter ${R.ch}. `+R.verses.map(v=>plain(v.html)).join(' '), ()=>$('#rListen').classList.remove('red'));
@@ -1501,22 +1529,101 @@ function renderPlans(){
 }
 
 /* ---------- Prayer list ---------- */
-let prTab='open';
+const PR_GROUPS=['Church Family','Our Team','Family','Friends','Company','Customers','Community','Personal'];
+let prTab='open', prCat='', prQ='';
+const prGroups=()=>[...new Set([...PR_GROUPS,...S.prayers.map(p=>p.cat).filter(Boolean)])];
+const prShort=d=>new Date(d).toLocaleDateString([], {month:'short',day:'numeric'});
+function prGroupSelect(id,cur){ return `<select id="${id}">${prGroups().map(g=>`<option ${g===cur?'selected':''}>${esc(g)}</option>`).join('')}<option value="__new">New group…</option></select>`; }
+function prGroupValue(id){ const v=$('#'+id).value; if(v!=='__new') return v; const n=(prompt('Name for the new group (for example "Sunday School Class")')||'').trim(); return n||'Personal'; }
+function prMarkPrayed(p){ p.lastPrayed=Date.now(); p.prayedCount=(p.prayedCount||0)+1; }
 $('#prTabs').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; prTab=b.dataset.t; $$('#prTabs button').forEach(x=>x.classList.toggle('on',x===b)); renderPrayers(); };
-$('#prAdd').onclick=()=>{ const t=$('#prText').value.trim(); if(!t) return; S.prayers.unshift({id:uid(),text:t,cat:$('#prCat').value,ts:Date.now(),answered:false}); persist(); $('#prText').value=''; toast('Added'); renderPrayers(); };
+$('#prQ').addEventListener('input',e=>{ prQ=e.target.value.toLowerCase(); renderPrayerList(); });
+$('#prNewBtn').onclick=()=>prEditSheet(null);
+$('#prBulkBtn').onclick=()=>{
+  openSheet(`<button class="close" data-x>X</button><h3>Add Several at Once</h3>
+    <p class="small muted">Type or paste one name or request on each line — a whole church roll or class list works. You can also tap the microphone on your keyboard and say each name followed by "new line."</p>
+    <textarea id="pbText" style="min-height:220px" placeholder="John and Mary Smith\nThe Wilson family\nPastor search committee"></textarea>
+    <label class="lbl">Put them in this group</label>${prGroupSelect('pbCat',prCat||'Church Family')}
+    <button class="btn red full" id="pbGo" style="margin-top:14px">Add to My List</button>`);
+  const upd=()=>{ const n=$('#pbText').value.split('\n').map(x=>x.trim()).filter(Boolean).length; $('#pbGo').textContent=n?`Add ${n} to My List`:'Add to My List'; };
+  $('#pbText').addEventListener('input',upd);
+  $('#pbGo').onclick=()=>{
+    const lines=[...new Set($('#pbText').value.split('\n').map(x=>x.replace(/^[\s\-•*\d.)]+/,'').trim()).filter(Boolean))]; if(!lines.length){ toast('Add at least one name'); return; }
+    const cat=prGroupValue('pbCat'), have=new Set(S.prayers.filter(p=>!p.answered&&p.cat===cat).map(p=>p.text.toLowerCase()));
+    const add=lines.filter(t=>!have.has(t.toLowerCase())); const now=Date.now();
+    add.forEach((t,i)=>S.prayers.push({id:uid(),text:t,cat,ts:now+i,answered:false}));
+    persist(); closeSheet(); prCat=cat; toast(`Added ${add.length}${add.length<lines.length?` (${lines.length-add.length} already on your list)`:''}`); renderPrayers();
+  };
+};
+function prEditSheet(p){
+  const isNew=!p;
+  openSheet(`<button class="close" data-x>X</button><h3>${isNew?'Add a Request':'Prayer Request'}</h3>
+    <label class="lbl">Who or what</label><textarea id="peText" style="min-height:100px" placeholder="Name, and anything specific to pray for">${esc(p?p.text:'')}</textarea>
+    <label class="lbl">Group</label>${prGroupSelect('peCat',p?p.cat:(prCat||'Personal'))}
+    ${p&&p.prayedCount?`<p class="small muted">Prayed for ${p.prayedCount} time${p.prayedCount===1?'':'s'}, last on ${prShort(p.lastPrayed)}.</p>`:''}
+    <button class="btn red full" id="peSave" style="margin-top:14px">${isNew?'Add':'Save'}</button>
+    ${p?`<div class="grid2" style="margin-top:10px">${p.answered?'<button class="btn" id="peReopen">Move Back to Praying</button>':'<button class="btn" id="peAns">Mark Answered</button>'}<button class="btn" id="peDel">Delete</button></div>`:''}`);
+  $('#peSave').onclick=()=>{ const t=$('#peText').value.trim(); if(!t){ toast('Enter a name or request'); return; } const cat=prGroupValue('peCat');
+    if(isNew) S.prayers.unshift({id:uid(),text:t,cat,ts:Date.now(),answered:false}); else { p.text=t; p.cat=cat; p.updated=Date.now(); }
+    persist(); closeSheet(); toast(isNew?'Added':'Saved'); renderPrayers(); };
+  if($('#peAns')) $('#peAns').onclick=()=>{ const n=prompt('How was it answered? (optional)')||''; p.answered=true; p.ansTs=Date.now(); p.ansNote=n.trim(); p.updated=Date.now(); persist(); closeSheet(); toast('Moved to Answered'); renderPrayers(); };
+  if($('#peReopen')) $('#peReopen').onclick=()=>{ p.answered=false; delete p.ansNote; p.updated=Date.now(); persist(); closeSheet(); renderPrayers(); };
+  if($('#peDel')) $('#peDel').onclick=()=>{ if(!confirm('Delete this request?')) return; S.prayers=S.prayers.filter(x=>x.id!==p.id); persist(); closeSheet(); renderPrayers(); };
+}
 function renderPrayers(){
-  const list=S.prayers.filter(p=>prTab==='open'?!p.answered:p.answered), box=$('#prList');
-  if(!list.length){ box.innerHTML=`<div class="empty">${prTab==='open'?'Nothing on your list yet.':'Answered prayers will be kept here as a record of God\u2019s faithfulness.'}</div>`; return; }
-  box.innerHTML=list.map(p=>`<div class="item" data-id="${p.id}"><div class="ref">${esc(p.cat)}</div><div class="txt">${esc(p.text)}</div>
-    <div class="small muted">Added ${new Date(p.ts).toLocaleDateString()}${p.answered?` \u2022 Answered ${new Date(p.ansTs).toLocaleDateString()}`:''}</div>${p.ansNote?`<div class="note">${esc(p.ansNote)}</div>`:''}
-    <div class="tools">${p.answered?'<button class="btn sm" data-a="reopen">Move Back</button>':'<button class="btn sm red" data-a="ans">Mark Answered</button>'}<button class="btn sm" data-a="del">Delete</button></div></div>`).join('');
-  box.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
-    const p=S.prayers.find(x=>x.id===b.closest('.item').dataset.id), a=b.dataset.a;
-    if(a==='ans'){ const n=prompt('How was it answered? (optional)')||''; p.answered=true; p.ansTs=Date.now(); p.ansNote=n.trim(); }
-    if(a==='reopen'){ p.answered=false; delete p.ansNote; }
-    if(a==='del'){ if(!confirm('Delete this request?')) return; S.prayers=S.prayers.filter(x=>x.id!==p.id); }
-    persist(); renderPrayers();
-  });
+  const open=S.prayers.filter(p=>!p.answered), month=Date.now()-30*864e5;
+  const recent=open.filter(p=>(p.lastPrayed||0)>month).length, ans=S.prayers.filter(p=>p.answered).length;
+  $('#prStats').textContent=open.length?`${open.length} on your list · ${recent} prayed for in the last 30 days${ans?` · ${ans} answered`:''}`:'';
+  const counts={}; S.prayers.filter(p=>prTab==='open'?!p.answered:p.answered).forEach(p=>counts[p.cat]=(counts[p.cat]||0)+1);
+  const gs=Object.keys(counts).sort((a,b)=>prGroups().indexOf(a)-prGroups().indexOf(b));
+  if(prCat&&!counts[prCat]) prCat='';
+  $('#prCats').innerHTML=gs.length>1?[['','All'],...gs.map(g=>[g,`${g} (${counts[g]})`])].map(([k,n])=>`<button class="chip ${prCat===k?'on':''}" data-k="${esc(k)}">${esc(n)}</button>`).join(''):'';
+  $$('#prCats .chip').forEach(c=>c.onclick=()=>{ prCat=c.dataset.k; renderPrayers(); });
+  $('#prPrayBtn').style.display=open.length?'':'none';
+  renderPrayerList();
+}
+function renderPrayerList(){
+  const box=$('#prList');
+  let list=S.prayers.filter(p=>(prTab==='open'?!p.answered:p.answered)&&(!prCat||p.cat===prCat)&&(!prQ||(p.text+' '+p.cat).toLowerCase().includes(prQ)));
+  if(prTab==='answered') list.sort((a,b)=>(b.ansTs||0)-(a.ansTs||0));
+  else list.sort((a,b)=>(a.cat||'').localeCompare(b.cat||'')||(a.ts||0)-(b.ts||0));
+  if(!list.length){ box.innerHTML=`<div class="empty">${S.prayers.some(p=>prTab==='open'?!p.answered:p.answered)?'Nothing matches that search.':prTab==='open'?'Nothing on your list yet. Tap Add Several at Once to add a whole list of names.':'Answered prayers will be kept here as a record of God’s faithfulness.'}</div>`; return; }
+  let h='', grp='';
+  list.forEach(p=>{ if(prTab==='open'&&!prCat&&p.cat!==grp){ grp=p.cat; h+=`<div class="jgroup">${esc(grp)}</div>`; }
+    const today=p.lastPrayed&&new Date(p.lastPrayed).toDateString()===new Date().toDateString();
+    const meta=p.answered?`Answered ${prShort(p.ansTs)}`:(p.prayedCount?`Prayed ${p.prayedCount}× · last ${prShort(p.lastPrayed)}`:`Added ${prShort(p.ts)}`);
+    h+=`<div class="pr-item" data-id="${p.id}"><div class="tx" data-edit>${prCat||prTab!=='open'?`<span class="cat">${esc(p.cat)}</span>`:''}${esc(p.text)}<span class="cat" style="margin-top:4px;text-transform:none;letter-spacing:0;font-weight:600">${esc(meta)}</span>${p.ansNote?`<div class="note">${esc(p.ansNote)}</div>`:''}</div>
+      ${p.answered?'':`<button class="btn sm ${today?'done':''}" data-pray>${today?'Prayed':'I Prayed'}</button>`}</div>`; });
+  box.innerHTML=h;
+  box.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>prEditSheet(S.prayers.find(p=>p.id===x.closest('.pr-item').dataset.id)));
+  box.querySelectorAll('[data-pray]').forEach(b=>b.onclick=()=>{ const p=S.prayers.find(x=>x.id===b.closest('.pr-item').dataset.id); if(!p||b.classList.contains('done')) return;
+    prMarkPrayed(p); persist(); b.classList.add('done'); b.textContent='Prayed'; renderPrayers(); });
+}
+/* Pray through the list, one at a time, least recently prayed first */
+$('#prPrayBtn').onclick=()=>prayThrough(prCat);
+function prayThrough(group){
+  const queue=S.prayers.filter(p=>!p.answered&&(!group||p.cat===group)).sort((a,b)=>(a.lastPrayed||0)-(b.lastPrayed||0)||(a.ts||0)-(b.ts||0));
+  if(!queue.length){ toast('Nothing to pray through yet'); return; }
+  let i=0, done=0;
+  const gs=[...new Set(S.prayers.filter(p=>!p.answered).map(p=>p.cat))];
+  const draw=()=>{
+    if(i>=queue.length){ openSheet(`<div class="dv-done"><div class="seal"></div><div class="dv-eyebrow">Prayer Time Complete</div><h1>Amen.</h1><p class="dv-p">You prayed for ${done} ${done===1?'person or need':'people and needs'}${group?` in ${esc(group)}`:''}.</p></div><button class="btn red full" data-x>Done</button>`); renderPrayers(); return; }
+    const p=queue[i];
+    openSheet(`<button class="close" data-x>X</button>
+      ${gs.length>1?`<div class="chips" id="ptG" style="margin-bottom:12px"><button class="chip ${!group?'on':''}" data-g="">All</button>${gs.map(g=>`<button class="chip ${group===g?'on':''}" data-g="${esc(g)}">${esc(g)}</button>`).join('')}</div>`:''}
+      <div class="small muted" style="text-align:center;letter-spacing:.14em;text-transform:uppercase;font-weight:700">${i+1} of ${queue.length}${group?' · '+esc(group):''}</div>
+      <div class="progress" style="margin:10px 0 22px"><i style="width:${Math.round(100*i/queue.length)}%"></i></div>
+      <div style="text-align:center;min-height:180px"><div class="cat small" style="letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700">${esc(p.cat)}</div>
+        <div class="serif" style="font-size:32px;font-weight:600;line-height:1.3;margin:12px 6px">${esc(p.text)}</div>
+        <div class="small muted">${p.lastPrayed?`Last prayed ${prShort(p.lastPrayed)}`:'Not prayed for yet'}</div></div>
+      <div class="grid2" style="margin-top:18px"><button class="btn" id="ptSkip">Skip</button><button class="btn red" id="ptNext">Prayed — Next</button></div>
+      <button class="btn full" id="ptStop" style="margin-top:10px">Finish for Now</button>`);
+    $('#ptNext').onclick=()=>{ prMarkPrayed(p); done++; persist(); i++; draw(); };
+    $('#ptSkip').onclick=()=>{ i++; draw(); };
+    $('#ptStop').onclick=()=>{ i=queue.length; draw(); };
+    $$('#ptG .chip').forEach(c=>c.onclick=()=>prayThrough(c.dataset.g));
+  };
+  draw();
 }
 
 /* ---------- Settings ---------- */
@@ -1526,7 +1633,7 @@ function applySettings(){
   document.querySelector('meta[name=theme-color]').content = '#3d0b15';
 }
 function renderSettings(){
-  $('#stName').value=S.settings.name; fillTrSelect(); fillVoices(); $('#stFsLbl').textContent=S.settings.fs; $('#stRate').value=String(S.settings.rate);
+  $('#stName').value=S.settings.name; fillTrSelect(); fillVoices(); if(typeof renderListenSettings==='function') renderListenSettings(); $('#stFsLbl').textContent=S.settings.fs; $('#stRate').value=String(S.settings.rate);
   $$('#stLayout button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.layout));
   $$('#stTheme button').forEach(b=>b.classList.toggle('on',b.dataset.m===S.settings.theme));
   $('#verLbl').textContent='Version '+APP_VERSION;
@@ -1770,7 +1877,7 @@ const SB_KEY='sb_publishable_PYlWSW6-Gi-QZl91IXUq0Q_W5mO3sDT';
 const SYNC_KEY=KEY+'.sync';
 try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ SY=null; }
 function saveSY(){ try{ if(SY) localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); else localStorage.removeItem(SYNC_KEY); }catch(e){} }
-const SYNC_ARR=['saved','speeches','prayers','journal','sermons'];
+const SYNC_ARR=['saved','speeches','prayers','journal','sermons','memory'];
 const SYNC_MAP=['hl','plans','prov','devo'];
 const SYNC_ONE=['pres','ribbon','last','presSeen','name'];
 function canon(x){ if(Array.isArray(x)) return x.map(canon); if(x&&typeof x==='object'){ const o={}; Object.keys(x).sort().forEach(k=>{ if(x[k]!==undefined) o[k]=canon(x[k]); }); return o; } return x; }
@@ -1963,7 +2070,16 @@ const ACTS=[['Adore','Praise God for who He is. Name one thing about His charact
  ['Give Thanks','Thank Him for specific blessings — your family, this company and the people you work with.'],
  ['Ask','Bring your needs and the needs of others to Him. Ask for wisdom and strength for today.']];
 const DV_STEPS=['Be Still','Read','Reflect','Pray','Go'];
-const DV={date:'',step:0,start:0,reading:null,prayed:{}};
+const DV={date:'',step:0,start:0,reading:null,prayed:{},prShow:0};
+function devoPraySheet(){
+  const cur=S.settings.devoPray||5, gs=[...new Set(S.prayers.filter(p=>!p.answered).map(p=>p.cat))];
+  openSheet(`<button class="close" data-x>X</button><h3>Morning Prayer List</h3><p class="small muted">How many people to pray for each morning. The app rotates through your whole list, starting with whoever was prayed for longest ago.</p>
+    <div class="chips" id="dpN" style="margin:12px 0">${[3,5,10,15,20,30,'all'].map(n=>`<button class="chip ${cur===n?'on':''}" data-n="${n}">${n==='all'?'Everyone':n}</button>`).join('')}</div>
+    ${gs.length>1?`<label class="lbl">From this group</label><div class="chips" id="dpG"><button class="chip ${!S.settings.devoGroup?'on':''}" data-g="">All groups</button>${gs.map(g=>`<button class="chip ${S.settings.devoGroup===g?'on':''}" data-g="${esc(g)}">${esc(g)}</button>`).join('')}</div>`:''}
+    <button class="btn red full" data-x style="margin-top:16px">Done</button>`);
+  $$('#dpN .chip').forEach(c=>c.onclick=()=>{ S.settings.devoPray=c.dataset.n==='all'?'all':+c.dataset.n; persist(); DV.prShow=0; $$('#dpN .chip').forEach(x=>x.classList.toggle('on',x===c)); if(location.hash==='#devo') renderDevo(); });
+  $$('#dpG .chip').forEach(c=>c.onclick=()=>{ S.settings.devoGroup=c.dataset.g; persist(); DV.prShow=0; $$('#dpG .chip').forEach(x=>x.classList.toggle('on',x===c)); if(location.hash==='#devo') renderDevo(); });
+}
 let quietT=null;
 function stopQuiet(){ clearInterval(quietT); quietT=null; }
 const pickDay=list=>list[dayOfYear()%list.length];
@@ -1976,7 +2092,7 @@ function devoReading(){
 }
 function startDevo(){
   const k=todayKey();
-  if(DV.date!==k){ Object.assign(DV,{date:k,step:(S.devo[k]&&S.devo[k].done)?5:0,start:Date.now(),reading:devoReading(),prayed:{}}); }
+  if(DV.date!==k){ Object.assign(DV,{date:k,step:(S.devo[k]&&S.devo[k].done)?5:0,start:Date.now(),reading:devoReading(),prayed:{},prShow:0}); }
   if(location.hash==='#devo') renderDevo(); else go('devo');
 }
 $('#moreDevo').onclick=startDevo;
@@ -2062,7 +2178,7 @@ async function renderDevo(){
           return `<span class="v ${i===0?'first':''}"><sup>${v.verse}</sup>${h} </span>`; }).join('')+'<div style="clear:both"></div></div>';
       }).join('');
     }catch(e){ $('#dvRead').innerHTML='<div class="empty">The reading could not load. Check your connection and tap Back, then Continue to try again.</div>'; }
-    $('#dvListen').onclick=()=>{ if(speaking){ stopSpeak(); $('#dvListen').textContent='Listen'; return; } if(!all) return; $('#dvListen').textContent='Stop';
+    $('#dvListen').onclick=()=>{ if(typeof narrationWanted==='function'&&narrationWanted()&&!speaking){ narrateToggle(DV.reading.chs,'devo'); return; } if(speaking){ stopSpeak(); $('#dvListen').textContent='Listen'; return; } if(!all) return; $('#dvListen').textContent='Stop';
       speak(all,()=>{ const b=$('#dvListen'); if(b) b.textContent='Listen'; }); };
   }
   else if(st===2){
@@ -2079,16 +2195,24 @@ async function renderDevo(){
     $('#dvMic').onclick=()=>{ if(recOn){ stopDictation(); return; } DICT={btn:'#dvMic',lbl:'#dvMicLbl',ta:'#dvAns',interim:'#dvInterim',save:saveDevoAnswer}; startDictation(); };
   }
   else if(st===3){
-    const open=S.prayers.filter(p=>!p.answered).sort((a,b)=>(a.lastPrayed||0)-(b.lastPrayed||0)).slice(0,3);
+    const want=S.settings.devoPray||5, grp=S.settings.devoGroup||'';
+    const pool=S.prayers.filter(p=>!p.answered&&(!grp||p.cat===grp)).sort((a,b)=>(a.lastPrayed||0)-(b.lastPrayed||0)||(a.ts||0)-(b.ts||0));
+    if(!DV.prShow) DV.prShow=want==='all'?pool.length:want;
+    const open=pool.slice(0,DV.prShow), more=pool.length-open.length; DV.shown=open.map(p=>p.id);
+    const cycle=want==='all'||!pool.length?'':` \u00B7 everyone is prayed for about every ${Math.ceil(pool.length/want)} day${Math.ceil(pool.length/want)===1?'':'s'}`;
     body.innerHTML=`<div class="dv-eyebrow">Pray</div><h1>Pray</h1>
       <div class="acts">${ACTS.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div>
       <h2>On Your Heart</h2>
+      <div class="row" style="align-items:center;margin:-2px 0 12px"><div class="small muted grow">${pool.length?`${open.length} of ${pool.length}${grp?' in '+esc(grp):''}${cycle}`:''}</div><button class="btn sm" id="dvPrSet">Change</button></div>
       <div id="dvPr">${open.length?open.map(p=>`<div class="pr-item" data-id="${p.id}"><div class="tx"><span class="cat">${esc(p.cat)}</span>${esc(p.text)}</div>
         <button class="btn sm ${DV.prayed[p.id]?'done':''}" data-pray>${DV.prayed[p.id]?'Prayed':'I Prayed'}</button></div>`).join('')
         :'<div class="empty" style="margin-bottom:10px">Your prayer list is empty. Add someone below.</div>'}</div>
+      ${more>0?`<button class="btn full" id="dvPrMore" style="margin-bottom:10px">Show ${Math.min(more,want==='all'?more:want)} More</button>`:''}
       <div class="row" style="margin-top:6px"><input type="text" class="grow" id="dvPrNew" placeholder="Add someone to pray for"><button class="btn" id="dvPrAdd">Add</button></div>`;
     $$('#dvPr [data-pray]').forEach(b=>b.onclick=()=>{ const id=b.closest('.pr-item').dataset.id, p=S.prayers.find(x=>x.id===id); if(!p||DV.prayed[id]) return;
-      DV.prayed[id]=1; p.lastPrayed=Date.now(); p.prayedCount=(p.prayedCount||0)+1; persist(); b.classList.add('done'); b.textContent='Prayed'; });
+      DV.prayed[id]=1; prMarkPrayed(p); persist(); b.classList.add('done'); b.textContent='Prayed'; });
+    if($('#dvPrMore')) $('#dvPrMore').onclick=()=>{ DV.prShow+=(want==='all'?pool.length:want); renderDevo(); };
+    $('#dvPrSet').onclick=()=>devoPraySheet();
     $('#dvPrAdd').onclick=()=>{ const t=$('#dvPrNew').value.trim(); if(!t) return; S.prayers.unshift({id:uid(),text:t,cat:'Personal',ts:Date.now(),answered:false}); persist(); toast('Added to your prayer list'); renderDevo(); };
   }
   else if(st===4){
@@ -2118,6 +2242,7 @@ function finishDevo(){
   const refs=r.chs.map(([b,c])=>chLabel(b,c));
   S.devo[k]=Object.assign(S.devo[k]||{},{done:true,at:Date.now(),mins,refs});
   if(r.plan&&S.plans[r.plan]&&!S.plans[r.plan].done.includes(r.day)) S.plans[r.plan].done.push(r.day);
+  (DV.shown||[]).forEach(id=>{ const p=S.prayers.find(x=>x.id===id); if(p&&!DV.prayed[id]&&!p.answered){ prMarkPrayed(p); DV.prayed[id]=1; } });
   persist(); DV.step=5; renderDevo();
 }
 $('#dvNext').onclick=()=>{ if(DV.step===2) saveDevoAnswer(); if(DV.step>=4){ finishDevo(); return; } DV.step++; renderDevo(); };
@@ -2152,5 +2277,6 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 <script src="spurgeon.js"></script>
 <script src="ceremonies.js"></script>
 <script src="study.js"></script>
+<script src="extras.js"></script>
 </body>
 </html>

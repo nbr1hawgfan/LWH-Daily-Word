@@ -1,6 +1,6 @@
 /* LWH Daily Word service worker */
-const VERSION = 'dw-1.4.1';
-const SHELL = ['./', './index.html', './manifest.json', './qrcode.js', './outlines.js', './spurgeon.js', './ceremonies.js', './study.js', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
+const VERSION = 'dw-1.5.0';
+const SHELL = ['./', './index.html', './manifest.json', './qrcode.js', './outlines.js', './spurgeon.js', './ceremonies.js', './study.js', './extras.js', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -16,6 +16,9 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+
+  // Narrated audio streams straight from the network (large files, range requests)
+  if (req.destination === 'audio' || /\.(mp3|m4a|ogg)(\?|$)/i.test(url.pathname)) return;
 
   // Scripture text never changes: cache first, keep forever.
   const isScripture =

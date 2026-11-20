@@ -177,7 +177,7 @@ function renderFamToday(){
   if(!rows.length){ box.innerHTML=''; return; }
   const today=rows.filter(r=>r.i===0), soon=rows.filter(r=>r.i>0).slice(0,3);
   box.innerHTML=`<div class="card fam-card"><div class="lab">${today.length?'Today in Your Family':'Coming Up in Your Family'}</div>
-    ${today.map(r=>`<div class="fl">${esc(frPhrase(r.e,r.yrs,'today'))}</div>`).join('')}
+    ${today.map(r=>`<div class="fl"${r.e.kind==='death'?` data-mem="${r.e.id}"`:''}><span class="fl-t">${esc(frPhrase(r.e,r.yrs,'today'))}</span></div>`).join('')}
     ${soon.map(r=>`<div class="fs">${esc(r.i===1?'Tomorrow':r.d.toLocaleDateString([], {weekday:'long'}))}: ${esc(frPhrase(r.e,r.yrs,'soon'))}</div>`).join('')}
     <button class="btn sm" style="margin-top:10px" data-go="family">Family Record</button></div>`;
 }

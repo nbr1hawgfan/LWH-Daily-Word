@@ -20,6 +20,14 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.9 — Keepsakes, In Loving Memory, old sermons (`photos.js`)
+- **Tucked in My Bible** (Home → Keepsakes) — take a picture of an obituary, wedding announcement, funeral program, letter or photo. Trim the edges, turn it, and use Brighten for faded newsprint. Tuck it at a verse: a corner of the clipping shows in the margin when that page is read, and tapping it opens the picture. Verses also have "Tuck a Picture Here" in the verse menu.
+- **In Loving Memory** — every Gone Home entry in the Family Record opens a memorial page: main picture in an oval frame, dates, resting place, a favorite verse, their story (typed or spoken), keepsakes, the funeral service, and words of comfort. On the anniversary, Home shows their picture with a verse of comfort.
+- **Pictures on Family Record entries** — any entry can hold pictures; the first shows beside the name.
+- **Old sermons** — My Sermons → Bring In Old Sermons and Services: choose many Word (.docx) or text files at once; the title, main Scripture, date and kind (sermon, wedding, funeral) are found automatically and shown for checking before saving. Every sermon has **Original Pages**: pictures of the printed or handwritten pages, kept with it, plus **Read the Text** for printed pages (runs on the phone, nothing is sent anywhere). Funerals can be linked to the person's memorial page. **Use as a Template** copies any sermon or service to start a new one.
+- **Storage** — pictures are kept on the device (IndexedDB) and backed up privately to the `dw-photos` bucket through the `dw-photos` server function (`supabase/functions/dw-photos`), which checks the reader's sign-in token. Each reader can only reach their own pictures; admins cannot see them. Pictures are resized before saving (about 300 KB each). Limit 5,000 per reader.
+- Libraries hosted in `lib/` and loaded only when used: mammoth.js (Word files, BSD-2) and Tesseract.js (text from printed pages, Apache-2.0).
+
 ### Added in 1.8 — Children's Bible (`kids.js`, sample)
 - Home → Keepsakes → **Children's Bible**: five picture-book stories retold for young children (In the Beginning, Noah and the Big Boat, David and the Giant, The First Christmas, Jesus Calms the Storm), 34 pages in all.
 - Every illustration is original, drawn in SVG inside `kids.js` from a small shared kit (people, animals, boats, skies), so the stories work offline and need no image files.

@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
@@ -481,6 +481,47 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 .st-it .tx{display:block;font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.3;margin-top:2px}
 .st-it .mt{display:block;font-size:15px;color:var(--muted);margin-top:3px}
 .st-it .nt{display:block;font-family:var(--serif);font-style:italic;font-size:18px;margin-top:6px;line-height:1.5}
+
+/* Children's Bible */
+.k-shelf{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.k-book{background:var(--card);border:1px solid var(--line);padding:0 0 12px;text-align:left;color:var(--ink);box-shadow:0 6px 14px -12px rgba(0,0,0,.5)}
+.k-cov{position:relative;border-bottom:3px solid var(--gold);aspect-ratio:4/3;overflow:hidden}
+.k-cov .kart{width:100%;height:100%}
+.k-book .t{display:block;font-family:'Nunito',var(--sans);font-weight:800;font-size:18px;line-height:1.2;margin:10px 10px 2px}
+.k-book .d{display:block;font-size:13.5px;color:var(--muted);margin:0 10px}
+.k-badge,.k-stars span,.k-bigstar{clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:linear-gradient(160deg,#ffe58a,#e0a92e)}
+.k-badge{position:absolute;right:8px;top:8px;width:30px;height:30px}
+.k-stars{display:flex;align-items:center;gap:6px;margin:0 0 14px}
+.k-stars span{width:24px;height:24px;background:var(--line2)}
+.k-stars span.on{background:linear-gradient(160deg,#ffe58a,#e0a92e)}
+.k-stars b{margin-left:8px;font-family:'Nunito',var(--sans);font-size:16px}
+.kart{display:block;width:100%;height:auto}
+.k-page{max-width:720px;margin:0 auto}
+.k-pic{border:3px solid var(--gold);background:#fff;box-shadow:0 10px 24px -16px rgba(0,0,0,.6)}
+.k-pic .kart{aspect-ratio:400/280}
+.k-text{font-family:'Nunito',var(--sans);font-weight:700;font-size:25px;line-height:1.55;color:var(--ink);margin:20px 4px 10px}
+.k-text .w{padding:0 1px;transition:background .12s}
+.k-text .w.on{background:#f7d774;color:#2a2420;box-shadow:0 0 0 2px #f7d774}
+.k-nav{grid-template-columns:1fr 1.5fr 1fr}
+.k-nav #kRead{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:1.4}
+.k-nav #kRead svg{width:22px;height:22px;flex:0 0 22px}
+.k-nav #kRead span{white-space:nowrap}
+.k-nav .btn{padding-left:8px;padding-right:8px}
+.k-nav #kRead.on{background:var(--brand);border-color:var(--brand)}
+.k-end{text-align:center;max-width:640px;margin:0 auto}
+.k-bigstar{width:110px;height:110px;margin:6px auto 8px;animation:kpop .7s ease-out}
+@keyframes kpop{0%{transform:scale(.2) rotate(-40deg);opacity:0}70%{transform:scale(1.12) rotate(6deg)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.k-bigstar{animation:none}}
+#v-kidstory .k-end h2{font-family:'Nunito',var(--sans);font-weight:800;font-size:28px;margin:0 0 14px;text-transform:none;letter-spacing:0;color:var(--ink);border:none;padding:0}
+#v-kidstory .k-end h2::after{display:none}
+.k-verse{border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:14px 6px;margin-bottom:14px}
+.k-verse p{font-family:var(--serif);font-size:23px;line-height:1.45;margin:6px 0}
+.k-verse .ref,.k-end .lab{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.k-talk{text-align:left;background:var(--card);border:1px solid var(--line);padding:14px 16px;margin-bottom:12px}
+.k-talk ol{margin:8px 0 0;padding-left:24px;font-family:'Nunito',var(--sans);font-weight:600;font-size:19px;line-height:1.5}
+.k-talk li{margin-bottom:6px}
+.k-talk p{font-family:'Nunito',var(--sans);font-weight:600;font-size:19px;line-height:1.5;margin:8px 0 0}
+#v-kidstory .dv-step{max-width:46%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -551,6 +592,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
   </div>
   <div class="sect">Keepsakes</div>
   <div class="toc">
+    <button class="toc-row" data-go="kids"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z"/><path d="M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/><path d="M6 10l1 1 2-2M16 9.5l1.2 2.5 2.3-.5"/></svg><span class="tx"><span class="t">Children’s Bible</span><span class="d">Bible stories with pictures for little ones</span></span></button>
     <button class="toc-row" data-go="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V9"/><path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5zM12 13c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg><span class="tx"><span class="t">Family Record</span><span class="d" id="homeFamD">Births, marriages and milestones of faith</span></span></button>
     <button class="toc-row" data-go="stones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16"/><path d="M6 20c-1-4 0-9 3-12 2-2 5-2 7 0 3 3 3 8 2 12"/><path d="M10 12h4M12 10v4"/></svg><span class="tx"><span class="t">Stones of Remembrance</span><span class="d" id="homeStD">What God has done</span></span></button>
     <button class="toc-row" data-go="presented"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3h14v18l-7-4-7 4z"/><path d="M12 7v6M9 10h6"/></svg><span class="tx"><span class="t">Presentation Page</span><span class="d">The front page of your Bible</span></span></button>
@@ -572,6 +614,14 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 <section class="view" id="v-memory">
   <h1>Memory Verses</h1>
   <div id="mvBody"></div>
+</section>
+
+<!-- CHILDREN'S BIBLE -->
+<section class="view" id="v-kids"><h1>Children’s Bible</h1><div id="kidsBody"></div></section>
+<section class="view" id="v-kidstory">
+  <div class="dv-top"><button class="rb-ic" id="kClose">Close</button><div class="dv-dots" id="kDots"></div><div class="dv-step" id="kTitle"></div></div>
+  <div class="dv-wrap" id="kStage"></div>
+  <div class="dv-nav k-nav"><button class="btn" id="kPrev">Back</button><button class="btn dark" id="kRead"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Read to Me</span></button><button class="btn red" id="kNext">Next</button></div>
 </section>
 
 <!-- FAMILY RECORD -->
@@ -699,6 +749,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
   <h1>Contents</h1>
   <div class="toc">
     <button class="toc-row" id="moreDevo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span class="tx"><span class="t">Morning Devotional</span><span class="d">Read, reflect and pray</span></span></button>
+    <button class="toc-row" data-go="kids"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z"/><path d="M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/><path d="M6 10l1 1 2-2M16 9.5l1.2 2.5 2.3-.5"/></svg><span class="tx"><span class="t">Children’s Bible</span><span class="d">Bible stories with pictures for little ones</span></span></button>
     <button class="toc-row" id="moreAdvent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l1.5 3-1.5 2-1.5-2z"/><path d="M9 9h6v13H9z"/><path d="M5 22h14"/></svg><span class="tx"><span class="t">Advent and Christmas</span><span class="d">A reading for every day to Christmas</span></span></button>
     <button class="toc-row" data-go="memory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0-6 6c0 2.5 1.5 3.6 2.5 5 .7 1 .5 2 .5 3h6c0-1-.2-2 .5-3 1-1.4 2.5-2.5 2.5-5a6 6 0 0 0-6-6z"/><path d="M9 21h6"/></svg><span class="tx"><span class="t">Memory Verses</span><span class="d">Practice and keep verses by heart</span></span></button>
     <button class="toc-row" data-go="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V9"/><path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5zM12 13c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg><span class="tx"><span class="t">Family Record</span><span class="d">Births, marriages, salvation and home-goings</span></span></button>
@@ -868,7 +919,7 @@ body.reading.chrome-hidden:not(.np-on) .fab{display:inline-flex}
 <script src="qrcode.js"></script>
 <script>
 'use strict';
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.8.0';
 const API = 'https://bolls.life';
 const FS_LAT = 35.3859, FS_LON = -94.3985;
 
@@ -928,7 +979,7 @@ const PRES_MSG = 'In honor of a leader whose faith has shaped not only a company
 const PRES_REF = 'Numbers 6:24-26';
 const PRES_BLESS = 'The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.';
 const DEF = {settings:{name:'',tr:'KJV',fs:20,layout:'para',theme:'light',rate:0.95,wx:'fs',lat:FS_LAT,lon:FS_LON,place:'Fort Smith, AR',cover:true,red:true},
-  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[], memory:[], family:[], stones:[],
+  saved:[], hl:{}, speeches:[], plans:{}, prayers:[], last:{book:43,ch:3}, prov:{}, journal:[], ribbon:null, devo:{}, sermons:[], memory:[], family:[], stones:[], kids:{},
   pres:{to:'',by:'Your family at Logistics Warehouse, Inc.',date:'',msg:PRES_MSG,ref:PRES_REF,bless:PRES_BLESS}};
 let S;
 try{ S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), JSON.parse(localStorage.getItem(KEY)||'{}')); S.settings=Object.assign({},DEF.settings,S.settings||{}); S.pres=Object.assign({},DEF.pres,S.pres||{}); }catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
@@ -1121,13 +1172,13 @@ const OCCASIONS = [
 ];
 
 /* ---------- Router ---------- */
-const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon','memory','family','stones'];
-const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more',memory:'more',family:'more',stones:'more'};
+const VIEWS=['home','read','search','topics','saved','more','speech','plans','prayer','settings','presented','journal','entry','devo','study','sermon','memory','family','stones','kids','kidstory'];
+const NAVMAP={topics:'search',speech:'more',plans:'more',prayer:'more',settings:'more',presented:'more',entry:'journal',devo:'home',study:'more',sermon:'more',memory:'more',family:'more',stones:'more',kids:'more',kidstory:'more'};
 function go(v){ location.hash = v; }
 function route(){
   let v = (location.hash||'#home').slice(1).split('?')[0]; if(!VIEWS.includes(v)) v='home';
   $$('.view').forEach(s=>s.classList.toggle('on', s.id==='v-'+v));
-  document.body.classList.toggle('reading', v==='read'); document.body.classList.toggle('focus', v==='devo'); document.body.classList.remove('chrome-hidden');
+  document.body.classList.toggle('reading', v==='read'); document.body.classList.toggle('focus', v==='devo'||v==='kidstory'); document.body.classList.remove('chrome-hidden');
   const nv = NAVMAP[v]||v; $$('#nav a').forEach(a=>a.classList.toggle('on', a.dataset.v===nv));
   window.scrollTo(0,0);
   if(v==='read') renderReader();
@@ -1148,6 +1199,8 @@ function route(){
   if(v==='memory'&&typeof renderMemory==='function') renderMemory();
   if(v==='family'&&typeof renderFamily==='function') renderFamily();
   if(v==='stones'&&typeof renderStones==='function') renderStones();
+  if(v==='kids'&&typeof renderKids==='function') renderKids();
+  if(v==='kidstory'&&typeof renderKidStory==='function') renderKidStory(); else if(typeof kStop==='function'){ KS.auto=false; kStop(); }
   if(v!=='entry'&&v!=='devo'&&v!=='sermon') stopDictation();
 }
 window.addEventListener('hashchange',route);
@@ -1990,7 +2043,7 @@ const SYNC_KEY=KEY+'.sync';
 try{ SY=JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ SY=null; }
 function saveSY(){ try{ if(SY) localStorage.setItem(SYNC_KEY,JSON.stringify(SY)); else localStorage.removeItem(SYNC_KEY); }catch(e){} }
 const SYNC_ARR=['saved','speeches','prayers','journal','sermons','memory','family','stones'];
-const SYNC_MAP=['hl','plans','prov','devo'];
+const SYNC_MAP=['hl','plans','prov','devo','kids'];
 const SYNC_ONE=['pres','ribbon','last','presSeen','name'];
 function canon(x){ if(Array.isArray(x)) return x.map(canon); if(x&&typeof x==='object'){ const o={}; Object.keys(x).sort().forEach(k=>{ if(x[k]!==undefined) o[k]=canon(x[k]); }); return o; } return x; }
 const J_=x=>JSON.stringify(canon(x===undefined?null:x));
@@ -2400,5 +2453,6 @@ if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.se
 <script src="extras.js"></script>
 <script src="shared.js"></script>
 <script src="keepsake.js"></script>
+<script src="kids.js"></script>
 </body>
 </html>

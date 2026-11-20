@@ -20,6 +20,13 @@ Red-and-black LWH portal styling, large text, no logins, works as a home-screen 
 - **Prayer List** — requests by category, mark answered with a note, answered history.
 - **Settings** — name, default translation, text size, layout, theme, voice speed, weather location, **backup / restore** file.
 
+### Added in 1.8 — Children's Bible (`kids.js`, sample)
+- Home → Keepsakes → **Children's Bible**: five picture-book stories retold for young children (In the Beginning, Noah and the Big Boat, David and the Giant, The First Christmas, Jesus Calms the Storm), 34 pages in all.
+- Every illustration is original, drawn in SVG inside `kids.js` from a small shared kit (people, animals, boats, skies), so the stories work offline and need no image files.
+- **Read to Me** reads each page aloud with the words lighting up as they are spoken, then turns the page by itself. Swipe or tap Next to read it yourself.
+- The last page has a verse to learn, Talk About It questions, a short prayer, and a gold star that stays on the shelf. Stars sync with the reader's account.
+- To add a story: add an entry to `KSTORIES` with `pages:[{x:text, a:()=>ART(...)}]`.
+
 ### Added in 1.7 — Keepsakes (`keepsake.js`)
 - **Advent and Christmas** — from the first Sunday of Advent through Christmas Day, the Morning Devotional becomes a daily Advent reading: Advent candles that light week by week (Hope, Peace, Joy, Love, then the Christ candle), a Scripture passage, a short thought for the day, a reflection question and a verse to carry. Christmas Eve and Christmas Day have their own readings. Two weeks before, Home shows when Advent begins. Contents → Advent and Christmas lists every reading (useful for preaching) and has a switch to turn it off. Dates are worked out each year automatically.
 - **Family Record** — like the pages in the middle of a family Bible: Births, Marriages, New Life in Christ (saved, baptized, joined the church, called to preach, ordained) and Gone Home to Be with the Lord. Dates can be just a year. Birthdays, anniversaries and other dates show on Home on the day and during the week before.
